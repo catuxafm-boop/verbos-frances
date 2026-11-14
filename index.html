@@ -169,7 +169,8 @@ const verbs={
   "assiéger":{
     pp:"assiégé",present:["assiège","assièges","assiège","assiégeons","assiégez","assiègent"],
     imp:"assiége",simple:["assiégeai","assiégeas","assiégea","assiégeâmes","assiégeâtes","assiégèrent"],
-    future:"assiéger",subj:["assiège","assièges","assiège","assiégions","assiégiez","assiègent"],
+    future:"assiéger",simple:["assiégeai","assiégeas","assiégea","assiégeâmes","assiégeâtes","assiégèrent"],
+    subj:["assiège","assièges","assiège","assiégions","assiégiez","assiègent"],
     subjImp:["assiégeasse","assiégeasses","assiégeât","assiégeassions","assiégeassiez","assiégeassent"],
     participle:"assiégeant",imperative:["assiège","assiégeons","assiégez"]
   },
@@ -222,7 +223,7 @@ const sections=[
 ];
 
 const allTenses=sections.flatMap(s=>s.items);
-const avoir=verbs["avoir"] || null;
+
 const avoirForms={
   present:["ai","as","a","avons","avez","ont"],
   imparfait:["avais","avais","avait","avions","aviez","avaient"],

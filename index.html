@@ -79,6 +79,31 @@ td:first-child{background:#eee5f7;text-align:left}
 #feedback{min-height:28px}
 .small{font-size:13px;font-weight:600}
 .note{font-size:13px;font-weight:600}
+
+.verb-selector{
+  background:var(--white);
+  border:2px solid var(--ink);
+  border-radius:16px;
+  padding:18px;
+  margin:15px 0 25px;
+  box-shadow:3px 3px 0 var(--ink);
+}
+.verb-selector label{
+  display:block;
+  margin-bottom:10px;
+  font-size:17px;
+}
+.verb-selector select{
+  width:100%;
+  padding:13px;
+  border:2px solid var(--ink);
+  border-radius:10px;
+  background:var(--yellow);
+  color:var(--ink);
+  font:inherit;
+  font-size:16px;
+  cursor:pointer;
+}
 @media(max-width:600px){body{padding:13px}}
 </style>
 </head>
@@ -109,6 +134,14 @@ td:first-child{background:#eee5f7;text-align:left}
     <h2>📚 Tableaux faits</h2>
     <button class="action" onclick="openPage('home')">← Accueil</button>
   </div>
+
+  <div class="verb-selector">
+    <label for="completedVerb">Choisis le verbe à afficher :</label>
+    <select id="completedVerb" onchange="updateTables(false)">
+      <option value="all">Tous les verbes</option>
+    </select>
+  </div>
+
   <div id="completedContent"></div>
 </section>
 
@@ -117,7 +150,16 @@ td:first-child{background:#eee5f7;text-align:left}
     <h2>✏️ Tableaux à compléter</h2>
     <button class="action" onclick="openPage('home')">← Accueil</button>
   </div>
+
   <p>Complète les cases avec les bonnes conjugaisons.</p>
+
+  <div class="verb-selector">
+    <label for="blankVerb">Choisis le verbe à compléter :</label>
+    <select id="blankVerb" onchange="updateTables(true)">
+      <option value="all">Tous les verbes</option>
+    </select>
+  </div>
+
   <div id="blankContent"></div>
 </section>
 
@@ -169,7 +211,7 @@ const verbs={
   "assiéger":{
     pp:"assiégé",present:["assiège","assièges","assiège","assiégeons","assiégez","assiègent"],
     imp:"assiége",simple:["assiégeai","assiégeas","assiégea","assiégeâmes","assiégeâtes","assiégèrent"],
-    future:"assiéger",simple:["assiégeai","assiégeas","assiégea","assiégeâmes","assiégeâtes","assiégèrent"],
+    future:"assiéger",
     subj:["assiège","assièges","assiège","assiégions","assiégiez","assiègent"],
     subjImp:["assiégeasse","assiégeasses","assiégeât","assiégeassions","assiégeassiez","assiégeassent"],
     participle:"assiégeant",imperative:["assiège","assiégeons","assiégez"]
@@ -256,9 +298,11 @@ function auxiliary(tense){
     case "Subjonctif imparfait":return avoirForms.subjImp;
   }
 }
+
 function compound(v,tense){
   return auxiliary(tense).map(a=>a+" "+v.pp);
 }
+
 function imperativePast(v){
   return ["aie","ayons","ayez"].map(a=>a+" "+v.pp);
 }
@@ -290,70 +334,129 @@ function conjugate(name,tense){
   }
 }
 
-function renderTables(blank){
+function renderTables(blank,selectedVerb="all"){
   let html="";
-  Object.keys(verbs).forEach(name=>{
+  const names=selectedVerb==="all"
+    ?Object.keys(verbs)
+    :[selectedVerb];
+
+  names.forEach(name=>{
+    const verb=verbs[name];
+    if(!verb)return;
+
     html+=`<div class="verb-card"><h3>${name}</h3>`;
+
     sections.forEach(section=>{
       html+=`<div class="section-title">${section.name}</div>`;
       html+=`<table><thead><tr><th>Temps / forme</th>`;
+
       pronouns.forEach(p=>html+=`<th>${p}</th>`);
+
       html+=`</tr></thead><tbody>`;
+
       section.items.forEach(tense=>{
         const result=conjugate(name,tense);
         html+=`<tr><td>${tense}</td>`;
+
         if(result.values.length===6){
-          result.values.forEach(value=>html+=`<td>${blank?"":value}</td>`);
+          result.values.forEach(value=>
+            html+=`<td>${blank?"":value}</td>`
+          );
         }else if(result.values.length===3){
-          result.values.forEach(value=>html+=`<td>${blank?"":value}</td>`);
+          result.values.forEach(value=>
+            html+=`<td>${blank?"":value}</td>`
+          );
           html+="<td></td><td></td><td></td>";
         }else{
           html+=`<td colspan="6">${blank?"":result.values[0]}</td>`;
         }
+
         html+="</tr>";
       });
+
       html+="</tbody></table>";
     });
+
     html+="</div>";
   });
+
   return html;
 }
 
+function fillSelectors(){
+  const names=Object.keys(verbs);
+
+  ["completedVerb","blankVerb"].forEach(id=>{
+    const select=document.getElementById(id);
+
+    names.forEach(name=>{
+      const option=document.createElement("option");
+      option.value=name;
+      option.textContent=name;
+      select.appendChild(option);
+    });
+  });
+}
+
+function updateTables(blank){
+  const selectId=blank?"blankVerb":"completedVerb";
+  const contentId=blank?"blankContent":"completedContent";
+
+  const selected=document.getElementById(selectId).value;
+
+  document.getElementById(contentId).innerHTML=
+    renderTables(blank,selected);
+}
+
 function openPage(id){
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".page").forEach(p=>
+    p.classList.remove("active")
+  );
   document.getElementById(id).classList.add("active");
 }
 
-document.getElementById("completedContent").innerHTML=renderTables(false);
-document.getElementById("blankContent").innerHTML=renderTables(true);
+fillSelectors();
+updateTables(false);
+updateTables(true);
 
 let current=null;
+
 function newRandom(){
   const names=Object.keys(verbs);
   const name=names[Math.floor(Math.random()*names.length)];
   const tense=allTenses[Math.floor(Math.random()*allTenses.length)];
   const result=conjugate(name,tense);
   const index=Math.floor(Math.random()*result.values.length);
+
   current={
     name,tense,index,
     answer:result.values[index],
     person:result.people[index]
   };
+
   document.getElementById("randomVerb").textContent=name;
   document.getElementById("randomTense").textContent=tense;
   document.getElementById("randomPerson").textContent=result.people[index];
   document.getElementById("answer").value="";
   document.getElementById("feedback").textContent="";
 }
+
 function startRandom(){
   openPage("random");
   newRandom();
 }
+
 function checkRandom(){
   if(!current)return;
-  const input=document.getElementById("answer").value.trim().toLowerCase().replace(/\s+/g," ");
-  const correct=current.answer.trim().toLowerCase().replace(/\s+/g," ");
+
+  const input=document.getElementById("answer").value
+    .trim().toLowerCase().replace(/\s+/g," ");
+
+  const correct=current.answer.trim()
+    .toLowerCase().replace(/\s+/g," ");
+
   const feedback=document.getElementById("feedback");
+
   if(input===correct){
     feedback.textContent="Bravo ! C'est correct ! ⭐";
     feedback.style.color="green";

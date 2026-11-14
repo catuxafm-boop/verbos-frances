@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -267,75 +268,290 @@ function futureForms(verb) {
 
 function conditionalForms(verb) {
   const stem = futureStem(verb);
-  re
-…
-¡Claro! Para que el pronombre y el verbo conjugado aparezcan juntos en una misma casilla, tienes que modificar la función renderTable().
+  return ["ais","ais","ait","ions","iez","aient"].map(x=>stem+x);
+}
 
-En tu código, busca la función que empieza por function renderTable() y sustitúyela completa por esta:
+function pastParticiple(verb, index, gender="m") {
+  let pp = verbs[verb].pp;
+  if (verbs[verb].aux === "être") {
+    if (gender === "f") pp += "e";
+    if (index === 3 || index === 5) pp += "s";
+  }
+  return pp;
+}
 
+function elideJe(pronoun, form) {
+  if (pronoun !== "je") return pronoun;
+  return /^[aeiouyàâäéèêëîïôöùûüœh]/i.test(form) ? "j’" : "je";
+}
+
+function phrase(pronoun, form) {
+  return elideJe(pronoun, form) + " " + form;
+}
+
+function compoundAux(verb, tense, index) {
+  const aux = verbs[verb].aux;
+  if (tense === "Passé composé") return auxPresent[aux][index];
+  if (tense === "Plus-que-parfait") return auxImperfect[aux][index];
+  if (tense === "Passé antérieur") return auxSimplePast[aux][index];
+  if (tense === "Futur antérieur") return auxFuture[aux][index];
+  if (tense === "Conditionnel passé") return auxConditional[aux][index];
+  if (tense === "Subjonctif passé") return auxSubjPresent[aux][index];
+  if (tense === "Subjonctif plus-que-parfait") return auxSimplePast[aux][index];
+  return "";
+}
+
+function compoundForm(verb, tense, index, gender) {
+  const aux = compoundAux(verb, tense, index);
+  const pp = pastParticiple(verb,index,gender);
+  return phrase(people[index], aux + " " + pp);
+}
+
+function getForms(verb, tense, gender="m") {
+  const v = verbs[verb];
+  let forms = [];
+
+  switch (tense) {
+    case "Présent": return v.present.map((x,i)=>phrase(people[i],x));
+    case "Imparfait": return regularImperfect(verb).map((x,i)=>phrase(people[i],x));
+    case "Passé simple": return v.simplePast.map((x,i)=>phrase(people[i],x));
+    case "Futur simple": return futureForms(verb).map((x,i)=>phrase(people[i],x));
+    case "Conditionnel présent": return conditionalForms(verb).map((x,i)=>phrase(people[i],x));
+    case "Subjonctif présent": return v.subjPresent.map((x,i)=>phrase(people[i],x));
+    case "Subjonctif imparfait": return v.subjImperfect.map((x,i)=>phrase(people[i],x));
+
+    case "Passé composé":
+    case "Plus-que-parfait":
+    case "Passé antérieur":
+    case "Futur antérieur":
+    case "Conditionnel passé":
+    case "Subjonctif passé":
+    case "Subjonctif plus-que-parfait":
+      return people.map((_,i)=>compoundForm(verb,tense,i,gender));
+
+    case "Impératif présent":
+      return v.imperative.map((x,i)=>shortPeople[i]+" "+x);
+    case "Impératif passé": {
+      const auxForms = [0,3,4].map(i=>compoundAux(verb,"Passé composé",i));
+      const indices = [1,3,4];
+      return indices.map((idx,i)=>shortPeople[i]+" "+auxForms[i]+" "+pastParticiple(verb,idx,gender));
+    }
+    case "Infinitif présent": return [verb];
+    case "Infinitif passé": return ["avoir/être "+v.pp];
+    case "Participe présent": return [participlePresent(verb)];
+    case "Participe passé": return [v.pp];
+    case "Participe composé": return [(v.aux==="être"?"étant ":"ayant ")+v.pp];
+    case "Gérondif présent": return ["en "+participlePresent(verb)];
+    case "Gérondif passé": return ["en "+(v.aux==="être"?"étant ":"ayant ")+v.pp];
+  }
+  return forms;
+}
+
+function participlePresent(verb) {
+  const special = {
+    être:"étant", avoir:"ayant", savoir:"sachant"
+  };
+  if (special[verb]) return special[verb];
+  const base = verbs[verb].present[3].replace(/ons$/,"");
+  return base+"ant";
+}
+
+/* -------------------- PARAMÈTRES -------------------- */
+
+function renderSettings() {
+  const root = document.getElementById("tenseSettings");
+  root.innerHTML = "";
+  for (const [group, tenses] of Object.entries(groups)) {
+    const section = document.createElement("div");
+    section.className = "group";
+    const heading = document.createElement("h3");
+    heading.textContent = group;
+    section.appendChild(heading);
+
+    const list = document.createElement("div");
+    list.className = "checks";
+    tenses.forEach(t => {
+      const label = document.createElement("label");
+      const box = document.createElement("input");
+      box.type = "checkbox";
+      box.checked = enabled.has(t);
+      box.addEventListener("change",()=>{
+        box.checked ? enabled.add(t) : enabled.delete(t);
+      });
+      label.append(box,document.createTextNode(t));
+      list.appendChild(label);
+    });
+    section.appendChild(list);
+    root.appendChild(section);
+  }
+
+  const gender = document.createElement("div");
+  gender.className = "group";
+  gender.innerHTML = `
+    <h3>Accord du participe passé avec être</h3>
+    <label><input type="radio" name="gender" value="m" checked> Masculin</label>
+    <label><input type="radio" name="gender" value="f"> Féminin</label>
+  `;
+  root.appendChild(gender);
+}
+
+function setAll(value) {
+  enabled = value ? new Set(allTenses) : new Set();
+  renderSettings();
+}
+
+function selectedGender() {
+  return document.querySelector('input[name="gender"]:checked')?.value || "m";
+}
+
+/* -------------------- QUESTIONS -------------------- */
+
+function showPage(page) {
+  ["home","settings","quiz","tables"].forEach(id=>{
+    document.getElementById(id).classList.toggle("hidden",id!==page);
+  });
+  if (page==="settings") renderSettings();
+  if (page==="tables") initTables();
+  if (page==="quiz" && !current) newQuestion();
+}
+
+function newQuestion() {
+  const choices = [...enabled].filter(t=>allTenses.includes(t));
+  if (!choices.length) {
+    document.getElementById("question").textContent =
+      "Sélectionne au moins un temps dans les paramètres.";
+    document.getElementById("feedback").textContent = "";
+    return;
+  }
+
+  const tense = choices[Math.floor(Math.random()*choices.length)];
+  const verb = Object.keys(verbs)[Math.floor(Math.random()*Object.keys(verbs).length)];
+  const nonPersonal = [
+    "Infinitif présent","Infinitif passé","Participe présent",
+    "Participe passé","Participe composé","Gérondif présent","Gérondif passé"
+  ];
+  const imperative = ["Impératif présent","Impératif passé"].includes(tense);
+
+  let index = Math.floor(Math.random()*6);
+  if (imperative) index = [1,3,4][Math.floor(Math.random()*3)];
+  if (nonPersonal.includes(tense)) index = 0;
+
+  const forms = getForms(verb,tense,selectedGender());
+  const answer = forms[index] || forms[0];
+
+  current = {verb,tense,index,answer,nonPersonal,imperative};
+  document.getElementById("question").textContent =
+    `${verb} — ${tense}` +
+    (nonPersonal.includes(tense) ? "" :
+      imperative ? ` — ${shortPeople[[1,3,4].indexOf(index)]}` : ` — ${people[index]}`);
+
+  document.getElementById("progress").textContent =
+    `Score : ${score} / ${total}`;
+  document.getElementById("answer").value = "";
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("nextBtn").classList.add("hidden");
+  document.getElementById("answer").focus();
+}
+
+function normalize(text) {
+  return text.toLowerCase()
+    .trim()
+    .replace(/[’']/g,"'")
+    .replace(/\s+/g," ")
+    .replace(/[.!?]+$/,"");
+}
+
+function checkAnswer() {
+  if (!current) return;
+  const entered = normalize(document.getElementById("answer").value);
+  const expected = normalize(current.answer);
+  const feedback = document.getElementById("feedback");
+  total++;
+
+  if (entered === expected) {
+    score++;
+    feedback.className = "result good";
+    feedback.textContent = "Bravo ! Bonne réponse.";
+  } else {
+    feedback.className = "result bad";
+    feedback.textContent = "Pas tout à fait. Réponse : " + current.answer;
+  }
+
+  document.getElementById("progress").textContent = `Score : ${score} / ${total}`;
+  document.getElementById("nextBtn").classList.remove("hidden");
+}
+
+function insertChar(char) {
+  const input = document.getElementById("answer");
+  const start = input.selectionStart;
+  const end = input.selectionEnd;
+  input.value = input.value.slice(0,start)+char+input.value.slice(end);
+  input.focus();
+  input.setSelectionRange(start+char.length,start+char.length);
+}
+
+document.getElementById("answer").addEventListener("keydown",e=>{
+  if (e.key==="Enter" && !document.getElementById("nextBtn").classList.contains("hidden")) {
+    newQuestion();
+  } else if (e.key==="Enter") {
+    checkAnswer();
+  }
+});
+
+/* -------------------- TABLEAUX -------------------- */
+
+function initTables() {
+  const verbSelect = document.getElementById("verbChoice");
+  const tenseSelect = document.getElementById("tenseChoice");
+
+  if (!verbSelect.options.length) {
+    Object.keys(verbs).forEach(v=>{
+      const option = document.createElement("option");
+      option.value = v;
+      option.textContent = v;
+      verbSelect.appendChild(option);
+    });
+    allTenses.forEach(t=>{
+      const option = document.createElement("option");
+      option.value = t;
+      option.textContent = t;
+      tenseSelect.appendChild(option);
+    });
+  }
+  renderTable();
+}
 
 function renderTable() {
   const verb = document.getElementById("verbChoice").value;
   const tense = document.getElementById("tenseChoice").value;
   if (!verb || !tense) return;
 
-  const forms = getForms(verb, tense, selectedGender());
-
+  const forms = getForms(verb,tense,selectedGender());
   const personal = ![
     "Infinitif présent","Infinitif passé","Participe présent",
     "Participe passé","Participe composé","Gérondif présent","Gérondif passé"
   ].includes(tense);
 
-  let html = "<table><thead><tr><th>Conjugaison</th></tr></thead><tbody>";
-
-  forms.forEach(form => {
-    html += `<tr><td>${form}</td></tr>`;
-  });
-
+  let html = "<table><thead><tr><th>Personne</th><th>Conjugaison</th></tr></thead><tbody>";
+  if (personal) {
+    const labels = tense.startsWith("Impératif") ? ["tu","nous","vous"] : people;
+    forms.forEach((form,i)=>{
+      html += `<tr><td>${labels[i]}</td><td>${form}</td></tr>`;
+    });
+  } else {
+    forms.forEach(form=>{
+      html += `<tr><td>${tense}</td><td>${form}</td></tr>`;
+    });
+  }
   html += "</tbody></table>";
-
   document.getElementById("tableOutput").innerHTML = html;
 }
 
-El resultado será así:
+/* -------------------- INITIALISATION -------------------- */
 
-Antes:
-
-Personne
-
-Conjugaison
-
-je
-
-je parle
-
-tu
-
-tu parles
-
-il/elle/on
-
-il parle
-
-Después:
-
-Conjugaison
-
-je parle
-
-tu parles
-
-il parle
-
-nous parlons
-
-vous parlez
-
-ils parlent
-
-Así, el pronombre y el verbo estarán siempre juntos en la misma casilla.
-
-
-
-
-
+renderSettings();
+initTables();
+showPage("home");
+</script>
+</body>
+</html>

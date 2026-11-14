@@ -8,28 +8,28 @@
 
 <style>
 :root {
-  --pink: #f8dce8;
-  --pink-dark: #d98eae;
-  --lavender: #e8e1fa;
-  --blue: #dceefa;
-  --cream: #fffaf5;
-  --ink: #66566b;
-  --purple: #a17fa7;
-  --white: #fff;
-  --shadow: 0 8px 24px #8e78951c;
+  --beige: #f4eee3;
+  --cream: #fffdf8;
+  --ink: #514b50;
+  --purple: #e9e0f3;
+  --purple-dark: #806b9b;
+  --green: #e2eadf;
+  --green-dark: #71856d;
+  --blue: #e0eaf0;
+  --blue-dark: #6d8495;
+  --yellow: #f3edda;
+  --yellow-dark: #95804c;
+  --terracotta: #f1e2d8;
+  --terracotta-dark: #a5765d;
+  --shadow: 0 5px 18px #65584412;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
   min-height: 100vh;
-  background:
-    radial-gradient(circle at 10% 15%, #f8e6ee 0, transparent 23%),
-    radial-gradient(circle at 90% 80%, #e9e3f8 0, transparent 25%),
-    var(--cream);
+  background: var(--beige);
   color: var(--ink);
   font-family: "Trebuchet MS", Arial, sans-serif;
 }
@@ -42,208 +42,130 @@ header {
 h1 {
   margin: 0;
   font-family: Georgia, serif;
-  font-size: clamp(29px, 5vw, 43px);
-  color: #a17fa7;
+  font-size: clamp(27px, 5vw, 39px);
+  color: #756486;
 }
 
 .subtitle {
-  color: #aa91aa;
-  margin-top: 10px;
-  font-size: 15px;
-}
-
-header .decoration {
-  font-size: 23px;
-  margin-bottom: 10px;
-  letter-spacing: 12px;
+  color: #877d77;
+  margin: 9px 0;
 }
 
 main {
-  width: min(960px, 94%);
-  margin: 20px auto 55px;
+  width: min(920px, 94%);
+  margin: 20px auto 50px;
 }
 
-.screen {
-  display: none;
-}
-
-.screen.active {
-  display: block;
-  animation: appear .45s ease;
-}
-
-@keyframes appear {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ACCUEIL */
+.screen { display: none; }
+.screen.active { display: block; }
 
 .home-title {
   text-align: center;
   font-family: Georgia, serif;
-  font-size: 27px;
-  color: #977b9c;
-  margin: 28px 0 8px;
+  font-size: 25px;
+  margin: 25px 0 8px;
+  color: #655c68;
 }
 
 .home-subtitle {
   text-align: center;
-  color: #ad9bae;
-  margin-bottom: 30px;
+  color: #8a8179;
+  margin-bottom: 25px;
 }
 
 .activities {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
 }
 
 .activity {
-  position: relative;
-  overflow: hidden;
-  border: 2px solid #ffffffb5;
-  border-radius: 26px;
-  padding: 20px 17px 25px;
-  min-height: 340px;
+  border: 1px solid #ffffff;
+  border-radius: 18px;
+  padding: 20px;
+  min-height: 285px;
   text-align: center;
   cursor: pointer;
   box-shadow: var(--shadow);
-  transition: transform .25s, box-shadow .25s;
+  transition: transform .2s, box-shadow .2s;
   color: var(--ink);
   font: inherit;
 }
 
 .activity:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 15px 30px #8e78952c;
+  transform: translateY(-4px);
+  box-shadow: 0 9px 22px #65584420;
 }
 
-.activity:nth-child(1) {
-  background: linear-gradient(155deg, #fbe5ed, #f5d4e2);
-}
-
-.activity:nth-child(2) {
-  background: linear-gradient(155deg, #eee9fc, #ddd5f2);
-}
-
-.activity:nth-child(3) {
-  background: linear-gradient(155deg, #e5f3fc, #d1e8f6);
-}
-
-/* ILUSTRACIONES */
+.activity:nth-child(1) { background: var(--purple); }
+.activity:nth-child(2) { background: var(--green); }
+.activity:nth-child(3) { background: var(--blue); }
 
 .drawing {
-  height: 185px;
-  width: 100%;
+  height: 145px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  margin-bottom: 8px;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .drawing svg {
-  width: 100%;
-  max-width: 205px;
-  height: 180px;
-  overflow: visible;
-  transition: transform .3s;
-}
-
-.activity:hover .drawing svg {
-  transform: scale(1.07) rotate(-2deg);
+  width: 165px;
+  height: 140px;
 }
 
 .activity h3 {
   margin: 8px 0;
   font-family: Georgia, serif;
-  font-size: 23px;
-  color: #816987;
+  font-size: 21px;
+  color: #514b50;
 }
 
 .activity p {
-  margin: 9px 0;
-  line-height: 1.6;
+  margin: 8px 0;
+  line-height: 1.5;
   font-size: 14px;
-  color: #806f83;
+  color: #625b5d;
 }
-
-.card-flower {
-  position: absolute;
-  font-size: 22px;
-  opacity: .75;
-}
-
-.flower-one {
-  top: 13px;
-  left: 17px;
-}
-
-.flower-two {
-  right: 17px;
-  bottom: 15px;
-}
-
-/* PANELES */
 
 .panel {
-  background: #ffffffed;
-  padding: 25px;
-  border-radius: 24px;
+  background: var(--cream);
+  padding: 23px;
+  border-radius: 18px;
   box-shadow: var(--shadow);
   margin: 15px 0;
-  border: 1px solid #f2e9f1;
 }
 
 h2 {
   font-family: Georgia, serif;
-  color: #9d789f;
+  color: #756486;
 }
 
-button, select, input {
-  font: inherit;
-}
+button, select, input { font: inherit; }
 
 button {
   border: 0;
-  border-radius: 13px;
+  border-radius: 11px;
   padding: 11px 17px;
   cursor: pointer;
-  background: #eadff5;
-  color: #66566b;
+  color: var(--ink);
   transition: filter .2s, transform .2s;
 }
 
 button:hover {
   filter: brightness(.97);
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
-.primary {
-  background: #edcddd;
-}
-
-.blue-button {
-  background: #dceefa;
-}
-
-.back {
-  background: #f3edf4;
-  margin-bottom: 15px;
-}
+.primary { background: var(--purple); }
+.back { background: #e9e2d8; margin-bottom: 15px; }
 
 .controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: 12px;
   align-items: center;
-  margin: 18px 0;
+  margin: 15px 0;
 }
 
 label {
@@ -253,66 +175,59 @@ label {
 }
 
 select {
-  border: 1px solid #e3d8e6;
+  border: 1px solid #ddd3c6;
   background: white;
   color: var(--ink);
-  border-radius: 10px;
+  border-radius: 9px;
   padding: 9px;
   max-width: 100%;
 }
 
 .question {
-  background: #fff5f8;
-  border: 1px solid #f5e2eb;
-  border-radius: 18px;
-  padding: 23px;
+  background: #f2edf6;
+  border-radius: 14px;
+  padding: 20px;
   text-align: center;
-  margin: 18px 0;
+  margin: 16px 0;
 }
 
 .question .verb {
-  font: 28px Georgia, serif;
-  color: #a16f91;
+  font: 27px Georgia, serif;
+  color: var(--purple-dark);
 }
 
 .question .prompt {
   font-size: 17px;
-  margin-top: 10px;
+  margin-top: 9px;
 }
 
 .answers {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 11px;
+  gap: 10px;
 }
 
 .answer {
-  background: #f0eafa;
-  padding: 14px 8px;
-  border-radius: 12px;
+  background: #eee8f4;
+  padding: 13px 8px;
+  border-radius: 11px;
   text-align: center;
-  transition: .2s;
 }
 
-.answer.correct {
-  background: #dff1e3;
-}
-
-.answer.wrong {
-  background: #f8dfe3;
-}
+.answer.correct { background: #dcebdc; }
+.answer.wrong { background: #f2dfd9; }
 
 .feedback {
-  min-height: 30px;
+  min-height: 28px;
   text-align: center;
   font-weight: bold;
-  margin: 16px 0;
+  margin: 14px 0;
 }
 
 .score-box {
-  background: #fff5f8;
-  border-radius: 14px;
+  background: #f3eddf;
   padding: 12px;
+  border-radius: 11px;
   text-align: center;
   margin-top: 15px;
 }
@@ -320,23 +235,23 @@ select {
 table {
   width: 100%;
   border-collapse: separate;
-  border-spacing: 0 8px;
+  border-spacing: 0 7px;
 }
 
 th {
   text-align: left;
   padding: 10px;
-  color: #967b9c;
+  color: var(--purple-dark);
 }
 
 td {
-  background: #f7f1fa;
-  padding: 13px 15px;
-  border-radius: 9px;
+  background: #eee8f4;
+  padding: 12px 15px;
+  border-radius: 8px;
 }
 
 tbody tr:nth-child(even) td {
-  background: #fdf0f5;
+  background: #e7eee3;
 }
 
 .conjugated-form {
@@ -345,39 +260,31 @@ tbody tr:nth-child(even) td {
 }
 
 .settings-group {
-  padding: 15px 0;
-  border-bottom: 1px solid #f0e9f1;
+  padding: 13px 0;
+  border-bottom: 1px solid #eee8df;
 }
 
-.settings-group:last-child {
-  border: 0;
-}
+.settings-group:last-child { border: 0; }
 
 .small-note {
-  color: #9b8c9e;
+  color: #8d837b;
   font-size: 13px;
 }
 
 .footer {
   text-align: center;
   padding: 15px;
-  color: #b39cb3;
+  color: #94877c;
   font-size: 13px;
 }
 
 @media(max-width:520px) {
-  .panel {
-    padding: 16px;
-  }
-
+  .panel { padding: 15px; }
   .controls {
     align-items: flex-start;
     flex-direction: column;
   }
-
-  .activity {
-    min-height: 310px;
-  }
+  .activity { min-height: 260px; }
 }
 </style>
 </head>
@@ -385,277 +292,95 @@ tbody tr:nth-child(even) td {
 <body>
 
 <header>
-  <div class="decoration">🌷 ✿ 🌸</div>
   <h1>Mon Atelier de Conjugaison</h1>
-  <p class="subtitle">
-    Un petit espace pour pratiquer le français avec douceur ♡
-  </p>
+  <p class="subtitle">Un petit espace pour pratiquer le français</p>
 </header>
 
 <main>
 
-<!-- ACCUEIL -->
-
 <section id="home" class="screen active">
-
-  <h2 class="home-title">Bienvenue dans mon atelier !</h2>
-
-  <p class="home-subtitle">
-    Que veux-tu faire aujourd'hui ? 🌼
-  </p>
+  <h2 class="home-title">Que veux-tu faire aujourd'hui ?</h2>
+  <p class="home-subtitle">Choisis une activité pour commencer.</p>
 
   <div class="activities">
 
-    <!-- CARTE 1 -->
-
     <button class="activity" onclick="showScreen('training')">
-
-      <span class="card-flower flower-one">✿</span>
-      <span class="card-flower flower-two">🌸</span>
-
       <div class="drawing">
-
-        <svg viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg">
-
-          <!-- Ombre -->
-          <ellipse cx="110" cy="158" rx="77" ry="10"
-                   fill="#bd8fa5" opacity=".2"/>
-
-          <!-- Livre -->
-          <path d="M39 70 Q75 54 109 77 L109 145 Q73 123 39 140Z"
-                fill="#fffaf5" stroke="#b68aa6" stroke-width="2"/>
-
-          <path d="M109 77 Q145 54 181 70 L181 140 Q144 123 109 145Z"
-                fill="#fff" stroke="#b68aa6" stroke-width="2"/>
-
-          <path d="M109 77 L109 145"
-                stroke="#b68aa6" stroke-width="2"/>
-
-          <path d="M52 87 Q77 76 96 89 M52 101 Q76 91 96 104
-                   M52 115 Q76 105 96 118"
-                fill="none" stroke="#e6b4ca" stroke-width="3"
-                stroke-linecap="round"/>
-
-          <path d="M123 89 Q145 76 167 86 M123 104 Q145 91 167 100
-                   M123 118 Q145 105 167 114"
-                fill="none" stroke="#c5b4e5" stroke-width="3"
-                stroke-linecap="round"/>
-
-          <!-- Crayon -->
-          <path d="M156 36 L174 43 L143 112 L126 105Z"
-                fill="#edb7cd" stroke="#b47d9c" stroke-width="2"/>
-
-          <path d="M126 105 L143 112 L120 124Z"
-                fill="#f2d4bc"/>
-
-          <path d="M156 36 L162 23 L180 31 L174 43Z"
-                fill="#d9a4c0" stroke="#b47d9c" stroke-width="2"/>
-
-          <!-- Fleur -->
-          <g transform="translate(43 36)">
-            <circle cx="0" cy="-9" r="7" fill="#f4b8d0"/>
-            <circle cx="9" cy="-2" r="7" fill="#f4b8d0"/>
-            <circle cx="6" cy="9" r="7" fill="#f4b8d0"/>
-            <circle cx="-6" cy="9" r="7" fill="#f4b8d0"/>
-            <circle cx="-9" cy="-2" r="7" fill="#f4b8d0"/>
-            <circle r="5" fill="#f5d88d"/>
-          </g>
-
-          <!-- Petits détails -->
-          <path d="M185 112 Q197 99 201 112 Q198 124 185 112Z"
-                fill="#b4d8c1"/>
-          <circle cx="30" cy="112" r="4" fill="#d4b9e8"/>
-          <path d="M185 56 Q195 43 204 54"
-                stroke="#d6a6c0" stroke-width="2" fill="none"/>
-
+        <svg viewBox="0 0 180 145" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="90" cy="130" rx="65" ry="7" fill="#b7a8c5" opacity=".3"/>
+          <path d="M25 48 Q58 35 88 52 L88 116 Q55 100 25 113Z"
+                fill="#fffdf8" stroke="#927fa8" stroke-width="2"/>
+          <path d="M88 52 Q119 35 153 48 L153 113 Q120 100 88 116Z"
+                fill="#fffdf8" stroke="#927fa8" stroke-width="2"/>
+          <path d="M88 52V116" stroke="#927fa8" stroke-width="2"/>
+          <path d="M37 65L75 65 M37 78L75 78 M37 91L75 91"
+                stroke="#b6a5cb" stroke-width="3" stroke-linecap="round"/>
+          <path d="M101 65L140 65 M101 78L140 78 M101 91L140 91"
+                stroke="#b6a5cb" stroke-width="3" stroke-linecap="round"/>
+          <path d="M132 17L145 23L117 83L104 77Z"
+                fill="#d4bce5" stroke="#927fa8" stroke-width="2"/>
+          <path d="M104 77L117 83L98 93Z" fill="#d7b58d"/>
+          <circle cx="40" cy="29" r="9" fill="#e7c8a5"/>
+          <path d="M40 15V8 M40 43V50 M26 29H19 M54 29H61"
+                stroke="#b68c69" stroke-width="2" stroke-linecap="round"/>
         </svg>
-
       </div>
-
       <h3>Entraînement</h3>
-
-      <p>
-        Entraîne-toi avec des questions aléatoires
-        et teste tes connaissances.
-      </p>
-
+      <p>Entraîne-toi avec des questions et teste tes connaissances.</p>
     </button>
-
-
-    <!-- CARTE 2 -->
 
     <button class="activity" onclick="showScreen('tables')">
-
-      <span class="card-flower flower-one">✧</span>
-      <span class="card-flower flower-two">🦋</span>
-
       <div class="drawing">
-
-        <svg viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg">
-
-          <ellipse cx="110" cy="157" rx="72" ry="9"
-                   fill="#a999c8" opacity=".2"/>
-
-          <!-- Livre ouvert -->
-          <path d="M35 70 Q72 49 109 74 L109 146
-                   Q73 121 35 140Z"
-                fill="#fff" stroke="#a58bbd" stroke-width="2"/>
-
-          <path d="M109 74 Q148 49 185 70 L185 140
-                   Q146 121 109 146Z"
-                fill="#fffaf7" stroke="#a58bbd" stroke-width="2"/>
-
-          <path d="M109 74 L109 146"
-                stroke="#a58bbd" stroke-width="2"/>
-
-          <!-- Pages -->
-          <path d="M48 86 Q76 74 95 88 M48 101 Q76 90 95 103
-                   M48 116 Q76 105 95 118"
-                fill="none" stroke="#c5b4e5" stroke-width="3"
-                stroke-linecap="round"/>
-
-          <path d="M124 88 Q148 74 172 85 M124 103 Q148 90 172 100
-                   M124 118 Q148 105 172 115"
-                fill="none" stroke="#e8bbd2" stroke-width="3"
-                stroke-linecap="round"/>
-
-          <!-- Fleur sur le livre -->
-          <g transform="translate(68 52)">
-            <circle cx="0" cy="-7" r="6" fill="#eeb3d0"/>
-            <circle cx="7" cy="0" r="6" fill="#eeb3d0"/>
-            <circle cx="0" cy="7" r="6" fill="#eeb3d0"/>
-            <circle cx="-7" cy="0" r="6" fill="#eeb3d0"/>
-            <circle r="3" fill="#f4d98c"/>
-          </g>
-
-          <!-- Papillon -->
-          <g transform="translate(160 38)">
-            <path d="M0 0 Q-28 -28 -26 0 Q-20 17 0 4
-                     Q20 -20 26 0 Q20 17 0 4Z"
-                  fill="#c9b8ed" stroke="#9d88c2" stroke-width="1.5"/>
-            <path d="M0 0 L0 16"
-                  stroke="#806a9f" stroke-width="3"
-                  stroke-linecap="round"/>
-            <path d="M0 1 Q-8 -13 -12 -12 M0 1 Q8 -13 12 -12"
-                  stroke="#806a9f" fill="none"/>
-          </g>
-
-          <!-- Étoiles -->
-          <path d="M31 38 L35 47 L44 50 L35 54 L31 63 L27 54 L18 50 L27 47Z"
-                fill="#f2d28b"/>
-
-          <circle cx="195" cy="92" r="4" fill="#eeb3d0"/>
-          <circle cx="25" cy="119" r="3" fill="#c6b5e6"/>
-
+        <svg viewBox="0 0 180 145" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="90" cy="130" rx="65" ry="7" fill="#9bad91" opacity=".3"/>
+          <path d="M25 49Q57 34 88 53V116Q56 99 25 112Z"
+                fill="#fffdf8" stroke="#82977b" stroke-width="2"/>
+          <path d="M88 53Q120 34 155 49V112Q120 99 88 116Z"
+                fill="#fffdf8" stroke="#82977b" stroke-width="2"/>
+          <path d="M88 53V116" stroke="#82977b" stroke-width="2"/>
+          <path d="M37 66L75 66 M37 79L75 79 M37 92L75 92"
+                stroke="#a8b99f" stroke-width="3" stroke-linecap="round"/>
+          <path d="M101 66L141 66 M101 79L141 79 M101 92L141 92"
+                stroke="#a8b99f" stroke-width="3" stroke-linecap="round"/>
+          <path d="M125 28Q105 4 104 26Q105 40 125 33Q145 40 146 26Q145 4 125 28Z"
+                fill="#c6b3df" stroke="#8f7ba9" stroke-width="1.5"/>
+          <path d="M125 28V44" stroke="#8f7ba9" stroke-width="2"/>
+          <circle cx="45" cy="29" r="7" fill="#e8c994"/>
+          <circle cx="45" cy="29" r="3" fill="#fff5d9"/>
         </svg>
-
       </div>
-
       <h3>Tables de conjugaison</h3>
-
-      <p>
-        Découvre les conjugaisons des verbes
-        et des temps différents.
-      </p>
-
+      <p>Consulte les conjugaisons des verbes et des temps différents.</p>
     </button>
 
-
-    <!-- CARTE 3 -->
-
     <button class="activity" onclick="showScreen('settings')">
-
-      <span class="card-flower flower-one">♡</span>
-      <span class="card-flower flower-two">🌷</span>
-
       <div class="drawing">
-
-        <svg viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg">
-
-          <ellipse cx="110" cy="157" rx="65" ry="9"
-                   fill="#9ab8ca" opacity=".2"/>
-
-          <!-- Boîte -->
-          <path d="M52 73 L168 73 L158 143 L62 143Z"
-                fill="#c7e1f1" stroke="#8aafc5" stroke-width="2"/>
-
-          <!-- Couvercle -->
-          <path d="M45 62 Q110 46 175 62 L168 84
-                   Q110 99 52 84Z"
-                fill="#f3cddd" stroke="#bd91ae" stroke-width="2"/>
-
-          <!-- Ruban -->
-          <path d="M103 53 L103 143 L119 143 L119 53Z"
-                fill="#fff0f5" opacity=".9"/>
-
-          <path d="M110 61 Q75 23 69 47
-                   Q66 69 110 69
-                   Q151 23 153 47
-                   Q156 69 110 69Z"
-                fill="#edb2cc" stroke="#bd86a6" stroke-width="2"/>
-
-          <circle cx="110" cy="66" r="8"
-                  fill="#d98eae" stroke="#bd86a6" stroke-width="2"/>
-
-          <!-- Fleurs -->
-          <g transform="translate(79 105)">
-            <circle cy="-7" r="6" fill="#f3b4ce"/>
-            <circle cx="7" r="6" fill="#f3b4ce"/>
-            <circle cy="7" r="6" fill="#f3b4ce"/>
-            <circle cx="-7" r="6" fill="#f3b4ce"/>
-            <circle r="3" fill="#f3d889"/>
-          </g>
-
-          <g transform="translate(142 113)">
-            <circle cy="-7" r="6" fill="#f7d9a3"/>
-            <circle cx="7" r="6" fill="#f7d9a3"/>
-            <circle cy="7" r="6" fill="#f7d9a3"/>
-            <circle cx="-7" r="6" fill="#f7d9a3"/>
-            <circle r="3" fill="#dba5bd"/>
-          </g>
-
-          <!-- Étoiles -->
-          <path d="M38 36 L42 45 L51 49 L42 53 L38 62 L34 53 L25 49 L34 45Z"
-                fill="#f1d18d"/>
-
-          <path d="M182 94 L185 101 L192 104 L185 107 L182 114 L179 107 L172 104 L179 101Z"
-                fill="#e6b8d1"/>
-
-          <circle cx="180" cy="40" r="4" fill="#d0c0e9"/>
-          <circle cx="47" cy="117" r="4" fill="#d0c0e9"/>
-
+        <svg viewBox="0 0 180 145" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="90" cy="130" rx="60" ry="7" fill="#9eb2c1" opacity=".3"/>
+          <path d="M40 60L140 60L132 119H48Z"
+                fill="#d6e4ec" stroke="#8098a8" stroke-width="2"/>
+          <path d="M34 48Q90 33 146 48L140 67Q90 79 40 67Z"
+                fill="#d7c7e7" stroke="#9884ac" stroke-width="2"/>
+          <path d="M84 54V119H97V54Z" fill="#f6eee0"/>
+          <path d="M90 49Q59 14 56 37Q55 56 90 58Q125 14 128 37Q125 56 90 58Z"
+                fill="#bba7d2" stroke="#8f7ba9" stroke-width="2"/>
+          <circle cx="90" cy="55" r="7" fill="#8f7ba9"/>
+          <circle cx="64" cy="91" r="6" fill="#e8c994"/>
+          <circle cx="116" cy="96" r="6" fill="#b5c9ad"/>
         </svg>
-
       </div>
-
       <h3>Paramètres</h3>
-
-      <p>
-        Personnalise ton entraînement
-        et tes préférences.
-      </p>
-
+      <p>Personnalise ton entraînement et tes préférences.</p>
     </button>
 
   </div>
-
 </section>
 
-
-<!-- ENTRAÎNEMENT -->
-
 <section id="training" class="screen">
-
-  <button class="back" onclick="showScreen('home')">
-    ← Accueil
-  </button>
-
+  <button class="back" onclick="showScreen('home')">← Accueil</button>
   <div class="panel">
-
-    <h2>🌷 Entraînement</h2>
-
+    <h2>Entraînement</h2>
     <div class="controls">
-
       <label>Temps :
         <select id="quizTense">
           <option value="present">Présent</option>
@@ -667,7 +392,6 @@ tbody tr:nth-child(even) td {
           <option value="imperatif">Impératif présent</option>
         </select>
       </label>
-
       <label>Verbe :
         <select id="quizVerb">
           <option value="random">Aléatoire</option>
@@ -682,49 +406,27 @@ tbody tr:nth-child(even) td {
           <option value="voir">Voir</option>
         </select>
       </label>
-
     </div>
-
     <div class="question">
       <div class="verb" id="quizVerbDisplay">parler</div>
-      <div class="prompt" id="quizPrompt">
-        Conjugue le verbe au présent :
-      </div>
+      <div class="prompt" id="quizPrompt">Conjugue le verbe :</div>
     </div>
-
     <div class="answers" id="answers"></div>
-
     <div class="feedback" id="feedback"></div>
-
     <div style="text-align:center">
-      <button class="primary" onclick="newQuestion()">
-        Question suivante →
-      </button>
+      <button class="primary" onclick="newQuestion()">Question suivante →</button>
     </div>
-
     <div class="score-box">
-      🌸 Score : <strong id="score">0</strong> bonne(s) réponse(s)
+      Score : <strong id="score">0</strong> bonne(s) réponse(s)
     </div>
-
   </div>
-
 </section>
 
-
-<!-- TABLES -->
-
 <section id="tables" class="screen">
-
-  <button class="back" onclick="showScreen('home')">
-    ← Accueil
-  </button>
-
+  <button class="back" onclick="showScreen('home')">← Accueil</button>
   <div class="panel">
-
-    <h2>📖 Tables de conjugaison</h2>
-
+    <h2>Tables de conjugaison</h2>
     <div class="controls">
-
       <label>Verbe :
         <select id="tableVerb" onchange="renderTable()">
           <option value="parler">Parler</option>
@@ -738,7 +440,6 @@ tbody tr:nth-child(even) td {
           <option value="voir">Voir</option>
         </select>
       </label>
-
       <label>Temps :
         <select id="tableTense" onchange="renderTable()">
           <option value="present">Présent</option>
@@ -750,86 +451,38 @@ tbody tr:nth-child(even) td {
           <option value="imperatif">Impératif présent</option>
         </select>
       </label>
-
     </div>
-
     <div id="tableContainer"></div>
-
   </div>
-
 </section>
 
-
-<!-- PARAMÈTRES -->
-
 <section id="settings" class="screen">
-
-  <button class="back" onclick="showScreen('home')">
-    ← Accueil
-  </button>
-
+  <button class="back" onclick="showScreen('home')">← Accueil</button>
   <div class="panel">
-
-    <h2>🎀 Paramètres</h2>
-
+    <h2>Paramètres</h2>
     <div class="settings-group">
-
       <strong>Genre pour le passé composé avec être</strong>
-
       <p>
-        <label>
-          <input type="radio" name="gender" value="m"
-                 checked onchange="renderTable(); refreshQuiz()">
-          Masculin
-        </label>
-
-        <label>
-          <input type="radio" name="gender" value="f"
-                 onchange="renderTable(); refreshQuiz()">
-          Féminin
-        </label>
+        <label><input type="radio" name="gender" value="m" checked onchange="renderTable(); refreshQuiz()"> Masculin</label>
+        <label><input type="radio" name="gender" value="f" onchange="renderTable(); refreshQuiz()"> Féminin</label>
       </p>
-
-      <p class="small-note">
-        Ce réglage permet de choisir l'accord du participe passé
-        dans les exemples concernés.
-      </p>
-
+      <p class="small-note">Ce réglage permet de choisir l'accord du participe passé dans les exemples concernés.</p>
     </div>
-
     <div class="settings-group">
-
       <strong>À propos</strong>
-
-      <p>
-        Bienvenue dans ton atelier de conjugaison ! 🌼
-      </p>
-
-      <p class="small-note">
-        Apprendre le français peut être doux et amusant.
-      </p>
-
+      <p>Bienvenue dans ton atelier de conjugaison !</p>
     </div>
-
   </div>
-
 </section>
 
 </main>
 
-<footer class="footer">
-  Fait avec amour pour apprendre le français ♡
-</footer>
-
+<footer class="footer">Mon Atelier de Conjugaison</footer>
 
 <script>
-
-const people = [
-  "je", "tu", "il/elle/on", "nous", "vous", "ils/elles"
-];
+const people = ["je", "tu", "il/elle/on", "nous", "vous", "ils/elles"];
 
 const verbs = {
-
   parler: {
     present: ["parle","parles","parle","parlons","parlez","parlent"],
     imparfait: ["parlais","parlais","parlait","parlions","parliez","parlaient"],
@@ -838,7 +491,6 @@ const verbs = {
     subjonctif: ["parle","parles","parle","parlions","parliez","parlent"],
     passe: ["ai parlé","as parlé","a parlé","avons parlé","avez parlé","ont parlé"]
   },
-
   finir: {
     present: ["finis","finis","finit","finissons","finissez","finissent"],
     imparfait: ["finissais","finissais","finissait","finissions","finissiez","finissaient"],
@@ -847,7 +499,6 @@ const verbs = {
     subjonctif: ["finisse","finisses","finisse","finissions","finissiez","finissent"],
     passe: ["ai fini","as fini","a fini","avons fini","avez fini","ont fini"]
   },
-
   aller: {
     present: ["vais","vas","va","allons","allez","vont"],
     imparfait: ["allais","allais","allait","allions","alliez","allaient"],
@@ -856,7 +507,6 @@ const verbs = {
     subjonctif: ["aille","ailles","aille","allions","alliez","aillent"],
     passe: ["suis allé(e)","es allé(e)","est allé(e)","sommes allé(e)s","êtes allé(e)(s)","sont allé(e)s"]
   },
-
   "être": {
     present: ["suis","es","est","sommes","êtes","sont"],
     imparfait: ["étais","étais","était","étions","étiez","étaient"],
@@ -865,7 +515,6 @@ const verbs = {
     subjonctif: ["sois","sois","soit","soyons","soyez","soient"],
     passe: ["ai été","as été","a été","avons été","avez été","ont été"]
   },
-
   "avoir": {
     present: ["ai","as","a","avons","avez","ont"],
     imparfait: ["avais","avais","avait","avions","aviez","avaient"],
@@ -874,7 +523,6 @@ const verbs = {
     subjonctif: ["aie","aies","ait","ayons","ayez","aient"],
     passe: ["ai eu","as eu","a eu","avons eu","avez eu","ont eu"]
   },
-
   faire: {
     present: ["fais","fais","fait","faisons","faites","font"],
     imparfait: ["faisais","faisais","faisait","faisions","faisiez","faisaient"],
@@ -883,7 +531,6 @@ const verbs = {
     subjonctif: ["fasse","fasses","fasse","fassions","fassiez","fassent"],
     passe: ["ai fait","as fait","a fait","avons fait","avez fait","ont fait"]
   },
-
   prendre: {
     present: ["prends","prends","prend","prenons","prenez","prennent"],
     imparfait: ["prenais","prenais","prenait","prenions","preniez","prenaient"],
@@ -892,7 +539,6 @@ const verbs = {
     subjonctif: ["prenne","prennes","prenne","prenions","preniez","prennent"],
     passe: ["ai pris","as pris","a pris","avons pris","avez pris","ont pris"]
   },
-
   venir: {
     present: ["viens","viens","vient","venons","venez","viennent"],
     imparfait: ["venais","venais","venait","venions","veniez","venaient"],
@@ -901,7 +547,6 @@ const verbs = {
     subjonctif: ["vienne","viennes","vienne","venions","veniez","viennent"],
     passe: ["suis venu(e)","es venu(e)","est venu(e)","sommes venu(e)s","êtes venu(e)(s)","sont venu(e)s"]
   },
-
   voir: {
     present: ["vois","vois","voit","voyons","voyez","voient"],
     imparfait: ["voyais","voyais","voyait","voyions","voyiez","voyaient"],
@@ -910,7 +555,6 @@ const verbs = {
     subjonctif: ["voie","voies","voie","voyions","voyiez","voient"],
     passe: ["ai vu","as vu","a vu","avons vu","avez vu","ont vu"]
   }
-
 };
 
 const tenseNames = {
@@ -928,250 +572,140 @@ let currentAnswer = "";
 let answered = false;
 
 function showScreen(id) {
-
-  document.querySelectorAll(".screen").forEach(s =>
-    s.classList.remove("active")
-  );
-
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
-
   if (id === "tables") renderTable();
-
   if (id === "training") newQuestion();
 }
 
 function getGender() {
-
-  return document.querySelector(
-    'input[name="gender"]:checked'
-  )?.value || "m";
-
+  return document.querySelector('input[name="gender"]:checked')?.value || "m";
 }
 
 function getForms(verb, tense) {
-
   const data = verbs[verb];
-
   if (!data) return [];
 
   if (tense === "imperatif") {
-    return [
-      data.present[1],
-      data.present[3],
-      data.present[4]
-    ];
+    return [data.present[1], data.present[3], data.present[4]];
   }
 
   let forms = [...data[tense]];
 
-  if (tense === "passe") {
-
-    const gender = getGender();
-
-    if (verb === "aller" || verb === "venir") {
-
-      forms = forms.map(f => {
-
-        if (gender === "f") {
-          return f.replace("(e)", "e").replace("(s)", "s");
-        }
-
-        return f.replace("(e)", "").replace("(s)", "");
-
-      });
-
-    }
-
+  if (tense === "passe" && (verb === "aller" || verb === "venir")) {
+    forms = forms.map(f => {
+      if (getGender() === "f") {
+        return f.replace("(e)", "e").replace("(s)", "s");
+      }
+      return f.replace("(e)", "").replace("(s)", "");
+    });
   }
 
   return forms;
 }
 
 function getPronouns(tense) {
-
-  if (tense === "imperatif") {
-    return ["tu", "nous", "vous"];
-  }
-
-  return people;
+  return tense === "imperatif" ? ["tu", "nous", "vous"] : people;
 }
 
 function renderTable() {
-
   const verb = document.getElementById("tableVerb").value;
   const tense = document.getElementById("tableTense").value;
-
   const forms = getForms(verb, tense);
   const pronouns = getPronouns(tense);
 
-  let html = `
-    <h3>${verb} — ${tenseNames[tense]}</h3>
-    <table>
-      <thead>
-        <tr><th>Conjugaison</th></tr>
-      </thead>
-      <tbody>
-  `;
+  let html = `<h3>${verb} — ${tenseNames[tense]}</h3>
+    <table><thead><tr><th>Conjugaison</th></tr></thead><tbody>`;
 
   forms.forEach((form, index) => {
-
     const pronoun = pronouns[index];
-
     let fullForm = pronoun + " " + form;
 
-    if (
-      tense !== "imperatif" &&
-      pronoun === "je" &&
-      /^[aeiouhàâäéèêëîïôöùûü]/i.test(form)
-    ) {
+    if (tense !== "imperatif" && pronoun === "je" &&
+        /^[aeiouhàâäéèêëîïôöùûü]/i.test(form)) {
       fullForm = "j’" + form;
     }
 
-    html += `
-      <tr>
-        <td class="conjugated-form">${fullForm}</td>
-      </tr>
-    `;
-
+    html += `<tr><td class="conjugated-form">${fullForm}</td></tr>`;
   });
 
   html += "</tbody></table>";
-
   document.getElementById("tableContainer").innerHTML = html;
 }
 
 function newQuestion() {
-
   answered = false;
 
   const selectedVerb = document.getElementById("quizVerb").value;
-
   const verbList = Object.keys(verbs);
-
   const verb = selectedVerb === "random"
     ? verbList[Math.floor(Math.random() * verbList.length)]
     : selectedVerb;
 
   const tense = document.getElementById("quizTense").value;
-
   const forms = getForms(verb, tense);
-
   const index = Math.floor(Math.random() * forms.length);
-
-  const pronouns = getPronouns(tense);
-
-  const pronoun = pronouns[index];
+  const pronoun = getPronouns(tense)[index];
 
   currentAnswer = forms[index];
 
   document.getElementById("quizVerbDisplay").textContent = verb;
-
   document.getElementById("quizPrompt").textContent =
     `Conjugue « ${verb} » avec « ${pronoun} » au ${tenseNames[tense].toLowerCase()} :`;
-
-  // Options variées, même si le verbe possède des formes répétées.
-
-  const options = [currentAnswer];
 
   const distractors = [];
 
   Object.keys(verbs).forEach(otherVerb => {
-
     getForms(otherVerb, tense).forEach(form => {
-
-      if (
-        form !== currentAnswer &&
-        !distractors.includes(form)
-      ) {
+      if (form !== currentAnswer && !distractors.includes(form)) {
         distractors.push(form);
       }
-
     });
-
   });
 
-  distractors.sort(() => Math.random() - 0.5);
+  distractors.sort(() => Math.random() - .5);
+  const options = [currentAnswer, ...distractors.slice(0, 3)];
+  options.sort(() => Math.random() - .5);
 
-  while (options.length < 4 && distractors.length > 0) {
-    options.push(distractors.pop());
-  }
-
-  options.sort(() => Math.random() - 0.5);
-
-  document.getElementById("answers").innerHTML =
-    options.map(option => {
-
-      const safeOption = JSON.stringify(option);
-
-      return `
-        <button class="answer"
-          onclick="checkAnswer(this, ${safeOption})">
-          ${option}
-        </button>
-      `;
-
-    }).join("");
+  document.getElementById("answers").innerHTML = options.map(option =>
+    `<button class="answer" onclick="checkAnswer(this, ${JSON.stringify(option)})">${option}</button>`
+  ).join("");
 
   document.getElementById("feedback").textContent = "";
-
 }
 
 function checkAnswer(button, answer) {
-
   if (answered) return;
-
   answered = true;
 
   if (answer === currentAnswer) {
-
     button.classList.add("correct");
-
-    document.getElementById("feedback").textContent =
-      "Bravo ! Bonne réponse 🌸";
-
+    document.getElementById("feedback").textContent = "Bravo ! Bonne réponse";
     score++;
-
     document.getElementById("score").textContent = score;
-
   } else {
-
     button.classList.add("wrong");
-
     document.getElementById("feedback").textContent =
       "Pas tout à fait. La bonne réponse est : " + currentAnswer;
 
     document.querySelectorAll(".answer").forEach(b => {
-
       if (b.textContent.trim() === currentAnswer) {
         b.classList.add("correct");
       }
-
     });
-
   }
-
 }
 
 function refreshQuiz() {
-
-  if (
-    document.getElementById("training").classList.contains("active")
-  ) {
+  if (document.getElementById("training").classList.contains("active")) {
     newQuestion();
   }
-
 }
 
-document.getElementById("quizTense").addEventListener(
-  "change", newQuestion
-);
-
-document.getElementById("quizVerb").addEventListener(
-  "change", newQuestion
-);
+document.getElementById("quizTense").addEventListener("change", newQuestion);
+document.getElementById("quizVerb").addEventListener("change", newQuestion);
 
 renderTable();
-
 </script>
 
 </body>

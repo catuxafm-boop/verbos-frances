@@ -103,7 +103,6 @@ td:first-child{
   font:inherit;font-size:16px;cursor:pointer
 }
 
-/* CASILLAS EDITABLES */
 .answer-input{
   display:block;
   position:relative;
@@ -112,12 +111,12 @@ td:first-child{
   user-select:text;
   -webkit-user-select:text;
   width:100%;
-  min-width:85px;
+  min-width:75px;
   min-height:38px;
   padding:9px 5px;
   border:2px solid var(--ink);
   border-radius:8px;
-  background:#fff;
+  background:white;
   font-family:Arial,sans-serif;
   font-weight:600;
   font-size:14px;
@@ -176,7 +175,7 @@ td:first-child{
 
 @media(max-width:600px){
   body{padding:13px}
-  .answer-input{min-width:75px;font-size:13px}
+  .answer-input{min-width:70px;font-size:13px}
 }
 </style>
 </head>
@@ -184,6 +183,7 @@ td:first-child{
 <body>
 <main>
 
+<!-- ACCUEIL -->
 <section id="home" class="page active">
   <h1>Mon Atelier de Conjugaison</h1>
   <p class="subtitle">
@@ -208,6 +208,7 @@ td:first-child{
   </div>
 </section>
 
+<!-- TABLEAUX FAITS -->
 <section id="completed" class="page">
   <div class="topbar">
     <h2>📚 Tableaux faits</h2>
@@ -224,6 +225,7 @@ td:first-child{
   <div id="completedContent"></div>
 </section>
 
+<!-- TABLEAUX À COMPLÉTER -->
 <section id="blank" class="page">
   <div class="topbar">
     <h2>✏️ Tableaux à compléter</h2>
@@ -249,6 +251,7 @@ td:first-child{
     <button class="action yellow" onclick="resetBlank()">
       ↻ Recommencer
     </button>
+
     <p id="blankFeedback">
       Écris tes réponses directement dans les tableaux.
     </p>
@@ -257,6 +260,7 @@ td:first-child{
   <div id="blankContent"></div>
 </section>
 
+<!-- MODE ALÉATOIRE -->
 <section id="random" class="page">
   <div class="topbar">
     <h2>🎲 Mode aléatoire</h2>
@@ -298,6 +302,7 @@ const verbs={
     participle:"faisant",
     imperative:["fais","faisons","faites"]
   },
+
   "écrire":{
     pp:"écrit",
     present:["écris","écris","écrit","écrivons","écrivez","écrivent"],
@@ -309,6 +314,7 @@ const verbs={
     participle:"écrivant",
     imperative:["écris","écrivons","écrivez"]
   },
+
   "acquérir":{
     pp:"acquis",
     present:["acquiers","acquiers","acquiert","acquérons","acquérez","acquièrent"],
@@ -320,6 +326,7 @@ const verbs={
     participle:"acquérant",
     imperative:["acquiers","acquérons","acquérez"]
   },
+
   "assiéger":{
     pp:"assiégé",
     present:["assiège","assièges","assiège","assiégeons","assiégez","assiègent"],
@@ -331,6 +338,7 @@ const verbs={
     participle:"assiégeant",
     imperative:["assiège","assiégeons","assiégez"]
   },
+
   "battre":{
     pp:"battu",
     present:["bats","bats","bat","battons","battez","battent"],
@@ -342,6 +350,7 @@ const verbs={
     participle:"battant",
     imperative:["bats","battons","battez"]
   },
+
   "boire":{
     pp:"bu",
     present:["bois","bois","boit","buvons","buvez","boivent"],
@@ -353,6 +362,7 @@ const verbs={
     participle:"buvant",
     imperative:["bois","buvons","buvez"]
   },
+
   "prendre":{
     pp:"pris",
     present:["prends","prends","prend","prenons","prenez","prennent"],
@@ -364,6 +374,7 @@ const verbs={
     participle:"prenant",
     imperative:["prends","prenons","prenez"]
   },
+
   "tenir":{
     pp:"tenu",
     present:["tiens","tiens","tient","tenons","tenez","tiennent"],
@@ -378,21 +389,40 @@ const verbs={
 };
 
 const sections=[
-  {name:"Indicatif",items:[
-    "Présent","Imparfait","Passé simple","Futur simple",
-    "Passé composé","Plus-que-parfait","Passé antérieur","Futur antérieur"
-  ]},
-  {name:"Conditionnel",items:[
-    "Conditionnel présent","Conditionnel passé 1re forme",
-    "Conditionnel passé 2e forme"
-  ]},
-  {name:"Subjonctif",items:[
-    "Subjonctif présent","Subjonctif passé",
-    "Subjonctif imparfait","Subjonctif plus-que-parfait"
-  ]},
-  {name:"Impératif",items:["Impératif présent","Impératif passé"]},
-  {name:"Infinitif",items:["Infinitif présent","Infinitif passé"]},
-  {name:"Participe",items:["Participe présent","Participe passé"]}
+  {
+    name:"Indicatif",
+    items:[
+      "Présent","Imparfait","Passé simple","Futur simple",
+      "Passé composé","Plus-que-parfait","Passé antérieur","Futur antérieur"
+    ]
+  },
+  {
+    name:"Conditionnel",
+    items:[
+      "Conditionnel présent",
+      "Conditionnel passé 1re forme",
+      "Conditionnel passé 2e forme"
+    ]
+  },
+  {
+    name:"Subjonctif",
+    items:[
+      "Subjonctif présent","Subjonctif passé",
+      "Subjonctif imparfait","Subjonctif plus-que-parfait"
+    ]
+  },
+  {
+    name:"Impératif",
+    items:["Impératif présent","Impératif passé"]
+  },
+  {
+    name:"Infinitif",
+    items:["Infinitif présent","Infinitif passé"]
+  },
+  {
+    name:"Participe",
+    items:["Participe présent","Participe passé"]
+  }
 ];
 
 const allTenses=sections.flatMap(s=>s.items);
@@ -469,51 +499,6 @@ function conjugate(name,tense){
 
 /* CREATION DES TABLEAUX */
 
-function renderTables(blank,selectedVerb="all"){
-  let html="";
-  const names=selectedVerb==="all"?Object.keys(verbs):[selectedVerb];
-
-  names.forEach(name=>{
-    if(!verbs[name])return;
-
-    html+=`<div class="verb-card"><h3>${name}</h3>`;
-
-    sections.forEach(section=>{
-      html+=`<div class="section-title">${section.name}</div>`;
-      html+=`<table><thead><tr><th>Temps / forme</th>`;
-
-      pronouns.forEach(p=>html+=`<th>${p}</th>`);
-      html+=`</tr></thead><tbody>`;
-
-      section.items.forEach(tense=>{
-        const result=conjugate(name,tense);
-        html+=`<tr><td>${tense}</td>`;
-
-        if(result.values.length===6){
-          result.values.forEach((value,i)=>{
-            html+=`<td>${makeCell(blank,value,name,tense,result.people[i])}</td>`;
-          });
-        }else if(result.values.length===3){
-          result.values.forEach((value,i)=>{
-            html+=`<td>${makeCell(blank,value,name,tense,result.people[i])}</td>`;
-          });
-          html+=`<td></td><td></td><td></td>`;
-        }else{
-          html+=`<td colspan="6">${makeCell(blank,result.values[0],name,tense,result.people[0])}</td>`;
-        }
-
-        html+="</tr>";
-      });
-
-      html+="</tbody></table>";
-    });
-
-    html+="</div>";
-  });
-
-  return html;
-}
-
 function makeCell(blank,value,name,tense,person){
   if(!blank)return escapeHTML(value);
 
@@ -542,7 +527,72 @@ function escapeAttribute(value){
   return escapeHTML(value);
 }
 
-/* SELECTEURS */
+function renderTables(blank,selectedVerb="all"){
+  let html="";
+  const names=selectedVerb==="all"?Object.keys(verbs):[selectedVerb];
+
+  names.forEach(name=>{
+    if(!verbs[name])return;
+
+    html+=`<div class="verb-card"><h3>${name}</h3>`;
+
+    sections.forEach(section=>{
+      html+=`<div class="section-title">${section.name}</div>`;
+      html+=`<table><thead><tr><th>Temps / forme</th>`;
+
+      // Los encabezados son siempre los seis pronombres.
+      // El imperativo usa las columnas Tu, Nous y Vous.
+      pronouns.forEach(p=>{
+        html+=`<th>${p}</th>`;
+      });
+
+      html+=`</tr></thead><tbody>`;
+
+      section.items.forEach(tense=>{
+        const result=conjugate(name,tense);
+        html+=`<tr><td>${tense}</td>`;
+
+        if(result.values.length===6){
+          result.values.forEach((value,i)=>{
+            html+=`<td>${makeCell(blank,value,name,tense,result.people[i])}</td>`;
+          });
+
+        }else if(result.values.length===3){
+          // Columna Je: vacía
+          html+=`<td></td>`;
+
+          // Columna Tu
+          html+=`<td>${makeCell(blank,result.values[0],name,tense,"Tu")}</td>`;
+
+          // Columna Il / Elle: vacía
+          html+=`<td></td>`;
+
+          // Columna Nous
+          html+=`<td>${makeCell(blank,result.values[1],name,tense,"Nous")}</td>`;
+
+          // Columna Vous
+          html+=`<td>${makeCell(blank,result.values[2],name,tense,"Vous")}</td>`;
+
+          // Columna Ils / Elles: vacía
+          html+=`<td></td>`;
+
+        }else{
+          html+=`<td colspan="6">${makeCell(blank,result.values[0],name,tense,result.people[0])}</td>`;
+        }
+
+        html+="</tr>";
+      });
+
+      html+="</tbody></table>";
+    });
+
+    html+="</div>";
+  });
+
+  return html;
+}
+
+/* SELECTORES */
 
 function fillSelectors(){
   const names=Object.keys(verbs);
@@ -589,7 +639,7 @@ function normalizeAnswer(value){
   return value.trim().toLowerCase().normalize("NFC").replace(/\s+/g," ");
 }
 
-/* CORRECTION */
+/* CORRECTION DES TABLEAUX */
 
 function checkBlank(){
   const inputs=document.querySelectorAll("#blankContent .answer-input");
@@ -626,7 +676,7 @@ function checkBlank(){
   }
 }
 
-/* SOLUTIONS */
+/* AFFICHER LES SOLUTIONS */
 
 function showSolutions(){
   const inputs=document.querySelectorAll("#blankContent .answer-input");

@@ -3,526 +3,452 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mon Atelier de Conjugaison</title>
-
 <style>
-* { box-sizing: border-box; }
-
+:root {
+  --beige:#f5eddf;
+  --ink:#302b35;
+  --purple:#a88bd8;
+  --green:#a9c99b;
+  --yellow:#f2d477;
+  --blue:#9ec8df;
+  --orange:#e9a77e;
+  --white:#fffdf8;
+}
+* { box-sizing:border-box; }
 body {
-  margin: 0;
-  padding: 20px;
-  background: #f2eadc;
-  color: #302b35;
-  font-family: Arial, sans-serif;
-  font-weight: 800;
+  margin:0;
+  padding:24px;
+  background:var(--beige);
+  color:var(--ink);
+  font-family:Arial, sans-serif;
+  font-weight:700;
 }
-
-header {
-  max-width: 1050px;
-  margin: 0 auto 22px;
-  padding: 25px;
-  text-align: center;
-  background: #cdb7e8;
-  border: 3px solid #302b35;
-  border-radius: 18px;
-}
-
-h1 { margin: 0; font-size: 30px; }
-header p { margin-bottom: 0; }
-
-main { max-width: 1050px; margin: auto; }
-
-button, select, input {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-  color: #302b35;
-}
-
+main { max-width:1100px; margin:auto; }
+h1 { text-align:center; font-size:clamp(28px,5vw,44px); }
+h2 { font-size:25px; }
+p { line-height:1.5; }
+.page { display:none; }
+.page.active { display:block; }
+.subtitle { text-align:center; margin-bottom:30px; }
 .home-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+  margin-top:30px;
 }
-
 .home-card {
-  min-height: 190px;
-  padding: 22px;
-  text-align: left;
-  border: 3px solid #302b35;
-  border-radius: 17px;
-  font-size: 19px;
+  border:3px solid var(--ink);
+  border-radius:20px;
+  padding:28px 20px;
+  min-height:190px;
+  cursor:pointer;
+  text-align:center;
+  color:var(--ink);
+  font:inherit;
+  font-size:21px;
+  box-shadow:5px 5px 0 var(--ink);
+  transition:transform .15s;
 }
-
+.home-card:hover { transform:translateY(-4px); }
 .home-card span {
-  display: block;
-  font-size: 35px;
-  margin-bottom: 18px;
+  display:block;
+  font-size:42px;
+  margin-bottom:15px;
 }
-
-.purple { background: #cdb7e8; }
-.green { background: #c9d9b9; }
-.yellow { background: #f0d98d; }
-.blue { background: #c2dce8; }
-.orange { background: #e5b99a; }
-
-.page { display: none; }
-.page.active { display: block; }
-
-.card {
-  padding: 22px;
-  margin-bottom: 18px;
-  background: #fffdf8;
-  border: 2px solid #302b35;
-  border-radius: 16px;
+.purple { background:var(--purple); }
+.green { background:var(--green); }
+.yellow { background:var(--yellow); }
+.blue { background:var(--blue); }
+.orange { background:var(--orange); }
+button, select, input {
+  font:inherit;
+  color:var(--ink);
 }
-
-.back {
-  margin-bottom: 15px;
-  padding: 11px 16px;
-  background: #fffdf8;
-  border: 2px solid #302b35;
-  border-radius: 10px;
-}
-
 .action {
-  padding: 11px 16px;
-  margin: 5px;
-  background: #d9c8ed;
-  border: 2px solid #302b35;
-  border-radius: 10px;
+  border:2px solid var(--ink);
+  border-radius:12px;
+  padding:12px 18px;
+  background:var(--white);
+  cursor:pointer;
+  margin:5px;
 }
-
-select, input {
-  padding: 11px;
-  border: 2px solid #302b35;
-  border-radius: 9px;
-  background: white;
-  margin: 5px;
+.action:hover { background:var(--yellow); }
+.topbar {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:20px;
 }
-
+.verb-card {
+  background:var(--white);
+  border:2px solid var(--ink);
+  border-radius:16px;
+  padding:16px;
+  margin:18px 0;
+  box-shadow:3px 3px 0 var(--ink);
+  overflow-x:auto;
+}
+.verb-card h3 { margin-top:0; font-size:23px; }
 table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 12px 0 25px;
-  background: white;
+  border-collapse:collapse;
+  width:100%;
+  min-width:650px;
+  margin-bottom:14px;
+  background:white;
 }
-
 th, td {
-  border: 2px solid #302b35;
-  padding: 10px 7px;
-  text-align: center;
+  border:1.5px solid var(--ink);
+  padding:9px;
+  text-align:center;
 }
-
-th { background: #cdb7e8; }
-
-td:first-child { background: #eee5d6; }
-
-tbody tr:nth-child(even) { background: #f7f3eb; }
-
-.blank {
-  height: 38px;
-  min-width: 65px;
+th { background:var(--yellow); }
+td:first-child { background:#eee5f7; text-align:left; }
+.section-title {
+  padding:10px 14px;
+  border-radius:10px;
+  background:var(--blue);
+  margin:18px 0 10px;
 }
-
-.table-wrap {
-  overflow-x: auto;
+.controls {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:center;
+  margin:15px 0;
 }
-
-#randomAnswer {
-  width: min(100%, 320px);
-  display: block;
-  margin: 15px 0;
+select, input {
+  background:white;
+  border:2px solid var(--ink);
+  border-radius:10px;
+  padding:12px;
 }
-
-.feedback {
-  margin-top: 15px;
-  font-size: 18px;
+.random-box {
+  background:var(--white);
+  border:3px solid var(--ink);
+  border-radius:20px;
+  padding:25px;
+  max-width:650px;
+  margin:25px auto;
+  text-align:center;
+  box-shadow:5px 5px 0 var(--ink);
 }
-
-.person {
-  background: #f0d98d;
-  padding: 13px;
-  border: 2px solid #302b35;
-  border-radius: 10px;
-  display: inline-block;
-  margin: 8px 0;
-}
-
-@media(max-width: 650px) {
-  body { padding: 10px; }
-  h1 { font-size: 24px; }
-  .card { padding: 13px; }
-  table { min-width: 650px; }
+.random-box input { width:100%; margin:15px 0; }
+#feedback { min-height:28px; }
+.small { font-size:13px; font-weight:600; }
+@media(max-width:600px) {
+  body { padding:14px; }
+  .home-card { min-height:150px; }
 }
 </style>
 </head>
-
 <body>
-
-<header>
-  <h1>Mon Atelier de Conjugaison</h1>
-  <p>Je conjugue, je révise et je progresse !</p>
-</header>
-
 <main>
 
-<!-- ACCUEIL -->
 <section id="home" class="page active">
+  <h1>Mon Atelier de Conjugaison</h1>
+  <p class="subtitle">Bienvenue ! Choisis ton atelier de conjugaison.</p>
   <div class="home-grid">
-
     <button class="home-card purple" onclick="openPage('completed')">
-      <span>📚</span>
-      Tableaux faits
-      <p>Consulter les conjugaisons complètes.</p>
+      <span>📚</span>Tableaux faits
+      <p class="small">Voir les conjugaisons complètes</p>
     </button>
-
     <button class="home-card green" onclick="openPage('blank')">
-      <span>✏️</span>
-      Tableaux à compléter
-      <p>Compléter les tableaux soi-même.</p>
+      <span>✏️</span>Tableaux à compléter
+      <p class="small">Compléter les cases vides</p>
     </button>
-
     <button class="home-card yellow" onclick="startRandom()">
-      <span>🎲</span>
-      Mode aléatoire
-      <p>Verbe, temps et personne au hasard.</p>
+      <span>🎲</span>Mode aléatoire
+      <p class="small">Deviner une conjugaison</p>
     </button>
-
   </div>
 </section>
 
-<!-- TABLEAUX COMPLETS -->
 <section id="completed" class="page">
-  <button class="back" onclick="openPage('home')">← Accueil</button>
-
-  <div class="card">
+  <div class="topbar">
     <h2>📚 Tableaux faits</h2>
-    <label>Choisir un verbe :</label>
-    <select id="completedSelect" onchange="showCompleted()"></select>
+    <button class="action" onclick="openPage('home')">← Accueil</button>
   </div>
-
-  <div id="completedTables"></div>
+  <div id="completedContent"></div>
 </section>
 
-<!-- TABLEAUX VIDES -->
 <section id="blank" class="page">
-  <button class="back" onclick="openPage('home')">← Accueil</button>
-
-  <div class="card">
+  <div class="topbar">
     <h2>✏️ Tableaux à compléter</h2>
-    <p>Toutes les cases sont vides. À toi de conjuguer !</p>
-
-    <label>Choisir un verbe :</label>
-    <select id="blankSelect" onchange="showBlank()"></select>
+    <button class="action" onclick="openPage('home')">← Accueil</button>
   </div>
-
-  <div id="blankTables"></div>
+  <p>Les cases sont vides pour que tu puisses t'entraîner.</p>
+  <div id="blankContent"></div>
 </section>
 
-<!-- ALEATOIRE -->
 <section id="random" class="page">
-  <button class="back" onclick="openPage('home')">← Accueil</button>
-
-  <div class="card">
+  <div class="topbar">
     <h2>🎲 Mode aléatoire</h2>
-    <p>Un verbe, un temps et une personne seront choisis au hasard.</p>
-
-    <button class="action" onclick="newRandom()">Nouvelle question 🎲</button>
-
-    <div id="randomQuestion"></div>
-
-    <input id="randomAnswer" placeholder="Écris la conjugaison...">
-
-    <button class="action" onclick="checkRandom()">Vérifier</button>
-
-    <div id="randomFeedback" class="feedback"></div>
+    <button class="action" onclick="openPage('home')">← Accueil</button>
+  </div>
+  <div class="random-box">
+    <p id="randomVerb" style="font-size:30px"></p>
+    <p id="randomTense" style="font-size:21px"></p>
+    <p id="randomPerson" style="font-size:21px"></p>
+    <input id="answer" placeholder="Écris la conjugaison..." autocomplete="off">
+    <div>
+      <button class="action purple" onclick="checkRandom()">Vérifier</button>
+      <button class="action yellow" onclick="newRandom()">Nouvelle question</button>
+    </div>
+    <p id="feedback"></p>
   </div>
 </section>
 
 </main>
 
 <script>
-
-/* VERBES */
+const pronouns = ["Je","Tu","Il / Elle","Nous","Vous","Ils / Elles"];
 
 const verbs = {
-  etre: {
-    name: "ÊTRE",
-    present: ["suis","es","est","sommes","êtes","sont"],
-    imparfait: ["étais","étais","était","étions","étiez","étaient"],
-    futur: ["serai","seras","sera","serons","serez","seront"],
-    conditionnel: ["serais","serais","serait","serions","seriez","seraient"],
-    passe: ["ai été","as été","a été","avons été","avez été","ont été"],
-    subjonctif: ["sois","sois","soit","soyons","soyez","soient"]
+  être: {
+    group:3, aux:"avoir", pp:"été",
+    present:["suis","es","est","sommes","êtes","sont"],
+    nous:"sommes", future:"ser", simple:["fus","fus","fut","fûmes","fûtes","furent"]
   },
-
   avoir: {
-    name: "AVOIR",
-    present: ["ai","as","a","avons","avez","ont"],
-    imparfait: ["avais","avais","avait","avions","aviez","avaient"],
-    futur: ["aurai","auras","aura","aurons","aurez","auront"],
-    conditionnel: ["aurais","aurais","aurait","aurions","auriez","auraient"],
-    passe: ["ai eu","as eu","a eu","avons eu","avez eu","ont eu"],
-    subjonctif: ["aie","aies","ait","ayons","ayez","aient"]
+    group:3, aux:"avoir", pp:"eu",
+    present:["ai","as","a","avons","avez","ont"],
+    nous:"avons", future:"aur", simple:["eus","eus","eut","eûmes","eûtes","eurent"]
   },
-
   aller: {
-    name: "ALLER",
-    present: ["vais","vas","va","allons","allez","vont"],
-    imparfait: ["allais","allais","allait","allions","alliez","allaient"],
-    futur: ["irai","iras","ira","irons","irez","iront"],
-    conditionnel: ["irais","irais","irait","irions","iriez","iraient"],
-    passe: ["suis allé(e)","es allé(e)","est allé(e)","sommes allé(e)s","êtes allé(e)(s)","sont allé(e)s"],
-    subjonctif: ["aille","ailles","aille","allions","alliez","aillent"]
+    group:3, aux:"être", pp:"allé",
+    present:["vais","vas","va","allons","allez","vont"],
+    nous:"allons", future:"ir", simple:["allai","allas","alla","allâmes","allâtes","allèrent"]
   },
-
   faire: {
-    name: "FAIRE",
-    present: ["fais","fais","fait","faisons","faites","font"],
-    imparfait: ["faisais","faisais","faisait","faisions","faisiez","faisaient"],
-    futur: ["ferai","feras","fera","ferons","ferez","feront"],
-    conditionnel: ["ferais","ferais","ferait","ferions","feriez","feraient"],
-    passe: ["ai fait","as fait","a fait","avons fait","avez fait","ont fait"],
-    subjonctif: ["fasse","fasses","fasse","fassions","fassiez","fassent"]
+    group:3, aux:"avoir", pp:"fait",
+    present:["fais","fais","fait","faisons","faites","font"],
+    nous:"faisons", future:"fer", simple:["fis","fis","fit","fîmes","fîtes","firent"]
   },
-
   parler: {
-    name: "PARLER",
-    present: ["parle","parles","parle","parlons","parlez","parlent"],
-    imparfait: ["parlais","parlais","parlait","parlions","parliez","parlaient"],
-    futur: ["parlerai","parleras","parlera","parlerons","parlerez","parleront"],
-    conditionnel: ["parlerais","parlerais","parlerait","parlerions","parleriez","parleraient"],
-    passe: ["ai parlé","as parlé","a parlé","avons parlé","avez parlé","ont parlé"],
-    subjonctif: ["parle","parles","parle","parlions","parliez","parlent"]
+    group:1, aux:"avoir", pp:"parlé",
+    present:["parle","parles","parle","parlons","parlez","parlent"],
+    nous:"parlons", future:"parler", simple:["parlai","parlas","parla","parlâmes","parlâtes","parlèrent"]
   },
-
   finir: {
-    name: "FINIR",
-    present: ["finis","finis","finit","finissons","finissez","finissent"],
-    imparfait: ["finissais","finissais","finissait","finissions","finissiez","finissaient"],
-    futur: ["finirai","finiras","finira","finirons","finirez","finiront"],
-    conditionnel: ["finirais","finirais","finirait","finirions","finiriez","finiraient"],
-    passe: ["ai fini","as fini","a fini","avons fini","avez fini","ont fini"],
-    subjonctif: ["finisse","finisses","finisse","finissions","finissiez","finissent"]
+    group:2, aux:"avoir", pp:"fini",
+    present:["finis","finis","finit","finissons","finissez","finissent"],
+    nous:"finissons", future:"finir", simple:["finis","finis","finit","finîmes","finîtes","finirent"]
   },
-
   prendre: {
-    name: "PRENDRE",
-    present: ["prends","prends","prend","prenons","prenez","prennent"],
-    imparfait: ["prenais","prenais","prenait","prenions","preniez","prenaient"],
-    futur: ["prendrai","prendras","prendra","prendrons","prendrez","prendront"],
-    conditionnel: ["prendrais","prendrais","prendrait","prendrions","prendriez","prendraient"],
-    passe: ["ai pris","as pris","a pris","avons pris","avez pris","ont pris"],
-    subjonctif: ["prenne","prennes","prenne","prenions","preniez","prennent"]
+    group:3, aux:"avoir", pp:"pris",
+    present:["prends","prends","prend","prenons","prenez","prennent"],
+    nous:"prenons", future:"prendr", simple:["pris","pris","prit","prîmes","prîtes","prirent"]
   },
-
   venir: {
-    name: "VENIR",
-    present: ["viens","viens","vient","venons","venez","viennent"],
-    imparfait: ["venais","venais","venait","venions","veniez","venaient"],
-    futur: ["viendrai","viendras","viendra","viendrons","viendrez","viendront"],
-    conditionnel: ["viendrais","viendrais","viendrait","viendrions","viendriez","viendraient"],
-    passe: ["suis venu(e)","es venu(e)","est venu(e)","sommes venu(e)s","êtes venu(e)(s)","sont venu(e)s"],
-    subjonctif: ["vienne","viennes","vienne","venions","veniez","viennent"]
+    group:3, aux:"être", pp:"venu",
+    present:["viens","viens","vient","venons","venez","viennent"],
+    nous:"venons", future:"viendr", simple:["vins","vins","vint","vînmes","vîntes","vinrent"]
   },
-
   pouvoir: {
-    name: "POUVOIR",
-    present: ["peux","peux","peut","pouvons","pouvez","peuvent"],
-    imparfait: ["pouvais","pouvais","pouvait","pouvions","pouviez","pouvaient"],
-    futur: ["pourrai","pourras","pourra","pourrons","pourrez","pourront"],
-    conditionnel: ["pourrais","pourrais","pourrait","pourrions","pourriez","pourraient"],
-    passe: ["ai pu","as pu","a pu","avons pu","avez pu","ont pu"],
-    subjonctif: ["puisse","puisses","puisse","puissions","puissiez","puissent"]
+    group:3, aux:"avoir", pp:"pu",
+    present:["peux","peux","peut","pouvons","pouvez","peuvent"],
+    nous:"pouvons", future:"pourr", simple:["pus","pus","put","pûmes","pûtes","purent"]
   },
-
   vouloir: {
-    name: "VOULOIR",
-    present: ["veux","veux","veut","voulons","voulez","veulent"],
-    imparfait: ["voulais","voulais","voulait","voulions","vouliez","voulaient"],
-    futur: ["voudrai","voudras","voudra","voudrons","voudrez","voudront"],
-    conditionnel: ["voudrais","voudrais","voudrait","voudrions","voudriez","voudraient"],
-    passe: ["ai voulu","as voulu","a voulu","avons voulu","avez voulu","ont voulu"],
-    subjonctif: ["veuille","veuilles","veuille","voulions","vouliez","veuillent"]
+    group:3, aux:"avoir", pp:"voulu",
+    present:["veux","veux","veut","voulons","voulez","veulent"],
+    nous:"voulons", future:"voudr", simple:["voulus","voulus","voulut","voulûmes","voulûtes","voulurent"]
   },
-
   dire: {
-    name: "DIRE",
-    present: ["dis","dis","dit","disons","dites","disent"],
-    imparfait: ["disais","disais","disait","disions","disiez","disaient"],
-    futur: ["dirai","diras","dira","dirons","direz","diront"],
-    conditionnel: ["dirais","dirais","dirait","dirions","diriez","diraient"],
-    passe: ["ai dit","as dit","a dit","avons dit","avez dit","ont dit"],
-    subjonctif: ["dise","dises","dise","disions","disiez","disent"]
+    group:3, aux:"avoir", pp:"dit",
+    present:["dis","dis","dit","disons","dites","disent"],
+    nous:"disons", future:"dir", simple:["dis","dis","dit","dîmes","dîtes","dirent"]
   },
-
   voir: {
-    name: "VOIR",
-    present: ["vois","vois","voit","voyons","voyez","voient"],
-    imparfait: ["voyais","voyais","voyait","voyions","voyiez","voyaient"],
-    futur: ["verrai","verras","verra","verrons","verrez","verront"],
-    conditionnel: ["verrais","verrais","verrait","verrions","verriez","verraient"],
-    passe: ["ai vu","as vu","a vu","avons vu","avez vu","ont vu"],
-    subjonctif: ["voie","voies","voie","voyions","voyiez","voient"]
+    group:3, aux:"avoir", pp:"vu",
+    present:["vois","vois","voit","voyons","voyez","voient"],
+    nous:"voyons", future:"verr", simple:["vis","vis","vit","vîmes","vîtes","virent"]
   }
 };
 
-/* TEMPS */
-
-const tenseNames = {
-  present: "Présent",
-  passe: "Passé composé",
-  imparfait: "Imparfait",
-  futur: "Futur simple",
-  conditionnel: "Conditionnel présent",
-  subjonctif: "Subjonctif présent"
-};
-
-const persons = [
-  "Je",
-  "Tu",
-  "Il / Elle",
-  "Nous",
-  "Vous",
-  "Ils / Elles"
+const sections = [
+  {name:"Indicatif", items:[
+    "Présent","Imparfait","Passé simple","Futur simple",
+    "Passé composé","Plus-que-parfait","Passé antérieur","Futur antérieur"
+  ]},
+  {name:"Conditionnel", items:[
+    "Conditionnel présent","Conditionnel passé 1re forme",
+    "Conditionnel passé 2e forme"
+  ]},
+  {name:"Subjonctif", items:[
+    "Subjonctif présent","Subjonctif passé",
+    "Subjonctif imparfait","Subjonctif plus-que-parfait"
+  ]},
+  {name:"Impératif", items:["Impératif présent","Impératif passé"]},
+  {name:"Infinitif", items:["Infinitif présent","Infinitif passé"]},
+  {name:"Participe", items:["Participe présent","Participe passé"]}
 ];
 
-const colors = ["purple","green","blue","yellow","orange"];
+const allTenses = sections.flatMap(s => s.items);
 
-/* NAVIGATION */
+function stripER(inf) { return inf.slice(0,-2); }
+function imparfaitStem(v) {
+  return stripER(v.nous);
+}
+function imparfaitForms(v) {
+  const s = imparfaitStem(v);
+  return [s+"ais",s+"ais",s+"ait",s+"ions",s+"iez",s+"aient"];
+}
+function futureForms(v) {
+  const s = v.future || v.infinitive;
+  return [s+"ai",s+"as",s+"a",s+"ons",s+"ez",s+"ont"];
+}
+function regularFutureStem(name) {
+  return name.endsWith("e") ? name.slice(0,-1) : name;
+}
+function subjPresent(v, name) {
+  const p = v.present;
+  if (name === "être") return ["sois","sois","soit","soyons","soyez","soient"];
+  if (name === "avoir") return ["aie","aies","ait","ayons","ayez","aient"];
+  if (name === "aller") return ["aille","ailles","aille","allions","alliez","aillent"];
+  if (name === "faire") return ["fasse","fasses","fasse","fassions","fassiez","fassent"];
+  if (name === "pouvoir") return ["puisse","puisses","puisse","puissions","puissiez","puissent"];
+  if (name === "vouloir") return ["veuille","veuilles","veuille","voulions","vouliez","veuillent"];
+  if (name === "venir") return ["vienne","viennes","vienne","venions","veniez","viennent"];
+  if (name === "prendre") return ["prenne","prennes","prenne","prenions","preniez","prennent"];
+  if (name === "voir") return ["voie","voies","voie","voyions","voyiez","voient"];
+  if (name === "dire") return ["dise","dises","dise","disions","disiez","disent"];
+  const stem = name.endsWith("er") ? name.slice(0,-2) : v.present[3].slice(0,-3);
+  return [stem+"e",stem+"es",stem+"e",stem+"ions",stem+"iez",stem+"ent"];
+}
+function simpleForms(v) { return v.simple; }
+
+function auxForms(v, tense) {
+  const a = v.aux === "être" ? verbs["être"] : verbs["avoir"];
+  if (tense === "Présent") return a.present;
+  if (tense === "Imparfait") return imparfaitForms(a);
+  if (tense === "Passé simple") return a.simple;
+  if (tense === "Futur simple") return futureForms(a);
+  if (tense === "Subjonctif présent") return subjPresent(a, v.aux);
+  return a.present;
+}
+function agreeParticiple(v, i) {
+  if (v.aux !== "être") return v.pp;
+  if (i === 2 || i === 5) return v.pp+"e";
+  if (i === 3 || i === 4) return v.pp+"s";
+  return v.pp;
+}
+function compound(v, name, tense, i) {
+  const aux = auxForms(v, tense)[i];
+  return aux+" "+agreeParticiple(v,i);
+}
+function formsFor(name, tense) {
+  const v = verbs[name];
+  const future = v.future ? futureForms(v) : futureForms({...v,future:regularFutureStem(name)});
+  const sub = subjPresent(v,name);
+  const imp = imparfaitForms(v);
+  const passéSimple = simpleForms(v);
+  const compoundAux = (t) => Array.from({length:6},(_,i)=>compound(v,name,t,i));
+
+  switch(tense) {
+    case "Présent": return v.present;
+    case "Imparfait": return imp;
+    case "Passé simple": return passéSimple;
+    case "Futur simple": return future;
+    case "Passé composé": return compoundAux("Présent");
+    case "Plus-que-parfait": return compoundAux("Imparfait");
+    case "Passé antérieur": return compoundAux("Passé simple");
+    case "Futur antérieur": return compoundAux("Futur simple");
+    case "Conditionnel présent": return future.map((x,i)=>x.replace(/ai$/,"ais").replace(/as$/,"ais").replace(/a$/,"ait").replace(/ons$/,"ions").replace(/ez$/,"iez").replace(/ont$/,"aient"));
+    case "Conditionnel passé 1re forme": return compoundAux("Conditionnel présent");
+    case "Conditionnel passé 2e forme": return compoundAux("Subjonctif imparfait");
+    case "Subjonctif présent": return sub;
+    case "Subjonctif passé": return compoundAux("Subjonctif présent");
+    case "Subjonctif imparfait": return passéSimple.map(x=>x.replace(/ai$/,"asse").replace(/as$/,"asses").replace(/a$/,"ât").replace(/âmes$/,"assions").replace(/âtes$/,"assiez").replace(/èrent$/,"assent"));
+    case "Subjonctif plus-que-parfait": return compoundAux("Subjonctif imparfait");
+    case "Impératif présent": return [v.present[0],v.present[3],v.present[4]];
+    case "Impératif passé": {
+      const aux = v.aux === "être" ? ["sois","soyons","soyez"] : ["aie","ayons","ayez"];
+      return aux.map((a,i)=>a+" "+agreeParticiple(v,[0,3,4][i]));
+    }
+    case "Infinitif présent": return [name];
+    case "Infinitif passé": return [v.aux === "être" ? "être" : "avoir",v.pp].join(" ");
+    case "Participe présent": return [v.nous.slice(0,-3)+"ant"];
+    case "Participe passé": return [v.pp];
+    default: return ["—"];
+  }
+}
+
+function renderTables(blank) {
+  let html = "";
+  Object.keys(verbs).forEach(name => {
+    html += `<div class="verb-card"><h3>${name}</h3>`;
+    sections.forEach(section => {
+      html += `<div class="section-title">${section.name}</div>`;
+      html += `<table><thead><tr><th>Temps</th>`;
+      pronouns.forEach(p=>html+=`<th>${p}</th>`);
+      html += `</tr></thead><tbody>`;
+      section.items.forEach(tense => {
+        const forms = formsFor(name,tense);
+        html += `<tr><td>${tense}</td>`;
+        for(let i=0;i<6;i++) {
+          const value = forms.length === 6 ? forms[i] : (i === 0 ? forms.join(" / ") : "");
+          html += `<td>${blank ? "" : (value || "")}</td>`;
+        }
+        html += `</tr>`;
+      });
+      html += `</tbody></table>`;
+    });
+    html += `</div>`;
+  });
+  return html;
+}
 
 function openPage(id) {
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
-
-/* MENUS */
-
-function createMenus() {
-  const options = Object.entries(verbs)
-    .map(([key,v]) => `<option value="${key}">${v.name}</option>`)
-    .join("");
-
-  document.getElementById("completedSelect").innerHTML = options;
-  document.getElementById("blankSelect").innerHTML = options;
-
-  showCompleted();
-  showBlank();
-}
-
-/* TABLEAUX COMPLETS */
-
 function showCompleted() {
-  const key = document.getElementById("completedSelect").value;
-  const verb = verbs[key];
-
-  let html = `<div class="card">
-    <h2>${verb.name}</h2>
-    <div class="table-wrap">
-    <table>
-    <thead><tr><th>Temps</th>${persons.map(p => `<th>${p}</th>`).join("")}</tr></thead>
-    <tbody>`;
-
-  Object.entries(tenseNames).forEach(([tense,label]) => {
-    html += `<tr><td>${label}</td>`;
-    verb[tense].forEach(answer => html += `<td>${answer}</td>`);
-    html += `</tr>`;
-  });
-
-  html += `</tbody></table></div></div>`;
-
-  document.getElementById("completedTables").innerHTML = html;
+  document.getElementById("completedContent").innerHTML = renderTables(false);
 }
-
-/* TABLEAUX VIDES */
-
 function showBlank() {
-  const key = document.getElementById("blankSelect").value;
-  const verb = verbs[key];
-
-  let html = `<div class="card">
-    <h2>${verb.name}</h2>
-    <div class="table-wrap">
-    <table>
-    <thead><tr><th>Temps</th>${persons.map(p => `<th>${p}</th>`).join("")}</tr></thead>
-    <tbody>`;
-
-  Object.entries(tenseNames).forEach(([tense,label]) => {
-    html += `<tr><td>${label}</td>`;
-    persons.forEach(() => html += `<td class="blank"></td>`);
-    html += `</tr>`;
-  });
-
-  html += `</tbody></table></div></div>`;
-
-  document.getElementById("blankTables").innerHTML = html;
+  document.getElementById("blankContent").innerHTML = renderTables(true);
 }
 
-/* MODE ALÉATOIRE */
-
-let currentQuestion = null;
-
+let current = null;
+function newRandom() {
+  const names = Object.keys(verbs);
+  const name = names[Math.floor(Math.random()*names.length)];
+  const tense = allTenses[Math.floor(Math.random()*allTenses.length)];
+  const forms = formsFor(name,tense);
+  const index = Math.floor(Math.random()*forms.length);
+  const people = forms.length === 3 ? ["Tu","Nous","Vous"] : forms.length === 1 ? ["Forme"] : pronouns;
+  current = {name,tense,index,answer:forms[index],person:people[index]};
+  document.getElementById("randomVerb").textContent = name;
+  document.getElementById("randomTense").textContent = tense;
+  document.getElementById("randomPerson").textContent = current.person;
+  document.getElementById("answer").value = "";
+  document.getElementById("feedback").textContent = "";
+}
 function startRandom() {
   openPage("random");
   newRandom();
 }
-
-function newRandom() {
-  const verbKeys = Object.keys(verbs);
-  const tenseKeys = Object.keys(tenseNames);
-
-  const verbKey = verbKeys[Math.floor(Math.random() * verbKeys.length)];
-  const tenseKey = tenseKeys[Math.floor(Math.random() * tenseKeys.length)];
-  const personIndex = Math.floor(Math.random() * 6);
-
-  currentQuestion = {
-    verb: verbKey,
-    tense: tenseKey,
-    person: personIndex,
-    answer: verbs[verbKey][tenseKey][personIndex]
-  };
-
-  document.getElementById("randomQuestion").innerHTML = `
-    <h3>${verbs[verbKey].name}</h3>
-    <p><strong>Temps :</strong> ${tenseNames[tenseKey]}</p>
-    <div class="person">${persons[personIndex]}</div>
-  `;
-
-  document.getElementById("randomAnswer").value = "";
-  document.getElementById("randomFeedback").textContent = "";
-  document.getElementById("randomAnswer").focus();
-}
-
-function normalize(text) {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, " ");
-}
-
 function checkRandom() {
-  if (!currentQuestion) return;
-
-  const answer = normalize(document.getElementById("randomAnswer").value);
-  const correct = normalize(currentQuestion.answer);
-
-  const feedback = document.getElementById("randomFeedback");
-
-  if (answer === correct) {
-    feedback.textContent = "Bravo ! Bonne réponse !";
+  if(!current) return;
+  const input = document.getElementById("answer").value.trim().toLowerCase();
+  const correct = current.answer.trim().toLowerCase();
+  const feedback = document.getElementById("feedback");
+  if(input === correct) {
+    feedback.textContent = "Bravo ! C'est correct ! ⭐";
     feedback.style.color = "green";
   } else {
-    feedback.textContent = "Pas encore ! Réessaie.";
-    feedback.style.color = "#a34b35";
+    feedback.textContent = "Pas encore ! La bonne réponse est : "+current.answer;
+    feedback.style.color = "#a33";
   }
 }
 
-createMenus();
-
+showCompleted();
+showBlank();
 </script>
 </body>
 </html>

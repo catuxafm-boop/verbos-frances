@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#6366f1">
+<title>Entrenador de verbos franceses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#fdfbf7; --card:#fff; --text:#334155; --primary:#6366f1; --primary-soft:#e0e7ff; --pink:#ec4899; --pink-soft:#fce7f3; --teal:#14b8a6; --teal-soft:#ccfbf1; --amber:#f59e0b; --amber-soft:#fef3c7; --green:#10b981; --red:#e11d48; }
+- { box-sizing:border-box; }
+body { font-family:'Nunito','Segoe UI',sans-serif; background:var(--bg); color:var(--text); margin:0; padding:20px; min-height:100vh; display:flex; justify-content:center; align-items:flex-start; }
+button,input,select { font:inherit; } button { cursor:pointer; }
+button:focus-visible,input:focus-visible,select:focus-visible { outline:3px solid #a5b4fc; outline-offset:2px; }
+.app-container { width:100%; max-width:900px; background:var(--card); border-radius:28px; padding:clamp(18px,4vw,32px); box-shadow:0 12px 35px rgba(99,102,241,.08); border:3px solid #f1f5f9; }
+h1 { text-align:center; color:var(--primary); font-size:clamp(1.7rem,4vw,2.2rem); margin:0 0 8px; font-weight:800; }
+h2 { margin:0 0 12px; color:#1e293b; }
+.subtitle { text-align:center; color:#64748b; font-size:1.05rem; margin:0 0 28px; }
+.menu-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; margin-top:20px; }
+.menu-card { border:0; border-radius:24px; padding:26px 18px; text-align:center; transition:transform .2s,box-shadow .2s; }
+.menu-card:hover { transform:translateY(-4px); box-shadow:0 10px 20px rgba(0,0,0,.07); }
+.card-quiz { background:var(--primary-soft); color:#3730a3; }
+.card-study { background:var(--teal-soft); color:#115e59; }
+.card-blank { background:var(--pink-soft); color:#9d174d; }
+.menu-icon { display:block; font-size:2.7rem; margin-bottom:10px; }
+.menu-title { display:block; font-size:1.3rem; font-weight:800; margin-bottom:7px; }
+.menu-desc { font-size:.95rem; line-height:1.45; }
+.top-bar { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:22px; }
+.btn-back,.btn-secondary { background:#f1f5f9; color:var(--text); border:0; padding:10px 16px; border-radius:13px; font-weight:800; }
+.btn-back:hover,.btn-secondary:hover { background:#e2e8f0; }
+.selectors { display:flex; gap:9px; flex-wrap:wrap; }
+select { padding:10px 12px; border:2px solid #cbd5e1; border-radius:13px; color:var(--text); background:#fff; font-weight:700; max-width:100%; }
+.accent-bar { display:flex; justify-content:center; flex-wrap:wrap; gap:8px; margin:16px 0; }
+.accent-btn { background:var(--amber-soft); color:#92400e; border:2px solid #fde68a; border-radius:11px; padding:7px 13px; font-size:1.1rem; font-weight:800; }
+.quiz-box { background:#f8fafc; border:3px solid var(--primary-soft); border-radius:24px; padding:28px 18px; text-align:center; }
+.badge-tense { display:inline-block; background:var(--primary); color:white; padding:6px 16px; border-radius:20px; font-weight:800; margin-bottom:12px; }
+.quiz-verb { font-size:clamp(2rem,6vw,2.7rem); font-weight:800; color:#1e293b; margin:6px 0; }
+.quiz-pronoun { font-size:1.5rem; font-weight:800; color:var(--pink); margin-bottom:16px; }
+.quiz-input-row { display:flex; justify-content:center; gap:9px; max-width:500px; margin:auto; }
+.quiz-input { min-width:0; flex:1; padding:13px 15px; font-size:1.15rem; font-weight:800; border:3px solid #cbd5e1; border-radius:15px; text-align:center; }
+.btn-main { background:var(--primary); color:white; border:0; padding:13px 21px; border-radius:15px; font-weight:800; font-size:1.05rem; }
+.btn-main:hover { background:#4f46e5; }
+.btn-main:disabled { opacity:.55; cursor:not-allowed; }
+.feedback-area { margin-top:20px; min-height:48px; display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:8px; font-size:1.1rem; font-weight:800; text-align:center; }
+.msg-ok { color:#059669; } .msg-error { color:var(--red); }
+.table-wrapper { overflow-x:auto; border-radius:17px; border:2px solid #e2e8f0; }
+table { width:100%; border-collapse:collapse; font-size:1.05rem; }
+th { background:var(--primary-soft); color:#3730a3; padding:13px; text-align:left; }
+td { padding:11px 14px; border-bottom:1px solid #e2e8f0; }
+tr:nth-child(even) td { background:#f8fafc; }
+.pronoun-cell { font-weight:800; color:var(--pink); width:34%; }
+.verb-cell { font-weight:800; color:#1e293b; }
+.table-input { width:100%; max-width:260px; padding:8px 10px; border:2px solid #cbd5e1; border-radius:10px; font-weight:700; }
+.input-correct { border-color:var(--green)!important; background:#ecfdf5; color:#065f46; }
+.input-wrong { border-color:var(--red)!important; background:#fff1f2; }
+.correction-inline { display:block; color:#be123c; font-size:.9rem; margin-top:4px; }
+.section-actions { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:18px; }
+.hint { color:#64748b; text-align:center; margin:10px 0 16px; }
+.score { text-align:center; font-weight:800; color:#3730a3; margin-top:14px; }
+.hidden { display:none!important; }
+@media(max-width:520px) { body { padding:10px; } .app-container { border-radius:20px; } .quiz-input-row { flex-direction:column; } .quiz-input-row .btn-main { width:100%; } .top-bar { align-items:stretch; } .selectors { width:100%; } .selectors select { flex:1; } table { font-size:.95rem; } th,td { padding:10px; } }
+</style>
+</head>
+<body>
+<main class="app-container">
+<section id="homeScreen">
+<h1>🇫🇷 Verbes Français</h1>
+<p class="subtitle">Elige cómo quieres practicar hoy</p>
+<div class="menu-grid">
+<button class="menu-card card-quiz" type="button" onclick="openMode('quiz')"><span class="menu-icon">🎯</span><span class="menu-title">Practicar verbos</span><span class="menu-desc">Elige el tiempo, la persona y escribe la forma correcta.</span></button>
+<button class="menu-card card-study" type="button" onclick="openMode('study')"><span class="menu-icon">📖</span><span class="menu-title">Ver tablas hechas</span><span class="menu-desc">Consulta las conjugaciones completas y ordenadas.</span></button>
+<button class="menu-card card-blank" type="button" onclick="openMode('blank')"><span class="menu-icon">✍️</span><span class="menu-title">Completar tablas</span><span class="menu-desc">Rellena las conjugaciones y comprueba tus respuestas.</span></button>
+</div>
+</section>
+<section id="quizScreen" class="hidden">
+<div class="top-bar"><button class="btn-back" type="button" onclick="goHome()">← Volver</button><div class="selectors"><select id="quizTense" aria-label="Tiempo verbal"></select><select id="quizVerb" aria-label="Verbo"></select></div></div>
+<div class="quiz-box"><span class="badge-tense" id="quizTenseLabel"></span><div class="quiz-verb" id="quizVerbLabel"></div><div class="quiz-pronoun" id="quizPronoun"></div><div class="quiz-input-row"><input id="quizAnswer" class="quiz-input" type="text" autocomplete="off" placeholder="Escribe la conjugación" aria-label="Tu respuesta"><button class="btn-main" id="checkQuiz" type="button">Comprobar</button></div>
+<div class="accent-bar"><button class="accent-btn" type="button" onclick="insertAccent('é')">é</button><button class="accent-btn" type="button" onclick="insertAccent('è')">è</button><button class="accent-btn" type="button" onclick="insertAccent('ê')">ê</button><button class="accent-btn" type="button" onclick="insertAccent('à')">à</button><button class="accent-btn" type="button" onclick="insertAccent('ù')">ù</button><button class="accent-btn" type="button" onclick="insertAccent('ç')">ç</button><button class="accent-btn" type="button" onclick="insertAccent('î')">î</button><button class="accent-btn" type="button" onclick="insertAccent('ô')">ô</button></div>
+<div class="feedback-area" id="quizFeedback" aria-live="polite"></div><div class="section-actions"><button class="btn-secondary hidden" id="nextQuiz" type="button">Siguiente pregunta →</button></div><p class="hint">Consejo: puedes usar los botones de acentos si los necesitas.</p></div>
+<p class="score" id="quizScore">Aciertos: 0</p>
+</section>
+<section id="studyScreen" class="hidden">
+<div class="top-bar"><button class="btn-back" type="button" onclick="goHome()">← Volver</button><div class="selectors"><select id="studyTense" aria-label="Tiempo verbal"></select><select id="studyVerb" aria-label="Verbo"></select></div></div>
+<h2 id="studyHeading"></h2>
+<div class="table-wrapper"><table><thead><tr><th>Pronombre</th><th>Conjugación</th></tr></thead><tbody id="studyTable"></tbody></table></div>
+</section>
+<section id="blankScreen" class="hidden">
+<div class="top-bar"><button class="btn-back" type="button" onclick="goHome()">← Volver</button><div class="selectors"><select id="blankTense" aria-label="Tiempo verbal"></select><select id="blankVerb" aria-label="Verbo"></select></div></div>
+<h2 id="blankHeading">Completa la tabla</h2>
+<p class="hint">Escribe las seis formas y pulsa «Corregir» para ver tus resultados.</p>
+<div class="table-wrapper"><table><thead><tr><th>Pronombre</th><th>Tu respuesta</th></tr></thead><tbody id="blankTable"></tbody></table></div>
+<div class="accent-bar"><button class="accent-btn" type="button" onclick="insertAccent('é',true)">é</button><button class="accent-btn" type="button" onclick="insertAccent('è',true)">è</button><button class="accent-btn" type="button" onclick="insertAccent('ê',true)">ê</button><button class="accent-btn" type="button" onclick="insertAccent('à',true)">à</button><button class="accent-btn" type="button" onclick="insertAccent('ù',true)">ù</button><button class="accent-btn" type="button" onclick="insertAccent('ç',true)">ç</button><button class="accent-btn" type="button" onclick="insertAccent('î',true)">î</button><button class="accent-btn" type="button" onclick="insertAccent('ô',true)">ô</button></div>
+<div class="section-actions"><button class="btn-main" id="checkTable" type="button">Corregir tabla</button><button class="btn-secondary" id="resetTable" type="button">Reiniciar</button></div>
+<div class="feedback-area" id="tableFeedback" aria-live="polite"></div>
+</section>
+</main>
+<script>
+'use strict';
+const pronouns = ['je','tu','il / elle / on','nous','vous','ils / elles'];
+const tenses = { present: 'Présent', passe: 'Passé composé', imparfait: 'Imparfait', futur: 'Futur simple' };
+const verbs = {
+être: { present:['suis','es','est','sommes','êtes','sont'], passe:['ai été','as été','a été','avons été','avez été','ont été'], imparfait:['étais','étais','était','étions','étiez','étaient'], futur:['serai','seras','sera','serons','serez','seront'] },
+avoir: { present:['ai','as','a','avons','avez','ont'], passe:['ai eu','as eu','a eu','avons eu','avez eu','ont eu'], imparfait:['avais','avais','avait','avions','aviez','avaient'], futur:['aurai','auras','aura','aurons','aurez','auront'] },
+aller: { present:['vais','vas','va','allons','allez','vont'], passe:['suis allé(e)','es allé(e)','est allé(e)','sommes allé(e)s','êtes allé(e)(s)','sont allé(e)s'], imparfait:['allais','allais','allait','allions','alliez','allaient'], futur:['irai','iras','ira','irons','irez','iront'] },
+faire: { present:['fais','fais','fait','faisons','faites','font'], passe:['ai fait','as fait','a fait','avons fait','avez fait','ont fait'], imparfait:['faisais','faisais','faisait','faisions','faisiez','faisaient'], futur:['ferai','feras','fera','ferons','ferez','feront'] },
+parler: { present:['parle','parles','parle','parlons','parlez','parlent'], passe:['ai parlé','as parlé','a parlé','avons parlé','avez parlé','ont parlé'], imparfait:['parlais','parlais','parlait','parlions','parliez','parlaient'], futur:['parlerai','parleras','parlera','parlerons','parlerez','parleront'] },
+finir: { present:['finis','finis','finit','finissons','finissez','finissent'], passe:['ai fini','as fini','a fini','avons fini','avez fini','ont fini'], imparfait:['finissais','finissais','finissait','finissions','finissiez','finissaient'], futur:['finirai','finiras','finira','finirons','finirez','finiront'] },
+prendre: { present:['prends','prends','prend','prenons','prenez','prennent'], passe:['ai pris','as pris','a pris','avons pris','avez pris','ont pris'], imparfait:['prenais','prenais','prenait','prenions','preniez','prenaient'], futur:['prendrai','prendras','prendra','prendrons','prendrez','prendront'] }
+};
+let currentQuestion = 0; let quizCorrect = 0; let quizAnswered = false;
+function fillSelect(id, includeAll=false) { const select = http://document.getElementById(id); http://select.innerHTML = ''; http://Object.entries(tenses).forEach(([key,label]) => { const option = http://document.createElement('option'); http://option.value = key; http://option.textContent = label; http://select.appendChild(option); }); const verbSelect = http://document.getElementById(id.replace('Tense','Verb')); if (verbSelect) { http://verbSelect.innerHTML = ''; http://Object.keys(verbs).forEach(verb => { const option = http://document.createElement('option'); http://option.value = verb; http://option.textContent = verb; http://verbSelect.appendChild(option); }); } }
+function setupSelectors() { ['quizTense','studyTense','blankTense'].forEach(fillSelect); ['quizTense','quizVerb','studyTense','studyVerb','blankTense','blankVerb'].forEach(id => { http://document.getElementById(id).addEventListener('change', () => { if (id.startsWith('quiz')) newQuestion(); if (id.startsWith('study')) renderStudy(); if (id.startsWith('blank')) renderBlank(); }); }); }
+function openMode(mode) { ['homeScreen','quizScreen','studyScreen','blankScreen'].forEach(id => http://document.getElementById(id).classList.add('hidden')); http://document.getElementById(mode + 'Screen').classList.remove('hidden'); if (mode === 'quiz') newQuestion(); if (mode === 'study') renderStudy(); if (mode === 'blank') renderBlank(); }
+function goHome() { ['quizScreen','studyScreen','blankScreen'].forEach(id => http://document.getElementById(id).classList.add('hidden')); http://document.getElementById('homeScreen').classList.remove('hidden'); }
+function getForms(tense,verb) { return verbs[verb][tense]; }
+function newQuestion() { const tense = http://document.getElementById('quizTense').value; const verb = http://document.getElementById('quizVerb').value; currentQuestion = http://Math.floor(Math.random()*6); quizAnswered = false; http://document.getElementById('quizTenseLabel').textContent = tenses[tense]; http://document.getElementById('quizVerbLabel').textContent = verb; http://document.getElementById('quizPronoun').textContent = pronouns[currentQuestion]; http://document.getElementById('quizAnswer').value = ''; http://document.getElementById('quizAnswer').disabled = false; http://document.getElementById('checkQuiz').disabled = false; http://document.getElementById('quizFeedback').textContent = ''; http://document.getElementById('nextQuiz').classList.add('hidden'); http://document.getElementById('quizAnswer').focus(); }
+function normalize(value) { return http://value.trim().toLocaleLowerCase('fr').replace(/[’]/g,"'").replace(/\s+/g,' '); }
+function checkQuiz() { if (quizAnswered) return; const tense = http://document.getElementById('quizTense').value; const verb = http://document.getElementById('quizVerb').value; const answer = normalize(document.getElementById('quizAnswer').value); const correct = normalize(getForms(tense,verb)[currentQuestion]); const feedback = http://document.getElementById('quizFeedback'); if (!answer) { http://feedback.textContent = 'Escribe una respuesta antes de comprobar.'; http://feedback.className='feedback-area msg-error'; return; } quizAnswered = true; http://document.getElementById('quizAnswer').disabled = true; http://document.getElementById('checkQuiz').disabled = true; if (answer === correct) { quizCorrect++; http://feedback.textContent = '¡Correcto! 🎉'; http://feedback.className = 'feedback-area msg-ok'; } else { http://feedback.textContent = 'La respuesta correcta es: ' + getForms(tense,verb)[currentQuestion]; http://feedback.className = 'feedback-area msg-error'; } http://document.getElementById('quizScore').textContent = 'Aciertos: ' + quizCorrect; http://document.getElementById('nextQuiz').classList.remove('hidden'); }
+function renderStudy() { const tense = http://document.getElementById('studyTense').value; const verb = http://document.getElementById('studyVerb').value; http://document.getElementById('studyHeading').textContent = verb + ' — ' + tenses[tense]; http://document.getElementById('studyTable').innerHTML = http://pronouns.map((p,i) => `<tr><td class="pronoun-cell">${p}</td><td class="verb-cell">${getForms(tense,verb)[i]}</td></tr>`).join(''); }
+function renderBlank() { const tense = http://document.getElementById('blankTense').value; const verb = http://document.getElementById('blankVerb').value; http://document.getElementById('blankHeading').textContent = 'Completa: ' + verb + ' — ' + tenses[tense]; http://document.getElementById('blankTable').innerHTML = http://pronouns.map((p,i) => `<tr><td class="pronoun-cell">${p}</td><td><input class="table-input" id="blankAnswer${i}" type="text" autocomplete="off" aria-label="Conjugación para ${p}"><span id="blankCorrection${i}"></span></td></tr>`).join(''); http://document.getElementById('tableFeedback').textContent = ''; }
+function checkTable() { const tense = http://document.getElementById('blankTense').value; const verb = http://document.getElementById('blankVerb').value; let score = 0; getForms(tense,verb).forEach((form,i) => { const input = http://document.getElementById('blankAnswer'+i); const correction = http://document.getElementById('blankCorrection'+i); const answer = normalize(input.value); const correct = normalize(form); const isCorrect = answer === correct; http://input.classList.toggle('input-correct',isCorrect); http://input.classList.toggle('input-wrong',!isCorrect); http://correction.textContent = isCorrect ? '✓' : 'Respuesta: ' + form; http://correction.className = 'correction-inline'; if (isCorrect) score++; }); http://document.getElementById('tableFeedback').textContent = `Resultado: ${score}/6 respuestas correctas.`; http://document.getElementById('tableFeedback').className = 'feedback-area ' + (score===6?'msg-ok':'msg-error'); }
+function resetTable() { renderBlank(); }
+function insertAccent(char, inBlank=false) { const active = http://document.activeElement; let target = active && http://active.tagName === 'INPUT' ? active : null; if (!target) target = http://document.getElementById(inBlank ? 'blankAnswer0' : 'quizAnswer'); if (!target || http://target.disabled) return; const start = http://target.selectionStart ?? http://target.value.length; const end = http://target.selectionEnd ?? http://target.value.length; http://target.value = http://target.value.slice(0,start) + char + http://target.value.slice(end); http://target.focus(); http://target.setSelectionRange(start+char.length,start+char.length); }
+document.getElementById('checkQuiz').addEventListener('click',checkQuiz);
+document.getElementById('nextQuiz').addEventListener('click',newQuestion);
+document.getElementById('quizAnswer').addEventListener('keydown',e=>{if(e.key==='Enter') checkQuiz();});
+document.getElementById('checkTable').addEventListener('click',checkTable);
+document.getElementById('resetTable').addEventListener('click',resetTable);
+setupSelectors();
+</script>
+</body>
+</html>

@@ -3,717 +3,1176 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Verbes Français</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon Atelier de Conjugaison</title>
+
 <style>
-:root{
---bg:#fdfbf7;--primary:#6366f1;--soft:#e0e7ff;
---pink:#ec4899;--teal:#14b8a6;--green:#10b981;
---red:#e11d48;--text:#334155;
+:root {
+  --pink: #f8dce8;
+  --pink-dark: #d98eae;
+  --lavender: #e8e1fa;
+  --blue: #dceefa;
+  --cream: #fffaf5;
+  --ink: #66566b;
+  --purple: #a17fa7;
+  --white: #fff;
+  --shadow: 0 8px 24px #8e78951c;
 }
-*{box-sizing:border-box}
-body{margin:0;padding:15px;background:var(--bg);color:var(--text);font-family:Nunito,sans-serif}
-.app{max-width:950px;margin:auto;background:white;padding:clamp(18px,4vw,32px);border:3px solid #f1f5f9;border-radius:25px;box-shadow:0 10px 30px #6366f114}
-h1{text-align:center;color:var(--primary);font-size:2rem}
-h2{color:#1e293b}
-.subtitle{text-align:center;color:#64748b;margin-bottom:28px}
-button,input,select{font:inherit}
-button{cursor:pointer;border:0;border-radius:13px;padding:11px 16px;font-weight:800}
-.primary{background:var(--primary);color:white}
-.secondary{background:#f1f5f9;color:var(--text)}
-.menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
-.menu button{padding:27px 16px;min-height:150px}
-.quiz{background:var(--soft);color:#3730a3}
-.study{background:#ccfbf1;color:#115e59}
-.blank{background:#fce7f3;color:#9d174d}
-.menu-icon{display:block;font-size:2.5rem;margin-bottom:8px}
-.menu-title{display:block;font-size:1.25rem;margin-bottom:6px}
-.menu-desc{font-weight:600;font-size:.9rem}
-.hidden{display:none!important}
-.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:20px}
-select{padding:10px;border:2px solid #cbd5e1;border-radius:12px;background:white;max-width:100%}
-.quizbox{background:#f8fafc;border:3px solid var(--soft);border-radius:22px;padding:25px 15px;text-align:center}
-.badge{display:inline-block;background:var(--primary);color:white;padding:6px 15px;border-radius:20px;font-weight:800}
-.verb{font-size:2.4rem;font-weight:800;color:#1e293b;margin:10px}
-.pronoun{font-size:1.3rem;font-weight:800;color:var(--pink);margin:10px}
-.answer-grid{max-width:520px;margin:auto;display:grid;gap:12px;text-align:left}
-.answer-grid label{font-weight:800}
-.answer-grid input{width:100%;padding:13px;border:2px solid #cbd5e1;border-radius:12px;margin-top:5px}
-.accent{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin:15px}
-.accent button{background:#fef3c7;color:#92400e;padding:7px 13px}
-.feedback{text-align:center;font-weight:800;min-height:45px;margin:15px 0}
-.ok{color:#059669}.error{color:var(--red)}
-.score{text-align:center;color:#3730a3;font-weight:800}
-.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:15px}
-.tablewrap{overflow-x:auto;border:2px solid #e2e8f0;border-radius:15px}
-table{width:100%;border-collapse:collapse}
-th{background:var(--soft);color:#3730a3;text-align:left;padding:12px}
-td{padding:11px;border-bottom:1px solid #e2e8f0}
-tr:nth-child(even) td{background:#f8fafc}
-td:first-child{font-weight:800;color:var(--pink)}
-.table-input{width:100%;padding:8px;border:2px solid #cbd5e1;border-radius:9px}
-.correct{background:#ecfdf5;border-color:var(--green)}
-.wrong{background:#fff1f2;border-color:var(--red)}
-.settings-group{border:2px solid #e2e8f0;border-radius:16px;padding:15px;margin:13px 0}
-.settings-group h3{color:var(--primary);margin:0 0 12px}
-.checkgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
-.checkitem{display:flex;align-items:center;gap:8px;font-weight:700}
-.checkitem input{width:18px;height:18px;accent-color:var(--primary)}
-.settings-actions{display:flex;gap:8px;flex-wrap:wrap}
-.small{font-size:.85rem;color:#64748b}
-@media(max-width:520px){
-body{padding:8px}.app{border-radius:18px}
-.top{align-items:stretch}.top select{flex:1}
-.verb{font-size:2rem}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 10% 15%, #f8e6ee 0, transparent 23%),
+    radial-gradient(circle at 90% 80%, #e9e3f8 0, transparent 25%),
+    var(--cream);
+  color: var(--ink);
+  font-family: "Trebuchet MS", Arial, sans-serif;
+}
+
+header {
+  text-align: center;
+  padding: 35px 16px 15px;
+}
+
+h1 {
+  margin: 0;
+  font-family: Georgia, serif;
+  font-size: clamp(29px, 5vw, 43px);
+  color: #a17fa7;
+}
+
+.subtitle {
+  color: #aa91aa;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+header .decoration {
+  font-size: 23px;
+  margin-bottom: 10px;
+  letter-spacing: 12px;
+}
+
+main {
+  width: min(960px, 94%);
+  margin: 20px auto 55px;
+}
+
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+  animation: appear .45s ease;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ACCUEIL */
+
+.home-title {
+  text-align: center;
+  font-family: Georgia, serif;
+  font-size: 27px;
+  color: #977b9c;
+  margin: 28px 0 8px;
+}
+
+.home-subtitle {
+  text-align: center;
+  color: #ad9bae;
+  margin-bottom: 30px;
+}
+
+.activities {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 24px;
+}
+
+.activity {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #ffffffb5;
+  border-radius: 26px;
+  padding: 20px 17px 25px;
+  min-height: 340px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: transform .25s, box-shadow .25s;
+  color: var(--ink);
+  font: inherit;
+}
+
+.activity:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px #8e78952c;
+}
+
+.activity:nth-child(1) {
+  background: linear-gradient(155deg, #fbe5ed, #f5d4e2);
+}
+
+.activity:nth-child(2) {
+  background: linear-gradient(155deg, #eee9fc, #ddd5f2);
+}
+
+.activity:nth-child(3) {
+  background: linear-gradient(155deg, #e5f3fc, #d1e8f6);
+}
+
+/* ILUSTRACIONES */
+
+.drawing {
+  height: 185px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.drawing svg {
+  width: 100%;
+  max-width: 205px;
+  height: 180px;
+  overflow: visible;
+  transition: transform .3s;
+}
+
+.activity:hover .drawing svg {
+  transform: scale(1.07) rotate(-2deg);
+}
+
+.activity h3 {
+  margin: 8px 0;
+  font-family: Georgia, serif;
+  font-size: 23px;
+  color: #816987;
+}
+
+.activity p {
+  margin: 9px 0;
+  line-height: 1.6;
+  font-size: 14px;
+  color: #806f83;
+}
+
+.card-flower {
+  position: absolute;
+  font-size: 22px;
+  opacity: .75;
+}
+
+.flower-one {
+  top: 13px;
+  left: 17px;
+}
+
+.flower-two {
+  right: 17px;
+  bottom: 15px;
+}
+
+/* PANELES */
+
+.panel {
+  background: #ffffffed;
+  padding: 25px;
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  margin: 15px 0;
+  border: 1px solid #f2e9f1;
+}
+
+h2 {
+  font-family: Georgia, serif;
+  color: #9d789f;
+}
+
+button, select, input {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  border-radius: 13px;
+  padding: 11px 17px;
+  cursor: pointer;
+  background: #eadff5;
+  color: #66566b;
+  transition: filter .2s, transform .2s;
+}
+
+button:hover {
+  filter: brightness(.97);
+  transform: translateY(-2px);
+}
+
+.primary {
+  background: #edcddd;
+}
+
+.blue-button {
+  background: #dceefa;
+}
+
+.back {
+  background: #f3edf4;
+  margin-bottom: 15px;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  margin: 18px 0;
+}
+
+label {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+}
+
+select {
+  border: 1px solid #e3d8e6;
+  background: white;
+  color: var(--ink);
+  border-radius: 10px;
+  padding: 9px;
+  max-width: 100%;
+}
+
+.question {
+  background: #fff5f8;
+  border: 1px solid #f5e2eb;
+  border-radius: 18px;
+  padding: 23px;
+  text-align: center;
+  margin: 18px 0;
+}
+
+.question .verb {
+  font: 28px Georgia, serif;
+  color: #a16f91;
+}
+
+.question .prompt {
+  font-size: 17px;
+  margin-top: 10px;
+}
+
+.answers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 11px;
+}
+
+.answer {
+  background: #f0eafa;
+  padding: 14px 8px;
+  border-radius: 12px;
+  text-align: center;
+  transition: .2s;
+}
+
+.answer.correct {
+  background: #dff1e3;
+}
+
+.answer.wrong {
+  background: #f8dfe3;
+}
+
+.feedback {
+  min-height: 30px;
+  text-align: center;
+  font-weight: bold;
+  margin: 16px 0;
+}
+
+.score-box {
+  background: #fff5f8;
+  border-radius: 14px;
+  padding: 12px;
+  text-align: center;
+  margin-top: 15px;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+}
+
+th {
+  text-align: left;
+  padding: 10px;
+  color: #967b9c;
+}
+
+td {
+  background: #f7f1fa;
+  padding: 13px 15px;
+  border-radius: 9px;
+}
+
+tbody tr:nth-child(even) td {
+  background: #fdf0f5;
+}
+
+.conjugated-form {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.settings-group {
+  padding: 15px 0;
+  border-bottom: 1px solid #f0e9f1;
+}
+
+.settings-group:last-child {
+  border: 0;
+}
+
+.small-note {
+  color: #9b8c9e;
+  font-size: 13px;
+}
+
+.footer {
+  text-align: center;
+  padding: 15px;
+  color: #b39cb3;
+  font-size: 13px;
+}
+
+@media(max-width:520px) {
+  .panel {
+    padding: 16px;
+  }
+
+  .controls {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .activity {
+    min-height: 310px;
+  }
 }
 </style>
 </head>
+
 <body>
-<main class="app">
 
-<section id="home">
-<h1>🇫🇷 Verbes Français</h1>
-<p class="subtitle">Apprends et maîtrise la conjugaison française !</p>
-<div class="menu">
-<button class="quiz" onclick="openScreen('quiz')">
-<span class="menu-icon">🎯</span>
-<span class="menu-title">Entraînement</span>
-<span class="menu-desc">Questions aléatoires : pronoms et conjugaisons.</span>
-</button>
-<button class="study" onclick="openScreen('study')">
-<span class="menu-icon">📖</span>
-<span class="menu-title">Tableaux de conjugaison</span>
-<span class="menu-desc">Consulte toutes les conjugaisons.</span>
-</button>
-<button class="blank" onclick="openScreen('blank')">
-<span class="menu-icon">✍️</span>
-<span class="menu-title">Compléter les tableaux</span>
-<span class="menu-desc">Complète les six formes.</span>
-</button>
-<button style="background:#fef3c7;color:#92400e" onclick="openScreen('settings')">
-<span class="menu-icon">⚙️</span>
-<span class="menu-title">Paramètres</span>
-<span class="menu-desc">Choisis les temps verbaux à réviser.</span>
-</button>
-</div>
+<header>
+  <div class="decoration">🌷 ✿ 🌸</div>
+  <h1>Mon Atelier de Conjugaison</h1>
+  <p class="subtitle">
+    Un petit espace pour pratiquer le français avec douceur ♡
+  </p>
+</header>
+
+<main>
+
+<!-- ACCUEIL -->
+
+<section id="home" class="screen active">
+
+  <h2 class="home-title">Bienvenue dans mon atelier !</h2>
+
+  <p class="home-subtitle">
+    Que veux-tu faire aujourd'hui ? 🌼
+  </p>
+
+  <div class="activities">
+
+    <!-- CARTE 1 -->
+
+    <button class="activity" onclick="showScreen('training')">
+
+      <span class="card-flower flower-one">✿</span>
+      <span class="card-flower flower-two">🌸</span>
+
+      <div class="drawing">
+
+        <svg viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg">
+
+          <!-- Ombre -->
+          <ellipse cx="110" cy="158" rx="77" ry="10"
+                   fill="#bd8fa5" opacity=".2"/>
+
+          <!-- Livre -->
+          <path d="M39 70 Q75 54 109 77 L109 145 Q73 123 39 140Z"
+                fill="#fffaf5" stroke="#b68aa6" stroke-width="2"/>
+
+          <path d="M109 77 Q145 54 181 70 L181 140 Q144 123 109 145Z"
+                fill="#fff" stroke="#b68aa6" stroke-width="2"/>
+
+          <path d="M109 77 L109 145"
+                stroke="#b68aa6" stroke-width="2"/>
+
+          <path d="M52 87 Q77 76 96 89 M52 101 Q76 91 96 104
+                   M52 115 Q76 105 96 118"
+                fill="none" stroke="#e6b4ca" stroke-width="3"
+                stroke-linecap="round"/>
+
+          <path d="M123 89 Q145 76 167 86 M123 104 Q145 91 167 100
+                   M123 118 Q145 105 167 114"
+                fill="none" stroke="#c5b4e5" stroke-width="3"
+                stroke-linecap="round"/>
+
+          <!-- Crayon -->
+          <path d="M156 36 L174 43 L143 112 L126 105Z"
+                fill="#edb7cd" stroke="#b47d9c" stroke-width="2"/>
+
+          <path d="M126 105 L143 112 L120 124Z"
+                fill="#f2d4bc"/>
+
+          <path d="M156 36 L162 23 L180 31 L174 43Z"
+                fill="#d9a4c0" stroke="#b47d9c" stroke-width="2"/>
+
+          <!-- Fleur -->
+          <g transform="translate(43 36)">
+            <circle cx="0" cy="-9" r="7" fill="#f4b8d0"/>
+            <circle cx="9" cy="-2" r="7" fill="#f4b8d0"/>
+            <circle cx="6" cy="9" r="7" fill="#f4b8d0"/>
+            <circle cx="-6" cy="9" r="7" fill="#f4b8d0"/>
+            <circle cx="-9" cy="-2" r="7" fill="#f4b8d0"/>
+            <circle r="5" fill="#f5d88d"/>
+          </g>
+
+          <!-- Petits détails -->
+          <path d="M185 112 Q197 99 201 112 Q198 124 185 112Z"
+                fill="#b4d8c1"/>
+          <circle cx="30" cy="112" r="4" fill="#d4b9e8"/>
+          <path d="M185 56 Q195 43 204 54"
+                stroke="#d6a6c0" stroke-width="2" fill="none"/>
+
+        </svg>
+
+      </div>
+
+      <h3>Entraînement</h3>
+
+      <p>
+        Entraîne-toi avec des questions aléatoires
+        et teste tes connaissances.
+      </p>
+
+    </button>
+
+
+    <!-- CARTE 2 -->
+
+    <button class="activity" onclick="showScreen('tables')">
+
+      <span class="card-flower flower-one">✧</span>
+      <span class="card-flower flower-two">🦋</span>
+
+      <div class="drawing">
+
+        <svg viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg">
+
+          <ellipse cx="110" cy="157" rx="72" ry="9"
+                   fill="#a999c8" opacity=".2"/>
+
+          <!-- Livre ouvert -->
+          <path d="M35 70 Q72 49 109 74 L109 146
+                   Q73 121 35 140Z"
+                fill="#fff" stroke="#a58bbd" stroke-width="2"/>
+
+          <path d="M109 74 Q148 49 185 70 L185 140
+                   Q146 121 109 146Z"
+                fill="#fffaf7" stroke="#a58bbd" stroke-width="2"/>
+
+          <path d="M109 74 L109 146"
+                stroke="#a58bbd" stroke-width="2"/>
+
+          <!-- Pages -->
+          <path d="M48 86 Q76 74 95 88 M48 101 Q76 90 95 103
+                   M48 116 Q76 105 95 118"
+                fill="none" stroke="#c5b4e5" stroke-width="3"
+                stroke-linecap="round"/>
+
+          <path d="M124 88 Q148 74 172 85 M124 103 Q148 90 172 100
+                   M124 118 Q148 105 172 115"
+                fill="none" stroke="#e8bbd2" stroke-width="3"
+                stroke-linecap="round"/>
+
+          <!-- Fleur sur le livre -->
+          <g transform="translate(68 52)">
+            <circle cx="0" cy="-7" r="6" fill="#eeb3d0"/>
+            <circle cx="7" cy="0" r="6" fill="#eeb3d0"/>
+            <circle cx="0" cy="7" r="6" fill="#eeb3d0"/>
+            <circle cx="-7" cy="0" r="6" fill="#eeb3d0"/>
+            <circle r="3" fill="#f4d98c"/>
+          </g>
+
+          <!-- Papillon -->
+          <g transform="translate(160 38)">
+            <path d="M0 0 Q-28 -28 -26 0 Q-20 17 0 4
+                     Q20 -20 26 0 Q20 17 0 4Z"
+                  fill="#c9b8ed" stroke="#9d88c2" stroke-width="1.5"/>
+            <path d="M0 0 L0 16"
+                  stroke="#806a9f" stroke-width="3"
+                  stroke-linecap="round"/>
+            <path d="M0 1 Q-8 -13 -12 -12 M0 1 Q8 -13 12 -12"
+                  stroke="#806a9f" fill="none"/>
+          </g>
+
+          <!-- Étoiles -->
+          <path d="M31 38 L35 47 L44 50 L35 54 L31 63 L27 54 L18 50 L27 47Z"
+                fill="#f2d28b"/>
+
+          <circle cx="195" cy="92" r="4" fill="#eeb3d0"/>
+          <circle cx="25" cy="119" r="3" fill="#c6b5e6"/>
+
+        </svg>
+
+      </div>
+
+      <h3>Tables de conjugaison</h3>
+
+      <p>
+        Découvre les conjugaisons des verbes
+        et des temps différents.
+      </p>
+
+    </button>
+
+
+    <!-- CARTE 3 -->
+
+    <button class="activity" onclick="showScreen('settings')">
+
+      <span class="card-flower flower-one">♡</span>
+      <span class="card-flower flower-two">🌷</span>
+
+      <div class="drawing">
+
+        <svg viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg">
+
+          <ellipse cx="110" cy="157" rx="65" ry="9"
+                   fill="#9ab8ca" opacity=".2"/>
+
+          <!-- Boîte -->
+          <path d="M52 73 L168 73 L158 143 L62 143Z"
+                fill="#c7e1f1" stroke="#8aafc5" stroke-width="2"/>
+
+          <!-- Couvercle -->
+          <path d="M45 62 Q110 46 175 62 L168 84
+                   Q110 99 52 84Z"
+                fill="#f3cddd" stroke="#bd91ae" stroke-width="2"/>
+
+          <!-- Ruban -->
+          <path d="M103 53 L103 143 L119 143 L119 53Z"
+                fill="#fff0f5" opacity=".9"/>
+
+          <path d="M110 61 Q75 23 69 47
+                   Q66 69 110 69
+                   Q151 23 153 47
+                   Q156 69 110 69Z"
+                fill="#edb2cc" stroke="#bd86a6" stroke-width="2"/>
+
+          <circle cx="110" cy="66" r="8"
+                  fill="#d98eae" stroke="#bd86a6" stroke-width="2"/>
+
+          <!-- Fleurs -->
+          <g transform="translate(79 105)">
+            <circle cy="-7" r="6" fill="#f3b4ce"/>
+            <circle cx="7" r="6" fill="#f3b4ce"/>
+            <circle cy="7" r="6" fill="#f3b4ce"/>
+            <circle cx="-7" r="6" fill="#f3b4ce"/>
+            <circle r="3" fill="#f3d889"/>
+          </g>
+
+          <g transform="translate(142 113)">
+            <circle cy="-7" r="6" fill="#f7d9a3"/>
+            <circle cx="7" r="6" fill="#f7d9a3"/>
+            <circle cy="7" r="6" fill="#f7d9a3"/>
+            <circle cx="-7" r="6" fill="#f7d9a3"/>
+            <circle r="3" fill="#dba5bd"/>
+          </g>
+
+          <!-- Étoiles -->
+          <path d="M38 36 L42 45 L51 49 L42 53 L38 62 L34 53 L25 49 L34 45Z"
+                fill="#f1d18d"/>
+
+          <path d="M182 94 L185 101 L192 104 L185 107 L182 114 L179 107 L172 104 L179 101Z"
+                fill="#e6b8d1"/>
+
+          <circle cx="180" cy="40" r="4" fill="#d0c0e9"/>
+          <circle cx="47" cy="117" r="4" fill="#d0c0e9"/>
+
+        </svg>
+
+      </div>
+
+      <h3>Paramètres</h3>
+
+      <p>
+        Personnalise ton entraînement
+        et tes préférences.
+      </p>
+
+    </button>
+
+  </div>
+
 </section>
 
-<section id="settings" class="hidden">
-<div class="top">
-<button class="secondary" onclick="openScreen('home')">← Retour</button>
-<h2>⚙️ Paramètres</h2>
-</div>
-<h3>Choisis les temps à pratiquer</h3>
-<p class="small">Les questions aléatoires utiliseront uniquement les temps sélectionnés.</p>
-<div class="settings-actions">
-<button class="primary" onclick="selectAll(true)">Tout sélectionner</button>
-<button class="secondary" onclick="selectAll(false)">Tout désélectionner</button>
-</div>
-<div id="settingsList"></div>
-<p id="selectionCount" class="score"></p>
-<button class="primary" onclick="saveSettings()">Enregistrer les paramètres</button>
+
+<!-- ENTRAÎNEMENT -->
+
+<section id="training" class="screen">
+
+  <button class="back" onclick="showScreen('home')">
+    ← Accueil
+  </button>
+
+  <div class="panel">
+
+    <h2>🌷 Entraînement</h2>
+
+    <div class="controls">
+
+      <label>Temps :
+        <select id="quizTense">
+          <option value="present">Présent</option>
+          <option value="imparfait">Imparfait</option>
+          <option value="futur">Futur simple</option>
+          <option value="passe">Passé composé</option>
+          <option value="conditionnel">Conditionnel présent</option>
+          <option value="subjonctif">Subjonctif présent</option>
+          <option value="imperatif">Impératif présent</option>
+        </select>
+      </label>
+
+      <label>Verbe :
+        <select id="quizVerb">
+          <option value="random">Aléatoire</option>
+          <option value="parler">Parler</option>
+          <option value="finir">Finir</option>
+          <option value="aller">Aller</option>
+          <option value="être">Être</option>
+          <option value="avoir">Avoir</option>
+          <option value="faire">Faire</option>
+          <option value="prendre">Prendre</option>
+          <option value="venir">Venir</option>
+          <option value="voir">Voir</option>
+        </select>
+      </label>
+
+    </div>
+
+    <div class="question">
+      <div class="verb" id="quizVerbDisplay">parler</div>
+      <div class="prompt" id="quizPrompt">
+        Conjugue le verbe au présent :
+      </div>
+    </div>
+
+    <div class="answers" id="answers"></div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <div style="text-align:center">
+      <button class="primary" onclick="newQuestion()">
+        Question suivante →
+      </button>
+    </div>
+
+    <div class="score-box">
+      🌸 Score : <strong id="score">0</strong> bonne(s) réponse(s)
+    </div>
+
+  </div>
+
 </section>
 
-<section id="quiz" class="hidden">
-<div class="top">
-<button class="secondary" onclick="openScreen('home')">← Retour</button>
-<button class="secondary" onclick="newQuestion()">Question aléatoire ↻</button>
-</div>
-<div class="quizbox">
-<span class="badge" id="qTense"></span>
-<div class="verb" id="qVerb"></div>
-<p>Conjugue ce verbe et indique le pronom correspondant.</p>
-<div class="pronoun" id="qPerson"></div>
-<div class="answer-grid">
-<label>Pronom :
-<input id="qPronoun" placeholder="Ex. je, tu, nous..." autocomplete="off">
-</label>
-<label>Conjugaison :
-<input id="qAnswer" placeholder="Écris la forme correcte" autocomplete="off">
-</label>
-</div>
-<div class="accent">
-<button onclick="insertAccent('é')">é</button>
-<button onclick="insertAccent('è')">è</button>
-<button onclick="insertAccent('ê')">ê</button>
-<button onclick="insertAccent('à')">à</button>
-<button onclick="insertAccent('ù')">ù</button>
-<button onclick="insertAccent('ç')">ç</button>
-<button onclick="insertAccent('î')">î</button>
-<button onclick="insertAccent('ô')">ô</button>
-</div>
-<button class="primary" id="checkQuiz">Vérifier</button>
-<div class="feedback" id="qFeedback"></div>
-<button class="secondary hidden" id="nextQuiz" onclick="newQuestion()">Question suivante →</button>
-</div>
-<p class="score" id="score">Bonnes réponses : 0</p>
+
+<!-- TABLES -->
+
+<section id="tables" class="screen">
+
+  <button class="back" onclick="showScreen('home')">
+    ← Accueil
+  </button>
+
+  <div class="panel">
+
+    <h2>📖 Tables de conjugaison</h2>
+
+    <div class="controls">
+
+      <label>Verbe :
+        <select id="tableVerb" onchange="renderTable()">
+          <option value="parler">Parler</option>
+          <option value="finir">Finir</option>
+          <option value="aller">Aller</option>
+          <option value="être">Être</option>
+          <option value="avoir">Avoir</option>
+          <option value="faire">Faire</option>
+          <option value="prendre">Prendre</option>
+          <option value="venir">Venir</option>
+          <option value="voir">Voir</option>
+        </select>
+      </label>
+
+      <label>Temps :
+        <select id="tableTense" onchange="renderTable()">
+          <option value="present">Présent</option>
+          <option value="imparfait">Imparfait</option>
+          <option value="futur">Futur simple</option>
+          <option value="passe">Passé composé</option>
+          <option value="conditionnel">Conditionnel présent</option>
+          <option value="subjonctif">Subjonctif présent</option>
+          <option value="imperatif">Impératif présent</option>
+        </select>
+      </label>
+
+    </div>
+
+    <div id="tableContainer"></div>
+
+  </div>
+
 </section>
 
-<section id="study" class="hidden">
-<div class="top">
-<button class="secondary" onclick="openScreen('home')">← Retour</button>
-<select id="studyTense"></select>
-<select id="studyVerb"></select>
-</div>
-<h2 id="studyHeading"></h2>
-<div class="tablewrap">
-<table>
-<thead><tr><th>Pronom</th><th>Conjugaison</th></tr></thead>
-<tbody id="studyBody"></tbody>
-</table>
-</div>
-</section>
 
-<section id="blank" class="hidden">
-<div class="top">
-<button class="secondary" onclick="openScreen('home')">← Retour</button>
-<select id="blankTense"></select>
-<select id="blankVerb"></select>
-</div>
-<h2 id="blankHeading"></h2>
-<p class="small">Complète les six formes et clique sur « Corriger ».</p>
-<div class="tablewrap">
-<table>
-<thead><tr><th>Pronom</th><th>Ta réponse</th></tr></thead>
-<tbody id="blankBody"></tbody>
-</table>
-</div>
-<div class="accent">
-<button onclick="insertAccent('é',true)">é</button>
-<button onclick="insertAccent('è',true)">è</button>
-<button onclick="insertAccent('ê',true)">ê</button>
-<button onclick="insertAccent('à',true)">à</button>
-<button onclick="insertAccent('ù',true)">ù</button>
-<button onclick="insertAccent('ç',true)">ç</button>
-<button onclick="insertAccent('î',true)">î</button>
-<button onclick="insertAccent('ô',true)">ô</button>
-</div>
-<div class="actions">
-<button class="primary" onclick="checkTable()">Corriger</button>
-<button class="secondary" onclick="renderBlank()">Recommencer</button>
-</div>
-<div class="feedback" id="blankFeedback"></div>
+<!-- PARAMÈTRES -->
+
+<section id="settings" class="screen">
+
+  <button class="back" onclick="showScreen('home')">
+    ← Accueil
+  </button>
+
+  <div class="panel">
+
+    <h2>🎀 Paramètres</h2>
+
+    <div class="settings-group">
+
+      <strong>Genre pour le passé composé avec être</strong>
+
+      <p>
+        <label>
+          <input type="radio" name="gender" value="m"
+                 checked onchange="renderTable(); refreshQuiz()">
+          Masculin
+        </label>
+
+        <label>
+          <input type="radio" name="gender" value="f"
+                 onchange="renderTable(); refreshQuiz()">
+          Féminin
+        </label>
+      </p>
+
+      <p class="small-note">
+        Ce réglage permet de choisir l'accord du participe passé
+        dans les exemples concernés.
+      </p>
+
+    </div>
+
+    <div class="settings-group">
+
+      <strong>À propos</strong>
+
+      <p>
+        Bienvenue dans ton atelier de conjugaison ! 🌼
+      </p>
+
+      <p class="small-note">
+        Apprendre le français peut être doux et amusant.
+      </p>
+
+    </div>
+
+  </div>
+
 </section>
 
 </main>
 
+<footer class="footer">
+  Fait avec amour pour apprendre le français ♡
+</footer>
+
+
 <script>
-const pronouns=['je','tu','il / elle / on','nous','vous','ils / elles'];
 
-const groups={
-'INDICATIF':[
-['present','Présent'],
-['passe','Passé composé'],
-['imparfait','Imparfait'],
-['plusque','Plus-que-parfait'],
-['passeSimple','Passé simple'],
-['passeAnterior','Passé antérieur'],
-['futur','Futur simple'],
-['futurAnterior','Futur antérieur']
-],
-'CONDITIONNEL':[
-['conditionnel','Conditionnel présent'],
-['conditionnelPasse','Conditionnel passé']
-],
-'SUBJONCTIF':[
-['subjPresent','Subjonctif présent'],
-['subjPasse','Subjonctif passé'],
-['subjImparfait','Subjonctif imparfait'],
-['subjPlusque','Subjonctif plus-que-parfait']
-],
-'IMPÉRATIF':[
-['imperatif','Impératif présent'],
-['imperatifPasse','Impératif passé']
-],
-'FORMES NON PERSONNELLES':[
-['infinitif','Infinitif présent'],
-['infinitifPasse','Infinitif passé'],
-['participePresent','Participe présent'],
-['participePasse','Participe passé'],
-['participeCompose','Participe passé composé'],
-['gerondif','Gérondif présent'],
-['gerondifPasse','Gérondif passé']
-]
+const people = [
+  "je", "tu", "il/elle/on", "nous", "vous", "ils/elles"
+];
+
+const verbs = {
+
+  parler: {
+    present: ["parle","parles","parle","parlons","parlez","parlent"],
+    imparfait: ["parlais","parlais","parlait","parlions","parliez","parlaient"],
+    futur: ["parlerai","parleras","parlera","parlerons","parlerez","parleront"],
+    conditionnel: ["parlerais","parlerais","parlerait","parlerions","parleriez","parleraient"],
+    subjonctif: ["parle","parles","parle","parlions","parliez","parlent"],
+    passe: ["ai parlé","as parlé","a parlé","avons parlé","avez parlé","ont parlé"]
+  },
+
+  finir: {
+    present: ["finis","finis","finit","finissons","finissez","finissent"],
+    imparfait: ["finissais","finissais","finissait","finissions","finissiez","finissaient"],
+    futur: ["finirai","finiras","finira","finirons","finirez","finiront"],
+    conditionnel: ["finirais","finirais","finirait","finirions","finiriez","finiraient"],
+    subjonctif: ["finisse","finisses","finisse","finissions","finissiez","finissent"],
+    passe: ["ai fini","as fini","a fini","avons fini","avez fini","ont fini"]
+  },
+
+  aller: {
+    present: ["vais","vas","va","allons","allez","vont"],
+    imparfait: ["allais","allais","allait","allions","alliez","allaient"],
+    futur: ["irai","iras","ira","irons","irez","iront"],
+    conditionnel: ["irais","irais","irait","irions","iriez","iraient"],
+    subjonctif: ["aille","ailles","aille","allions","alliez","aillent"],
+    passe: ["suis allé(e)","es allé(e)","est allé(e)","sommes allé(e)s","êtes allé(e)(s)","sont allé(e)s"]
+  },
+
+  "être": {
+    present: ["suis","es","est","sommes","êtes","sont"],
+    imparfait: ["étais","étais","était","étions","étiez","étaient"],
+    futur: ["serai","seras","sera","serons","serez","seront"],
+    conditionnel: ["serais","serais","serait","serions","seriez","seraient"],
+    subjonctif: ["sois","sois","soit","soyons","soyez","soient"],
+    passe: ["ai été","as été","a été","avons été","avez été","ont été"]
+  },
+
+  "avoir": {
+    present: ["ai","as","a","avons","avez","ont"],
+    imparfait: ["avais","avais","avait","avions","aviez","avaient"],
+    futur: ["aurai","auras","aura","aurons","aurez","auront"],
+    conditionnel: ["aurais","aurais","aurait","aurions","auriez","auraient"],
+    subjonctif: ["aie","aies","ait","ayons","ayez","aient"],
+    passe: ["ai eu","as eu","a eu","avons eu","avez eu","ont eu"]
+  },
+
+  faire: {
+    present: ["fais","fais","fait","faisons","faites","font"],
+    imparfait: ["faisais","faisais","faisait","faisions","faisiez","faisaient"],
+    futur: ["ferai","feras","fera","ferons","ferez","feront"],
+    conditionnel: ["ferais","ferais","ferait","ferions","feriez","feraient"],
+    subjonctif: ["fasse","fasses","fasse","fassions","fassiez","fassent"],
+    passe: ["ai fait","as fait","a fait","avons fait","avez fait","ont fait"]
+  },
+
+  prendre: {
+    present: ["prends","prends","prend","prenons","prenez","prennent"],
+    imparfait: ["prenais","prenais","prenait","prenions","preniez","prenaient"],
+    futur: ["prendrai","prendras","prendra","prendrons","prendrez","prendront"],
+    conditionnel: ["prendrais","prendrais","prendrait","prendrions","prendriez","prendraient"],
+    subjonctif: ["prenne","prennes","prenne","prenions","preniez","prennent"],
+    passe: ["ai pris","as pris","a pris","avons pris","avez pris","ont pris"]
+  },
+
+  venir: {
+    present: ["viens","viens","vient","venons","venez","viennent"],
+    imparfait: ["venais","venais","venait","venions","veniez","venaient"],
+    futur: ["viendrai","viendras","viendra","viendrons","viendrez","viendront"],
+    conditionnel: ["viendrais","viendrais","viendrait","viendrions","viendriez","viendraient"],
+    subjonctif: ["vienne","viennes","vienne","venions","veniez","viennent"],
+    passe: ["suis venu(e)","es venu(e)","est venu(e)","sommes venu(e)s","êtes venu(e)(s)","sont venu(e)s"]
+  },
+
+  voir: {
+    present: ["vois","vois","voit","voyons","voyez","voient"],
+    imparfait: ["voyais","voyais","voyait","voyions","voyiez","voyaient"],
+    futur: ["verrai","verras","verra","verrons","verrez","verront"],
+    conditionnel: ["verrais","verrais","verrait","verrions","verriez","verraient"],
+    subjonctif: ["voie","voies","voie","voyions","voyiez","voient"],
+    passe: ["ai vu","as vu","a vu","avons vu","avez vu","ont vu"]
+  }
+
 };
 
-const allTenses=Object.fromEntries(Object.values(groups).flat());
-
-const data={
-être:{
-aux:'être',pp:'été',ppf:'été',part:'étant',
-present:['suis','es','est','sommes','êtes','sont'],
-imparfait:['étais','étais','était','étions','étiez','étaient'],
-futur:['serai','seras','sera','serons','serez','seront'],
-conditionnel:['serais','serais','serait','serions','seriez','seraient'],
-passeSimple:['fus','fus','fut','fûmes','fûtes','furent'],
-subjPresent:['sois','sois','soit','soyons','soyez','soient'],
-subjImparfait:['fusse','fusses','fût','fussions','fussiez','fussent'],
-imperatif:['','sois','','soyons','soyez',''],
-inf:'être'
-},
-avoir:{
-aux:'avoir',pp:'eu',ppf:'eu',part:'ayant',
-present:['ai','as','a','avons','avez','ont'],
-imparfait:['avais','avais','avait','avions','aviez','avaient'],
-futur:['aurai','auras','aura','aurons','aurez','auront'],
-conditionnel:['aurais','aurais','aurait','aurions','auriez','auraient'],
-passeSimple:['eus','eus','eut','eûmes','eûtes','eurent'],
-subjPresent:['aie','aies','ait','ayons','ayez','aient'],
-subjImparfait:['eusse','eusses','eût','eussions','eussiez','eussent'],
-imperatif:['','aie','','ayons','ayez',''],
-inf:'avoir'
-},
-aller:{
-aux:'être',pp:'allé',ppf:'allée',part:'allant',
-present:['vais','vas','va','allons','allez','vont'],
-imparfait:['allais','allais','allait','allions','alliez','allaient'],
-futur:['irai','iras','ira','irons','irez','iront'],
-conditionnel:['irais','irais','irait','irions','iriez','iraient'],
-passeSimple:['allai','allas','alla','allâmes','allâtes','allèrent'],
-subjPresent:['aille','ailles','aille','allions','alliez','aillent'],
-subjImparfait:['allasse','allasses','allât','allassions','allassiez','allassent'],
-imperatif:['','va','','allons','allez',''],
-inf:'aller'
-},
-faire:{
-aux:'avoir',pp:'fait',ppf:'faite',part:'faisant',
-present:['fais','fais','fait','faisons','faites','font'],
-imparfait:['faisais','faisais','faisait','faisions','faisiez','faisaient'],
-futur:['ferai','feras','fera','ferons','ferez','feront'],
-conditionnel:['ferais','ferais','ferait','ferions','feriez','feraient'],
-passeSimple:['fis','fis','fit','fîmes','fîtes','firent'],
-subjPresent:['fasse','fasses','fasse','fassions','fassiez','fassent'],
-subjImparfait:['fisse','fisses','fît','fissions','fissiez','fissent'],
-imperatif:['','fais','','faisons','faites',''],
-inf:'faire'
-},
-parler:{
-aux:'avoir',pp:'parlé',ppf:'parlée',part:'parlant',
-present:['parle','parles','parle','parlons','parlez','parlent'],
-imparfait:['parlais','parlais','parlait','parlions','parliez','parlaient'],
-futur:['parlerai','parleras','parlera','parlerons','parlerez','parleront'],
-conditionnel:['parlerais','parlerais','parlerait','parlerions','parleriez','parleraient'],
-passeSimple:['parlai','parlas','parla','parlâmes','parlâtes','parlèrent'],
-subjPresent:['parle','parles','parle','parlions','parliez','parlent'],
-subjImparfait:['parlasse','parlasses','parlât','parlassions','parlassiez','parlassent'],
-imperatif:['','parle','','parlons','parlez',''],
-inf:'parler'
-},
-finir:{
-aux:'avoir',pp:'fini',ppf:'finie',part:'finissant',
-present:['finis','finis','finit','finissons','finissez','finissent'],
-imparfait:['finissais','finissais','finissait','finissions','finissiez','finissaient'],
-futur:['finirai','finiras','finira','finirons','finirez','finiront'],
-conditionnel:['finirais','finirais','finirait','finirions','finiriez','finiraient'],
-passeSimple:['finis','finis','finit','finîmes','finîtes','finirent'],
-subjPresent:['finisse','finisses','finisse','finissions','finissiez','finissent'],
-subjImparfait:['finisse','finisses','finît','finissions','finissiez','finissent'],
-imperatif:['','finis','','finissons','finissez',''],
-inf:'finir'
-},
-prendre:{
-aux:'avoir',pp:'pris',ppf:'prise',part:'prenant',
-present:['prends','prends','prend','prenons','prenez','prennent'],
-imparfait:['prenais','prenais','prenait','prenions','preniez','prenaient'],
-futur:['prendrai','prendras','prendra','prendrons','prendrez','prendront'],
-conditionnel:['prendrais','prendrais','prendrait','prendrions','prendriez','prendraient'],
-passeSimple:['pris','pris','prit','prîmes','prîtes','prirent'],
-subjPresent:['prenne','prennes','prenne','prenions','preniez','prennent'],
-subjImparfait:['prisse','prisses','prît','prissions','prissiez','prissent'],
-imperatif:['','prends','','prenons','prenez',''],
-inf:'prendre'
-}
+const tenseNames = {
+  present: "Présent",
+  imparfait: "Imparfait",
+  futur: "Futur simple",
+  passe: "Passé composé",
+  conditionnel: "Conditionnel présent",
+  subjonctif: "Subjonctif présent",
+  imperatif: "Impératif présent"
 };
 
-const names=Object.fromEntries(Object.values(groups).flat());
+let score = 0;
+let currentAnswer = "";
+let answered = false;
 
-let enabled=new Set(Object.keys(allTenses));
-let deck=[];
-let current=null;
-let score=0;
-let answered=false;
-let lastInput=null;
+function showScreen(id) {
 
-function norm(s){
-return s.trim().toLocaleLowerCase('fr').replace(/[’]/g,"'").replace(/\s+/g,' ');
+  document.querySelectorAll(".screen").forEach(s =>
+    s.classList.remove("active")
+  );
+
+  document.getElementById(id).classList.add("active");
+
+  if (id === "tables") renderTable();
+
+  if (id === "training") newQuestion();
 }
 
-function auxForms(verb,key){
-return data[verb].aux==='être'?data.être[key]:data.avoir[key];
+function getGender() {
+
+  return document.querySelector(
+    'input[name="gender"]:checked'
+  )?.value || "m";
+
 }
 
-function participle(verb,index){
-const d=data[verb];
-if(verb==='aller'){
-return index===0?'allé':index===2?'allé':index===3?'allés':index===4?'allé':index===5?'allés':'allé';
-}
-return d.pp;
-}
+function getForms(verb, tense) {
 
-function auxiliary(verb,key,index){
-const aux=data[verb].aux;
-const forms=data[aux][key];
-return forms[index];
-}
+  const data = verbs[verb];
 
-function compound(verb,key,index){
-const aux=auxiliary(verb,key,index);
-const pp=participle(verb,index);
-return aux+' '+pp;
-}
+  if (!data) return [];
 
-function forms(verb,tense){
-const d=data[verb];
-const a=data[verb].aux;
-const result=Array(6).fill('');
+  if (tense === "imperatif") {
+    return [
+      data.present[1],
+      data.present[3],
+      data.present[4]
+    ];
+  }
 
-switch(tense){
-case 'present':case 'imparfait':case 'futur':
-case 'conditionnel':case 'passeSimple':
-case 'subjPresent':case 'subjImparfait':
-case 'imperatif':
-return d[tense];
+  let forms = [...data[tense]];
 
-case 'passe':
-return result.map((_,i)=>compound(verb,'present',i));
+  if (tense === "passe") {
 
-case 'plusque':
-return result.map((_,i)=>compound(verb,'imparfait',i));
+    const gender = getGender();
 
-case 'passeAnterior':
-return result.map((_,i)=>compound(verb,'passeSimple',i));
+    if (verb === "aller" || verb === "venir") {
 
-case 'futurAnterior':
-return result.map((_,i)=>compound(verb,'futur',i));
+      forms = forms.map(f => {
 
-case 'conditionnelPasse':
-return result.map((_,i)=>compound(verb,'conditionnel',i));
+        if (gender === "f") {
+          return f.replace("(e)", "e").replace("(s)", "s");
+        }
 
-case 'subjPasse':
-return result.map((_,i)=>compound(verb,'subjPresent',i));
+        return f.replace("(e)", "").replace("(s)", "");
 
-case 'subjPlusque':
-return result.map((_,i)=>compound(verb,'subjImparfait',i));
+      });
 
-case 'imperatifPasse':
-return result.map((_,i)=>compound(verb,'imperatif',i));
+    }
 
-case 'infinitif':
-return [d.inf];
+  }
 
-case 'infinitifPasse':
-return [a==='être'?'être '+d.pp:'avoir '+d.pp];
-
-case 'participePresent':
-return [d.part];
-
-case 'participePasse':
-return [d.pp+' / '+d.ppf];
-
-case 'participeCompose':
-return [a==='être'?'étant '+d.pp:'ayant '+d.pp];
-
-case 'gerondif':
-return ['en '+d.part];
-
-case 'gerondifPasse':
-return [a==='être'?'en étant '+d.pp:'en ayant '+d.pp];
-}
-return result;
+  return forms;
 }
 
-function isPersonal(t){
-return !['infinitif','infinitifPasse','participePresent','participePasse','participeCompose','gerondif','gerondifPasse'].includes(t);
+function getPronouns(tense) {
+
+  if (tense === "imperatif") {
+    return ["tu", "nous", "vous"];
+  }
+
+  return people;
 }
 
-function buildSettings(){
-const container=document.getElementById('settingsList');
-container.innerHTML='';
-for(const [group,items] of Object.entries(groups)){
-const section=document.createElement('div');
-section.className='settings-group';
-const heading=document.createElement('h3');
-heading.textContent=group;
-section.appendChild(heading);
-const grid=document.createElement('div');
-grid.className='checkgrid';
+function renderTable() {
 
-items.forEach(([key,label])=>{
-const row=document.createElement('label');
-row.className='checkitem';
-const input=document.createElement('input');
-input.type='checkbox';
-input.value=key;
-input.checked=enabled.has(key);
-input.addEventListener('change',()=>{
-if(input.checked)enabled.add(key);
-else enabled.delete(key);
-updateCount();
-});
-row.append(input,document.createTextNode(label));
-grid.appendChild(row);
-});
-section.appendChild(grid);
-container.appendChild(section);
-}
-updateCount();
-}
+  const verb = document.getElementById("tableVerb").value;
+  const tense = document.getElementById("tableTense").value;
 
-function updateCount(){
-document.getElementById('selectionCount').textContent=
-enabled.size+' / '+Object.keys(allTenses).length+' temps sélectionnés';
-}
+  const forms = getForms(verb, tense);
+  const pronouns = getPronouns(tense);
 
-function selectAll(value){
-document.querySelectorAll('#settingsList input').forEach(input=>{
-input.checked=value;
-if(value)enabled.add(input.value);
-else enabled.delete(input.value);
-});
-updateCount();
+  let html = `
+    <h3>${verb} — ${tenseNames[tense]}</h3>
+    <table>
+      <thead>
+        <tr><th>Conjugaison</th></tr>
+      </thead>
+      <tbody>
+  `;
+
+  forms.forEach((form, index) => {
+
+    const pronoun = pronouns[index];
+
+    let fullForm = pronoun + " " + form;
+
+    if (
+      tense !== "imperatif" &&
+      pronoun === "je" &&
+      /^[aeiouhàâäéèêëîïôöùûü]/i.test(form)
+    ) {
+      fullForm = "j’" + form;
+    }
+
+    html += `
+      <tr>
+        <td class="conjugated-form">${fullForm}</td>
+      </tr>
+    `;
+
+  });
+
+  html += "</tbody></table>";
+
+  document.getElementById("tableContainer").innerHTML = html;
 }
 
-function saveSettings(){
-if(!enabled.size){
-alert('Sélectionne au moins un temps verbal !');
-return;
-}
-buildDeck();
-alert('Paramètres enregistrés !');
-openScreen('home');
-}
+function newQuestion() {
 
-function openScreen(id){
-document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
-document.getElementById(id).classList.remove('hidden');
-if(id==='quiz')newQuestion();
-if(id==='study')renderStudy();
-if(id==='blank')renderBlank();
-}
+  answered = false;
 
-function buildDeck(){
-deck=[];
-const verbs=Object.keys(data);
-for(const verb of verbs){
-for(const tense of enabled){
-if(isPersonal(tense)){
-const indices=tense==='imperatif'||tense==='imperatifPasse'?[1,3,4]:[0,1,2,3,4,5];
-indices.forEach(index=>deck.push({verb,tense,index}));
-}else{
-deck.push({verb,tense,index:0});
-}
-}
-}
-shuffle(deck);
-}
+  const selectedVerb = document.getElementById("quizVerb").value;
 
-function shuffle(array){
-for(let i=array.length-1;i>0;i--){
-const j=Math.floor(Math.random()*(i+1));
-[array[i],array[j]]=[array[j],array[i]];
-}
-}
+  const verbList = Object.keys(verbs);
 
-function newQuestion(){
-if(!enabled.size){
-alert('Sélectionne des temps dans les paramètres.');
-openScreen('settings');
-return;
-}
-if(!deck.length)buildDeck();
-current=deck.pop();
-answered=false;
+  const verb = selectedVerb === "random"
+    ? verbList[Math.floor(Math.random() * verbList.length)]
+    : selectedVerb;
 
-const {verb,tense,index}=current;
-document.getElementById('qTense').textContent=names[tense];
-document.getElementById('qVerb').textContent=verb;
+  const tense = document.getElementById("quizTense").value;
 
-const personal=isPersonal(tense);
-const pronounInput=document.getElementById('qPronoun');
-const person=document.getElementById('qPerson');
+  const forms = getForms(verb, tense);
 
-pronounInput.disabled=!personal;
-pronounInput.value='';
-pronounInput.placeholder=personal?'Écris le pronom':'Pas de pronom pour cette forme';
-person.textContent=personal?
-'Personne demandée : '+pronouns[index]:
-'Forme non personnelle';
+  const index = Math.floor(Math.random() * forms.length);
 
-document.getElementById('qAnswer').value='';
-document.getElementById('qAnswer').disabled=false;
-document.getElementById('checkQuiz').disabled=false;
-document.getElementById('qFeedback').textContent='';
-document.getElementById('qFeedback').className='feedback';
-document.getElementById('nextQuiz').classList.add('hidden');
-}
+  const pronouns = getPronouns(tense);
 
-function checkQuiz(){
-if(answered)return;
-const {verb,tense,index}=current;
-const personal=isPersonal(tense);
-const pronoun=norm(document.getElementById('qPronoun').value);
-const answer=norm(document.getElementById('qAnswer').value);
-const feedback=document.getElementById('qFeedback');
+  const pronoun = pronouns[index];
 
-if(personal&&!pronoun){
-feedback.textContent='Écris aussi le pronom !';
-feedback.className='feedback error';
-return;
-}
-if(!answer){
-feedback.textContent='Écris la conjugaison !';
-feedback.className='feedback error';
-return;
+  currentAnswer = forms[index];
+
+  document.getElementById("quizVerbDisplay").textContent = verb;
+
+  document.getElementById("quizPrompt").textContent =
+    `Conjugue « ${verb} » avec « ${pronoun} » au ${tenseNames[tense].toLowerCase()} :`;
+
+  // Options variées, même si le verbe possède des formes répétées.
+
+  const options = [currentAnswer];
+
+  const distractors = [];
+
+  Object.keys(verbs).forEach(otherVerb => {
+
+    getForms(otherVerb, tense).forEach(form => {
+
+      if (
+        form !== currentAnswer &&
+        !distractors.includes(form)
+      ) {
+        distractors.push(form);
+      }
+
+    });
+
+  });
+
+  distractors.sort(() => Math.random() - 0.5);
+
+  while (options.length < 4 && distractors.length > 0) {
+    options.push(distractors.pop());
+  }
+
+  options.sort(() => Math.random() - 0.5);
+
+  document.getElementById("answers").innerHTML =
+    options.map(option => {
+
+      const safeOption = JSON.stringify(option);
+
+      return `
+        <button class="answer"
+          onclick="checkAnswer(this, ${safeOption})">
+          ${option}
+        </button>
+      `;
+
+    }).join("");
+
+  document.getElementById("feedback").textContent = "";
+
 }
 
-const correctPronoun=personal?pronouns[index]:'';
-const correctForm=forms(verb,tense)[index];
-const pronounCorrect=!personal||pronoun===norm(correctPronoun)||
-(correctPronoun==='il / elle / on'&&['il','elle','on'].includes(pronoun));
+function checkAnswer(button, answer) {
 
-let answerCorrect=answer===norm(correctForm);
-if(tense==='participePasse'){
-answerCorrect=[data[verb].pp,data[verb].ppf].map(norm).includes(answer);
+  if (answered) return;
+
+  answered = true;
+
+  if (answer === currentAnswer) {
+
+    button.classList.add("correct");
+
+    document.getElementById("feedback").textContent =
+      "Bravo ! Bonne réponse 🌸";
+
+    score++;
+
+    document.getElementById("score").textContent = score;
+
+  } else {
+
+    button.classList.add("wrong");
+
+    document.getElementById("feedback").textContent =
+      "Pas tout à fait. La bonne réponse est : " + currentAnswer;
+
+    document.querySelectorAll(".answer").forEach(b => {
+
+      if (b.textContent.trim() === currentAnswer) {
+        b.classList.add("correct");
+      }
+
+    });
+
+  }
+
 }
 
-answered=true;
-document.getElementById('qPronoun').disabled=true;
-document.getElementById('qAnswer').disabled=true;
-document.getElementById('checkQuiz').disabled=true;
+function refreshQuiz() {
 
-if(pronounCorrect&&answerCorrect){
-score++;
-feedback.textContent='Excellent ! Deux bonnes réponses ! 🎉';
-feedback.className='feedback ok';
-}else{
-feedback.textContent='Correction : '+(personal?correctPronoun+' — ':'')+correctForm;
-feedback.className='feedback error';
-}
-document.getElementById('score').textContent='Bonnes réponses : '+score;
-document.getElementById('nextQuiz').classList.remove('hidden');
+  if (
+    document.getElementById("training").classList.contains("active")
+  ) {
+    newQuestion();
+  }
+
 }
 
-function fillSelect(id){
-const select=document.getElementById(id);
-select.innerHTML='';
-Object.entries(names).forEach(([key,label])=>{
-const option=document.createElement('option');
-option.value=key;
-option.textContent=label;
-select.appendChild(option);
-});
-}
+document.getElementById("quizTense").addEventListener(
+  "change", newQuestion
+);
 
-function fillVerbs(id){
-const select=document.getElementById(id);
-select.innerHTML='';
-Object.keys(data).forEach(verb=>{
-const option=document.createElement('option');
-option.value=verb;
-option.textContent=verb;
-select.appendChild(option);
-});
-}
+document.getElementById("quizVerb").addEventListener(
+  "change", newQuestion
+);
 
-function renderStudy(){
-const verb=document.getElementById('studyVerb').value;
-const tense=document.getElementById('studyTense').value;
-document.getElementById('studyHeading').textContent=verb+' — '+names[tense];
-const personal=isPersonal(tense);
-const values=forms(verb,tense);
+renderTable();
 
-if(personal){
-const labels=tense==='imperatif'||tense==='imperatifPasse'?
-['—','tu','—','nous','vous','—']:pronouns;
-document.getElementById('studyBody').innerHTML=values.map((v,i)=>
-`<tr><td>${labels[i]}</td><td>${v||'—'}</td></tr>`).join('');
-}else{
-document.getElementById('studyBody').innerHTML=
-`<tr><td>Forme</td><td>${values[0]}</td></tr>`;
-}
-}
-
-function renderBlank(){
-const verb=document.getElementById('blankVerb').value;
-const tense=document.getElementById('blankTense').value;
-document.getElementById('blankHeading').textContent=verb+' — '+names[tense];
-const personal=isPersonal(tense);
-const indices=personal?(tense.startsWith('imperatif')?[1,3,4]:[0,1,2,3,4,5]):[0];
-const labels=personal?indices.map(i=>tense.startsWith('imperatif')?['','tu','','nous','vous',''][i]:pronouns[i]):['Forme'];
-
-document.getElementById('blankBody').innerHTML=indices.map((index,i)=>`
-<tr>
-<td>${labels[i]}</td>
-<td><input class="table-input" id="blank${i}" autocomplete="off"></td>
-</tr>`).join('');
-document.getElementById('blankFeedback').textContent='';
-}
-
-function checkTable(){
-const verb=document.getElementById('blankVerb').value;
-const tense=document.getElementById('blankTense').value;
-const personal=isPersonal(tense);
-const indices=personal?(tense.startsWith('imperatif')?[1,3,4]:[0,1,2,3,4,5]):[0];
-const values=forms(verb,tense);
-let score=0;
-
-indices.forEach((index,i)=>{
-const input=document.getElementById('blank'+i);
-const answer=norm(input.value);
-let correct=norm(values[index])===answer;
-if(tense==='participePasse'){
-correct=[data[verb].pp,data[verb].ppf].map(norm).includes(answer);
-}
-input.classList.toggle('correct',correct);
-input.classList.toggle('wrong',!correct);
-if(correct)score++;
-});
-
-document.getElementById('blankFeedback').textContent=
-`Résultat : ${score}/${indices.length} bonnes réponses.`;
-document.getElementById('blankFeedback').className=
-'feedback '+(score===indices.length?'ok':'error');
-}
-
-document.addEventListener('focusin',e=>{
-if(e.target.tagName==='INPUT')lastInput=e.target;
-});
-
-function insertAccent(char,inBlank=false){
-let input=lastInput;
-if(!input||!document.contains(input)||input.disabled){
-input=document.getElementById(inBlank?'blank0':'qAnswer');
-}
-if(!input||input.disabled)return;
-const start=input.selectionStart??input.value.length;
-const end=input.selectionEnd??input.value.length;
-input.value=input.value.slice(0,start)+char+input.value.slice(end);
-input.focus();
-input.setSelectionRange(start+1,start+1);
-lastInput=input;
-}
-
-document.getElementById('checkQuiz').addEventListener('click',checkQuiz);
-document.getElementById('qAnswer').addEventListener('keydown',e=>{
-if(e.key==='Enter')checkQuiz();
-});
-document.getElementById('qPronoun').addEventListener('keydown',e=>{
-if(e.key==='Enter')document.getElementById('qAnswer').focus();
-});
-
-fillSelect('studyTense');
-fillSelect('blankTense');
-fillVerbs('studyVerb');
-fillVerbs('blankVerb');
-
-document.getElementById('studyTense').addEventListener('change',renderStudy);
-document.getElementById('studyVerb').addEventListener('change',renderStudy);
-document.getElementById('blankTense').addEventListener('change',renderBlank);
-document.getElementById('blankVerb').addEventListener('change',renderBlank);
-
-buildSettings();
-buildDeck();
 </script>
+
 </body>
 </html>

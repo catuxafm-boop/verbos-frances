@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -103,85 +104,58 @@ td:first-child{
 }
 
 .answer-input{
-  display:block;
-  position:relative;
-  z-index:2;
-  pointer-events:auto;
-  user-select:text;
-  -webkit-user-select:text;
-  width:100%;
-  min-width:75px;
-  min-height:38px;
-  padding:9px 5px;
-  border:2px solid var(--ink);
-  border-radius:8px;
-  background:white;
-  font-family:Arial,sans-serif;
-  font-weight:600;
-  font-size:14px;
-  text-align:center;
-  color:var(--ink);
-  cursor:text;
+  display:block;position:relative;z-index:2;
+  pointer-events:auto;user-select:text;
+  -webkit-user-select:text;width:100%;
+  min-width:75px;min-height:38px;padding:9px 5px;
+  border:2px solid var(--ink);border-radius:8px;
+  background:white;font-family:Arial,sans-serif;
+  font-weight:600;font-size:14px;text-align:center;
+  color:var(--ink);cursor:text;
 }
 .answer-input:focus{
   outline:3px solid var(--purple);
   background:#fffdf8;
 }
 .answer-input.correct{
-  background:#d9efd0;
-  border-color:#398044;
+  background:#d9efd0;border-color:#398044;
 }
 .answer-input.incorrect{
-  background:#f8d8d8;
-  border-color:#b33;
+  background:#f8d8d8;border-color:#b33;
 }
 .answer-input:disabled{
-  opacity:1;
-  color:var(--ink);
-  cursor:not-allowed;
+  opacity:1;color:var(--ink);cursor:not-allowed;
 }
 
 .blank-tools{
-  background:var(--white);
-  border:2px solid var(--ink);
-  border-radius:16px;
-  padding:15px;
-  margin-bottom:20px;
+  background:var(--white);border:2px solid var(--ink);
+  border-radius:16px;padding:15px;margin-bottom:20px;
   box-shadow:3px 3px 0 var(--ink);
 }
 #blankFeedback{
-  min-height:28px;
-  margin:10px 4px 0;
-  font-weight:700;
+  min-height:28px;margin:10px 4px 0;font-weight:700;
 }
 
 .random-box{
-  background:var(--white);
-  border:3px solid var(--ink);
+  background:var(--white);border:3px solid var(--ink);
   border-radius:20px;padding:25px;
-  max-width:650px;margin:25px auto;
-  text-align:center;
+  max-width:650px;margin:25px auto;text-align:center;
   box-shadow:5px 5px 0 var(--ink)
 }
 .random-box input{
   width:100%;margin:15px 0;background:white;
-  border:2px solid var(--ink);
-  border-radius:10px;padding:13px;font:inherit
+  border:2px solid var(--ink);border-radius:10px;
+  padding:13px;font:inherit
 }
 #feedback{min-height:28px}
-#score{
-  font-size:28px;
-  color:#60468b;
-}
-.score-area{
-  background:#f0e8fa;
-  border:2px solid var(--ink);
-  border-radius:14px;
-  padding:12px;
-  margin-bottom:20px;
-}
 .small{font-size:13px;font-weight:600}
 .note{font-size:13px;font-weight:600}
+
+.score-area{
+  background:#f0e8fa;border:2px solid var(--ink);
+  border-radius:14px;padding:12px;margin-bottom:20px;
+}
+#score{font-size:28px;color:#60468b}
 
 @media(max-width:600px){
   body{padding:13px}
@@ -196,9 +170,7 @@ td:first-child{
 <!-- ACCUEIL -->
 <section id="home" class="page active">
   <h1>Mon Atelier de Conjugaison</h1>
-  <p class="subtitle">
-    Bienvenue ! Choisis ton atelier de conjugaison.
-  </p>
+  <p class="subtitle">Bienvenue ! Choisis ton atelier de conjugaison.</p>
 
   <div class="home-grid">
     <button class="home-card purple" onclick="openPage('completed')">
@@ -252,19 +224,10 @@ td:first-child{
   </div>
 
   <div class="blank-tools">
-    <button class="action green" onclick="checkBlank()">
-      ✓ Corriger mes réponses
-    </button>
-    <button class="action purple" onclick="showSolutions()">
-      👁 Voir les solutions
-    </button>
-    <button class="action yellow" onclick="resetBlank()">
-      ↻ Recommencer
-    </button>
-
-    <p id="blankFeedback">
-      Écris tes réponses directement dans les tableaux.
-    </p>
+    <button class="action green" onclick="checkBlank()">✓ Corriger mes réponses</button>
+    <button class="action purple" onclick="showSolutions()">👁 Voir les solutions</button>
+    <button class="action yellow" onclick="resetBlank()">↻ Recommencer</button>
+    <p id="blankFeedback">Écris tes réponses directement dans les tableaux.</p>
   </div>
 
   <div id="blankContent"></div>
@@ -278,13 +241,10 @@ td:first-child{
   </div>
 
   <div class="random-box">
-
     <div class="score-area">
       🏆 Score : <span id="score">0</span> points
       <br>
-      <button class="action purple" onclick="resetScore()">
-        ↻ Réinitialiser le score
-      </button>
+      <button class="action purple" onclick="resetScore()">↻ Réinitialiser le score</button>
     </div>
 
     <p id="randomVerb" style="font-size:30px"></p>
@@ -308,6 +268,12 @@ td:first-child{
 const pronouns=[
   "Je","Tu","Il / Elle","Nous","Vous","Ils / Elles"
 ];
+
+/*
+  Les huit verbes demandés.
+  Les radicaux et les formes irrégulières sont indiqués
+  séparément pour éviter les erreurs de construction.
+*/
 
 const verbs={
   "faire":{
@@ -349,7 +315,7 @@ const verbs={
   "assiéger":{
     pp:"assiégé",
     present:["assiège","assièges","assiège","assiégeons","assiégez","assiègent"],
-    imp:"assiége",
+    imp:"assiég",
     simple:["assiégeai","assiégeas","assiégea","assiégeâmes","assiégeâtes","assiégèrent"],
     future:"assiéger",
     subj:["assiège","assièges","assiège","assiégions","assiégiez","assiègent"],
@@ -444,7 +410,7 @@ const sections=[
   }
 ];
 
-const allTenses=sections.flatMap(s=>s.items);
+const allTenses=sections.flatMap(section=>section.items);
 
 const avoirForms={
   present:["ai","as","a","avons","avez","ont"],
@@ -456,82 +422,115 @@ const avoirForms={
   subjImp:["eusse","eusses","eût","eussions","eussiez","eussent"]
 };
 
-function endings(stem,arr){
-  return arr.map(e=>stem+e);
-}
-
 const imparfaitEnd=["ais","ais","ait","ions","iez","aient"];
 const futureEnd=["ai","as","a","ons","ez","ont"];
-const condEnd=["ais","ais","ait","ions","iez","aient"];
+const conditionalEnd=["ais","ais","ait","ions","iez","aient"];
 
-function imperfect(v){return endings(v.imp,imparfaitEnd)}
-function future(v){return endings(v.future,futureEnd)}
-function conditional(v){return endings(v.future,condEnd)}
-
-function auxiliary(tense){
-  switch(tense){
-    case "Présent":return avoirForms.present;
-    case "Imparfait":return avoirForms.imparfait;
-    case "Passé simple":return avoirForms.simple;
-    case "Futur simple":return avoirForms.future;
-    case "Conditionnel présent":return avoirForms.conditional;
-    case "Subjonctif présent":return avoirForms.subj;
-    case "Subjonctif imparfait":return avoirForms.subjImp;
-  }
+function endings(stem,arr){
+  return arr.map(ending=>stem+ending);
 }
 
-function compound(v,tense){
-  return auxiliary(tense).map(a=>a+" "+v.pp);
+function imperfect(verb){
+  return endings(verb.imp,imparfaitEnd);
 }
 
-function imperativePast(v){
-  return ["aie","ayons","ayez"].map(a=>a+" "+v.pp);
+function future(verb){
+  return endings(verb.future,futureEnd);
+}
+
+function conditional(verb){
+  return endings(verb.future,conditionalEnd);
+}
+
+/*
+  Les temps composés utilisent avoir :
+  - passé composé : présent de avoir
+  - plus-que-parfait : imparfait de avoir
+  - passé antérieur : passé simple de avoir
+  - futur antérieur : futur simple de avoir
+  - conditionnel passé : conditionnel de avoir
+  - subjonctif passé : subjonctif présent de avoir
+  - subjonctif plus-que-parfait : subjonctif imparfait de avoir
+*/
+
+function compound(verb,auxiliaryForms){
+  return auxiliaryForms.map(aux=>aux+" "+verb.pp);
+}
+
+function imperativePast(verb){
+  return ["aie","ayons","ayez"].map(aux=>aux+" "+verb.pp);
 }
 
 function conjugate(name,tense){
-  const v=verbs[name];
+  const verb=verbs[name];
 
   switch(tense){
-    case "Présent":return {values:v.present,people:pronouns};
-    case "Imparfait":return {values:imperfect(v),people:pronouns};
-    case "Passé simple":return {values:v.simple,people:pronouns};
-    case "Futur simple":return {values:future(v),people:pronouns};
-    case "Passé composé":return {values:compound(v,"Présent"),people:pronouns};
-    case "Plus-que-parfait":return {values:compound(v,"Imparfait"),people:pronouns};
-    case "Passé antérieur":return {values:compound(v,"Passé simple"),people:pronouns};
-    case "Futur antérieur":return {values:compound(v,"Futur simple"),people:pronouns};
-    case "Conditionnel présent":return {values:conditional(v),people:pronouns};
-    case "Conditionnel passé 1re forme":return {values:compound(v,"Conditionnel présent"),people:pronouns};
-    case "Conditionnel passé 2e forme":return {values:compound(v,"Subjonctif imparfait"),people:pronouns};
-    case "Subjonctif présent":return {values:v.subj,people:pronouns};
-    case "Subjonctif passé":return {values:compound(v,"Subjonctif présent"),people:pronouns};
-    case "Subjonctif imparfait":return {values:v.subjImp,people:pronouns};
-    case "Subjonctif plus-que-parfait":return {values:compound(v,"Subjonctif imparfait"),people:pronouns};
-    case "Impératif présent":return {values:v.imperative,people:["Tu","Nous","Vous"]};
-    case "Impératif passé":return {values:imperativePast(v),people:["Tu","Nous","Vous"]};
-    case "Infinitif présent":return {values:[name],people:["Infinitif"]};
-    case "Infinitif passé":return {values:["avoir "+v.pp],people:["Infinitif passé"]};
-    case "Participe présent":return {values:[v.participle],people:["Participe présent"]};
-    case "Participe passé":return {values:[v.pp],people:["Participe passé"]};
+    case "Présent":
+      return {values:verb.present,people:pronouns};
+
+    case "Imparfait":
+      return {values:imperfect(verb),people:pronouns};
+
+    case "Passé simple":
+      return {values:verb.simple,people:pronouns};
+
+    case "Futur simple":
+      return {values:future(verb),people:pronouns};
+
+    case "Passé composé":
+      return {values:compound(verb,avoirForms.present),people:pronouns};
+
+    case "Plus-que-parfait":
+      return {values:compound(verb,avoirForms.imparfait),people:pronouns};
+
+    case "Passé antérieur":
+      return {values:compound(verb,avoirForms.simple),people:pronouns};
+
+    case "Futur antérieur":
+      return {values:compound(verb,avoirForms.future),people:pronouns};
+
+    case "Conditionnel présent":
+      return {values:conditional(verb),people:pronouns};
+
+    case "Conditionnel passé 1re forme":
+      return {values:compound(verb,avoirForms.conditional),people:pronouns};
+
+    case "Conditionnel passé 2e forme":
+      return {values:compound(verb,avoirForms.subjImp),people:pronouns};
+
+    case "Subjonctif présent":
+      return {values:verb.subj,people:pronouns};
+
+    case "Subjonctif passé":
+      return {values:compound(verb,avoirForms.subj),people:pronouns};
+
+    case "Subjonctif imparfait":
+      return {values:verb.subjImp,people:pronouns};
+
+    case "Subjonctif plus-que-parfait":
+      return {values:compound(verb,avoirForms.subjImp),people:pronouns};
+
+    case "Impératif présent":
+      return {values:verb.imperative,people:["Tu","Nous","Vous"]};
+
+    case "Impératif passé":
+      return {values:imperativePast(verb),people:["Tu","Nous","Vous"]};
+
+    case "Infinitif présent":
+      return {values:[name],people:["Infinitif"]};
+
+    case "Infinitif passé":
+      return {values:["avoir "+verb.pp],people:["Infinitif passé"]};
+
+    case "Participe présent":
+      return {values:[verb.participle],people:["Participe présent"]};
+
+    case "Participe passé":
+      return {values:[verb.pp],people:["Participe passé"]};
   }
 }
 
-/* CREATION DES TABLEAUX */
-
-function makeCell(blank,value,name,tense,person){
-  if(!blank)return escapeHTML(value);
-
-  return `<input
-    class="answer-input"
-    type="text"
-    autocomplete="off"
-    autocapitalize="none"
-    spellcheck="false"
-    data-answer="${escapeAttribute(value)}"
-    aria-label="${escapeAttribute(name+", "+tense+", "+person)}"
-    placeholder="Écrire..."
-  >`;
-}
+/* CRÉATION DES TABLEAUX */
 
 function escapeHTML(value){
   return String(value)
@@ -542,8 +541,19 @@ function escapeHTML(value){
     .replace(/'/g,"&#039;");
 }
 
-function escapeAttribute(value){
-  return escapeHTML(value);
+function makeCell(blank,value,name,tense,person){
+  if(!blank)return escapeHTML(value);
+
+  return `<input
+    class="answer-input"
+    type="text"
+    autocomplete="off"
+    autocapitalize="none"
+    spellcheck="false"
+    data-answer="${escapeHTML(value)}"
+    aria-label="${escapeHTML(name+", "+tense+", "+person)}"
+    placeholder="Écrire..."
+  >`;
 }
 
 function renderTables(blank,selectedVerb="all"){
@@ -553,14 +563,14 @@ function renderTables(blank,selectedVerb="all"){
   names.forEach(name=>{
     if(!verbs[name])return;
 
-    html+=`<div class="verb-card"><h3>${name}</h3>`;
+    html+=`<div class="verb-card"><h3>${escapeHTML(name)}</h3>`;
 
     sections.forEach(section=>{
       html+=`<div class="section-title">${section.name}</div>`;
       html+=`<table><thead><tr><th>Temps / forme</th>`;
 
-      pronouns.forEach(p=>{
-        html+=`<th>${p}</th>`;
+      pronouns.forEach(person=>{
+        html+=`<th>${person}</th>`;
       });
 
       html+=`</tr></thead><tbody>`;
@@ -570,8 +580,8 @@ function renderTables(blank,selectedVerb="all"){
         html+=`<tr><td>${tense}</td>`;
 
         if(result.values.length===6){
-          result.values.forEach((value,i)=>{
-            html+=`<td>${makeCell(blank,value,name,tense,result.people[i])}</td>`;
+          result.values.forEach((value,index)=>{
+            html+=`<td>${makeCell(blank,value,name,tense,result.people[index])}</td>`;
           });
 
         }else if(result.values.length===3){
@@ -598,7 +608,7 @@ function renderTables(blank,selectedVerb="all"){
   return html;
 }
 
-/* SELECTORES */
+/* SELECTEURS */
 
 function fillSelectors(){
   const names=Object.keys(verbs);
@@ -624,25 +634,30 @@ function updateTables(blank){
     renderTables(blank,selected);
 
   if(blank){
-    document.getElementById("blankFeedback").textContent=
-      "Écris tes réponses directement dans les tableaux.";
-    document.getElementById("blankFeedback").style.color="#302b35";
+    const feedback=document.getElementById("blankFeedback");
+    feedback.textContent="Écris tes réponses directement dans les tableaux.";
+    feedback.style.color="#302b35";
   }
 }
 
 /* NAVIGATION */
 
 function openPage(id){
-  document.querySelectorAll(".page").forEach(p=>{
-    p.classList.remove("active");
+  document.querySelectorAll(".page").forEach(page=>{
+    page.classList.remove("active");
   });
+
   document.getElementById(id).classList.add("active");
 }
 
-/* NORMALISATION */
+/* NORMALISATION DES RÉPONSES */
 
 function normalizeAnswer(value){
-  return value.trim().toLowerCase().normalize("NFC").replace(/\s+/g," ");
+  return value
+    .trim()
+    .toLowerCase()
+    .normalize("NFC")
+    .replace(/\s+/g," ");
 }
 
 /* CORRECTION DES TABLEAUX */
@@ -694,12 +709,12 @@ function showSolutions(){
     input.disabled=true;
   });
 
-  document.getElementById("blankFeedback").textContent=
-    "Voici toutes les bonnes réponses ! ⭐";
-  document.getElementById("blankFeedback").style.color="green";
+  const feedback=document.getElementById("blankFeedback");
+  feedback.textContent="Voici toutes les bonnes réponses ! ⭐";
+  feedback.style.color="green";
 }
 
-/* RECOMMENCER */
+/* RECOMMENCER LES TABLEAUX */
 
 function resetBlank(){
   const inputs=document.querySelectorAll("#blankContent .answer-input");
@@ -710,9 +725,9 @@ function resetBlank(){
     input.classList.remove("correct","incorrect");
   });
 
-  document.getElementById("blankFeedback").textContent=
-    "Nouvel essai ! Complète les tableaux.";
-  document.getElementById("blankFeedback").style.color="#302b35";
+  const feedback=document.getElementById("blankFeedback");
+  feedback.textContent="Nouvel essai ! Complète les tableaux.";
+  feedback.style.color="#302b35";
 }
 
 /* INITIALISATION */
@@ -721,7 +736,7 @@ fillSelectors();
 updateTables(false);
 updateTables(true);
 
-/* MODE ALEATOIRE ET SCORE */
+/* MODE ALÉATOIRE ET SCORE */
 
 let current=null;
 let score=0;
@@ -744,9 +759,9 @@ function newRandom(){
   const index=Math.floor(Math.random()*result.values.length);
 
   current={
-    name,
-    tense,
-    index,
+    name:name,
+    tense:tense,
+    index:index,
     answer:result.values[index],
     person:result.people[index]
   };
@@ -758,6 +773,7 @@ function newRandom(){
   document.getElementById("randomPerson").textContent=result.people[index];
   document.getElementById("answer").value="";
   document.getElementById("feedback").textContent="";
+  document.getElementById("feedback").style.color="#302b35";
 
   updateScore();
 }
@@ -773,6 +789,12 @@ function checkRandom(){
   const input=normalizeAnswer(document.getElementById("answer").value);
   const correct=normalizeAnswer(current.answer);
   const feedback=document.getElementById("feedback");
+
+  if(input===""){
+    feedback.textContent="Écris une réponse avant de vérifier.";
+    feedback.style.color="#a33";
+    return;
+  }
 
   answered=true;
 

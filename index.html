@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -170,6 +169,17 @@ td:first-child{
   border-radius:10px;padding:13px;font:inherit
 }
 #feedback{min-height:28px}
+#score{
+  font-size:28px;
+  color:#60468b;
+}
+.score-area{
+  background:#f0e8fa;
+  border:2px solid var(--ink);
+  border-radius:14px;
+  padding:12px;
+  margin-bottom:20px;
+}
 .small{font-size:13px;font-weight:600}
 .note{font-size:13px;font-weight:600}
 
@@ -268,6 +278,15 @@ td:first-child{
   </div>
 
   <div class="random-box">
+
+    <div class="score-area">
+      🏆 Score : <span id="score">0</span> points
+      <br>
+      <button class="action purple" onclick="resetScore()">
+        ↻ Réinitialiser le score
+      </button>
+    </div>
+
     <p id="randomVerb" style="font-size:30px"></p>
     <p id="randomTense" style="font-size:21px"></p>
     <p id="randomPerson" style="font-size:21px"></p>
@@ -540,8 +559,6 @@ function renderTables(blank,selectedVerb="all"){
       html+=`<div class="section-title">${section.name}</div>`;
       html+=`<table><thead><tr><th>Temps / forme</th>`;
 
-      // Los encabezados son siempre los seis pronombres.
-      // El imperativo usa las columnas Tu, Nous y Vous.
       pronouns.forEach(p=>{
         html+=`<th>${p}</th>`;
       });
@@ -558,22 +575,11 @@ function renderTables(blank,selectedVerb="all"){
           });
 
         }else if(result.values.length===3){
-          // Columna Je: vacía
           html+=`<td></td>`;
-
-          // Columna Tu
           html+=`<td>${makeCell(blank,result.values[0],name,tense,"Tu")}</td>`;
-
-          // Columna Il / Elle: vacía
           html+=`<td></td>`;
-
-          // Columna Nous
           html+=`<td>${makeCell(blank,result.values[1],name,tense,"Nous")}</td>`;
-
-          // Columna Vous
           html+=`<td>${makeCell(blank,result.values[2],name,tense,"Vous")}</td>`;
-
-          // Columna Ils / Elles: vacía
           html+=`<td></td>`;
 
         }else{
@@ -715,9 +721,20 @@ fillSelectors();
 updateTables(false);
 updateTables(true);
 
-/* MODE ALEATOIRE */
+/* MODE ALEATOIRE ET SCORE */
 
 let current=null;
+let score=0;
+let answered=false;
+
+function updateScore(){
+  document.getElementById("score").textContent=score;
+}
+
+function resetScore(){
+  score=0;
+  updateScore();
+}
 
 function newRandom(){
   const names=Object.keys(verbs);
@@ -734,11 +751,15 @@ function newRandom(){
     person:result.people[index]
   };
 
+  answered=false;
+
   document.getElementById("randomVerb").textContent=name;
   document.getElementById("randomTense").textContent=tense;
   document.getElementById("randomPerson").textContent=result.people[index];
   document.getElementById("answer").value="";
   document.getElementById("feedback").textContent="";
+
+  updateScore();
 }
 
 function startRandom(){
@@ -747,19 +768,24 @@ function startRandom(){
 }
 
 function checkRandom(){
-  if(!current)return;
+  if(!current || answered)return;
 
   const input=normalizeAnswer(document.getElementById("answer").value);
   const correct=normalizeAnswer(current.answer);
   const feedback=document.getElementById("feedback");
 
+  answered=true;
+
   if(input===correct){
-    feedback.textContent="Bravo ! C'est correct ! ⭐";
+    score++;
+    feedback.textContent="Bravo ! C'est correct ! ⭐ +1 point";
     feedback.style.color="green";
   }else{
     feedback.textContent="La bonne réponse est : "+current.answer;
     feedback.style.color="#a33";
   }
+
+  updateScore();
 }
 </script>
 </body>

@@ -1,814 +1,571 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mon Atelier de Conjugaison</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#151923">
+<title>Atelier de préparation — Ferrari Edition</title>
 <style>
-:root{
-  --bg:#f5eddf;--ink:#302b35;--purple:#b49ada;
-  --green:#b4d1a5;--yellow:#f2d477;--blue:#a6cce0;
-  --orange:#e9ad89;--white:#fffdf8;
+:root {
+  --bg:#11151e;--panel:#202735;--red:#e63946;--gold:#f4bd50;
+  --text:#f7f7f8;--muted:#aab2c0;--green:#42d392;
 }
 *{box-sizing:border-box}
-body{
-  margin:0;padding:22px;background:var(--bg);
-  color:var(--ink);font-family:Arial,sans-serif;font-weight:700;
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;overflow-x:hidden}
+button,input{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.screen{min-height:100vh}
+#intro{
+ display:flex;align-items:center;justify-content:center;text-align:center;
+ padding:25px;background:radial-gradient(ellipse at 50% 35%,#45404a,#171b26 65%,#10131a);
 }
-main{max-width:1150px;margin:auto}
-h1{text-align:center;font-size:clamp(28px,5vw,44px)}
-h2{font-size:25px}
-p{line-height:1.5}
-.page{display:none}
-.page.active{display:block}
-.subtitle{text-align:center;margin-bottom:30px}
-
-.home-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:18px;margin-top:30px
+.intro-content{width:min(800px,100%)}
+.logo{font-size:13px;letter-spacing:7px;color:var(--gold);font-weight:800}
+.intro-content h1{font-size:clamp(38px,8vw,76px);margin:20px 0 10px;text-transform:uppercase;font-style:italic}
+.intro-content h1 span{color:var(--red)}
+.intro-content p{color:#d0d2da;line-height:1.7}
+.hero-car{width:min(650px,100%);margin:20px auto;filter:drop-shadow(0 20px 25px #0008)}
+.primary{
+ border:0;border-radius:12px;background:var(--red);color:white;
+ padding:16px 30px;font-weight:900;letter-spacing:1px;
+ box-shadow:0 5px 0 #92202b;transition:.2s
 }
-.home-card{
-  border:3px solid var(--ink);border-radius:20px;
-  padding:28px 20px;min-height:185px;cursor:pointer;
-  text-align:center;color:var(--ink);
-  font:inherit;font-size:21px;
-  box-shadow:5px 5px 0 var(--ink);
-  transition:transform .15s
+.primary:hover{transform:translateY(-2px);filter:brightness(1.12)}
+.history{background:#ffffff0b;border:1px solid #ffffff1c;padding:17px;border-radius:14px;margin:20px auto;max-width:650px;text-align:left}
+.history h3{color:var(--gold);margin:0 0 8px}
+.history p{margin:0;font-size:14px}
+#game{padding:15px;max-width:1200px;margin:auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.topbar h2{font-size:20px;margin:8px 0}
+.step{font-size:12px;color:var(--gold);letter-spacing:2px;font-weight:bold}
+.progress-area{margin:15px 0}
+.progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:7px}
+.progress{height:12px;background:#303847;border-radius:20px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#f3a43c,#f6d76d);transition:width .15s}
+.garage{
+ position:relative;background:linear-gradient(#dbe5ee 0%,#aab9c6 65%,#7d8c9b 66%,#65717e 100%);
+ border-radius:20px;min-height:340px;display:flex;align-items:center;justify-content:center;
+ overflow:hidden;border:5px solid #303847;box-shadow:inset 0 0 40px #fff8;
 }
-.home-card:hover{transform:translateY(-4px)}
-.home-card span{display:block;font-size:42px;margin-bottom:15px}
-
-.purple{background:var(--purple)}
-.green{background:var(--green)}
-.yellow{background:var(--yellow)}
-.blue{background:var(--blue)}
-.orange{background:var(--orange)}
-
-.action{
-  border:2px solid var(--ink);border-radius:12px;
-  padding:11px 16px;background:var(--white);
-  cursor:pointer;font:inherit;color:var(--ink);
-  margin:4px
-}
-.action:hover{background:var(--yellow)}
-
-.topbar{
-  display:flex;justify-content:space-between;
-  align-items:center;flex-wrap:wrap;
-  gap:10px;margin-bottom:20px
-}
-
-.verb-card{
-  background:var(--white);border:2px solid var(--ink);
-  border-radius:16px;padding:16px;margin:18px 0;
-  box-shadow:3px 3px 0 var(--ink);overflow-x:auto
-}
-.verb-card h3{margin-top:0;font-size:25px}
-
-.section-title{
-  padding:10px 14px;border-radius:10px;
-  background:var(--blue);margin:18px 0 10px
-}
-
-table{
-  border-collapse:collapse;width:100%;
-  min-width:650px;margin-bottom:14px
-}
-th,td{
-  border:1.5px solid var(--ink);
-  padding:9px;text-align:center
-}
-th{background:var(--yellow)}
-td:first-child{
-  background:#eee5f7;text-align:left
-}
-
-.verb-selector{
-  background:var(--white);
-  border:2px solid var(--ink);
-  border-radius:16px;padding:18px;
-  margin:15px 0 25px;
-  box-shadow:3px 3px 0 var(--ink);
-}
-.verb-selector label{
-  display:block;margin-bottom:10px;font-size:17px
-}
-.verb-selector select{
-  width:100%;padding:13px;
-  border:2px solid var(--ink);border-radius:10px;
-  background:var(--yellow);color:var(--ink);
-  font:inherit;font-size:16px;cursor:pointer
-}
-
-.answer-input{
-  display:block;position:relative;z-index:2;
-  pointer-events:auto;user-select:text;
-  -webkit-user-select:text;width:100%;
-  min-width:75px;min-height:38px;padding:9px 5px;
-  border:2px solid var(--ink);border-radius:8px;
-  background:white;font-family:Arial,sans-serif;
-  font-weight:600;font-size:14px;text-align:center;
-  color:var(--ink);cursor:text;
-}
-.answer-input:focus{
-  outline:3px solid var(--purple);
-  background:#fffdf8;
-}
-.answer-input.correct{
-  background:#d9efd0;border-color:#398044;
-}
-.answer-input.incorrect{
-  background:#f8d8d8;border-color:#b33;
-}
-.answer-input:disabled{
-  opacity:1;color:var(--ink);cursor:not-allowed;
-}
-
-.blank-tools{
-  background:var(--white);border:2px solid var(--ink);
-  border-radius:16px;padding:15px;margin-bottom:20px;
-  box-shadow:3px 3px 0 var(--ink);
-}
-#blankFeedback{
-  min-height:28px;margin:10px 4px 0;font-weight:700;
-}
-
-.random-box{
-  background:var(--white);border:3px solid var(--ink);
-  border-radius:20px;padding:25px;
-  max-width:650px;margin:25px auto;text-align:center;
-  box-shadow:5px 5px 0 var(--ink)
-}
-.random-box input{
-  width:100%;margin:15px 0;background:white;
-  border:2px solid var(--ink);border-radius:10px;
-  padding:13px;font:inherit
-}
-#feedback{min-height:28px}
-.small{font-size:13px;font-weight:600}
-.note{font-size:13px;font-weight:600}
-
-.score-area{
-  background:#f0e8fa;border:2px solid var(--ink);
-  border-radius:14px;padding:12px;margin-bottom:20px;
-}
-#score{font-size:28px;color:#60468b}
-
+.garage:before{content:"";position:absolute;top:0;left:8%;right:8%;height:58%;border-left:5px solid #ffffff88;border-right:5px solid #ffffff88;background:repeating-linear-gradient(90deg,transparent 0 80px,#ffffff30 82px 85px)}
+.garage:after{content:"";position:absolute;bottom:0;left:0;right:0;height:34%;background:repeating-linear-gradient(90deg,#ffffff12 0 2px,transparent 2px 100px)}
+.car-wrap{position:relative;z-index:2;width:min(850px,96%);touch-action:pan-y;transition:transform .08s}
+.car-wrap.revving{animation:vibrate .09s infinite alternate}
+@keyframes vibrate{from{transform:translate(1px,0)}to{transform:translate(-1px,1px)}}
+#carSvg{width:100%;height:auto;overflow:visible;display:block}
+#dirtCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;touch-action:none}
+.sponge{position:absolute;width:45px;height:45px;border-radius:50%;border:3px solid white;background:#c7f4ff99;box-shadow:0 0 0 5px #8ceaff55;pointer-events:none;display:none;z-index:5}
+#historyBox{margin:14px 0;background:#252d3a;border:1px solid #414b5c;border-radius:13px;padding:14px}
+#historyBox h3{font-size:14px;color:var(--gold);margin:0 0 6px}
+#historyBox p{font-size:13px;color:#d4d9e2;line-height:1.55;margin:0}
+.controls{background:var(--panel);padding:15px;border-radius:16px;margin-top:15px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:12px}
+.tab{background:#303a4b;color:white;border:1px solid #4a566b;padding:11px 15px;border-radius:9px;white-space:nowrap;font-size:13px}
+.tab.active{background:var(--red);border-color:var(--red)}
+.panel{display:none;min-height:100px}
+.panel.active{display:block}
+.panel h3{font-size:15px}
+.colors,.choices{display:flex;flex-wrap:wrap;gap:12px}
+.color{width:42px;height:42px;border:3px solid #fff7;border-radius:50%;padding:0}
+.color.selected,.choice.selected{outline:3px solid var(--gold);outline-offset:3px}
+.choice{border:1px solid #536075;background:#303a4b;color:white;padding:12px;border-radius:10px}
+.switchline{display:flex;align-items:center;gap:10px;margin:12px 0;color:#e0e3e9;font-size:14px}
+.switchline input{accent-color:var(--red);width:20px;height:20px}
+.plate-input{background:#121823;color:white;border:1px solid #536075;padding:12px;border-radius:9px;width:160px;text-transform:uppercase}
+.action-row{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0}
+.pedal{width:115px;height:95px;border-radius:18px 18px 30px 30px;border:4px solid #999;background:linear-gradient(145deg,#b4bdc9,#465365);color:#111;font-weight:1000;box-shadow:0 8px 0 #222;touch-action:none}
+.pedal:active,.pedal.pressed{transform:translateY(6px);box-shadow:0 2px 0 #222}
+.finish{background:var(--green);color:#10231b;box-shadow:0 5px 0 #1a8059}
+.smoke{position:absolute;width:18px;height:18px;background:#e8edf0aa;border-radius:50%;filter:blur(4px);pointer-events:none;z-index:4;animation:smoke 1.4s forwards}
+@keyframes smoke{to{transform:translate(-60px,-55px) scale(3);opacity:0}}
+#finalScreen{position:fixed;inset:0;background:#11151ef5;z-index:20;display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto}
+.final-card{width:min(850px,100%);text-align:center;position:relative}
+.final-card h1{font-size:clamp(32px,7vw,58px);color:var(--gold)}
+.final-card p{line-height:1.6;color:#e2e5ea}
+#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1}
+#downloadCanvas{display:none}
+footer{text-align:center;color:#7e899a;font-size:11px;padding:20px}
 @media(max-width:600px){
-  body{padding:13px}
-  .answer-input{min-width:70px;font-size:13px}
+ #game{padding:10px}.garage{min-height:245px}
+ .controls{padding:12px}.topbar h2{font-size:17px}
+ .hero-car{margin:8px auto}
 }
 </style>
 </head>
-
 <body>
-<main>
 
-<!-- ACCUEIL -->
-<section id="home" class="page active">
-  <h1>Mon Atelier de Conjugaison</h1>
-  <p class="subtitle">Bienvenue ! Choisis ton atelier de conjugaison.</p>
+<section id="intro" class="screen">
+ <div class="intro-content">
+  <div class="logo">ÉDITION AUTOMOBILE • 01</div>
+  <h1>ATELIER <span>DE TUNING</span></h1>
+  <p>Bienvenue dans ton garage ! Restaure une voiture de sport classique, personnalise-la et donne vie à ta propre création.</p>
 
-  <div class="home-grid">
-    <button class="home-card purple" onclick="openPage('completed')">
-      <span>📚</span>Tableaux faits
-      <p class="small">Voir toutes les conjugaisons</p>
-    </button>
+  <svg class="hero-car" viewBox="0 0 800 300" role="img" aria-label="Illustration d'une voiture sportive rouge">
+   <ellipse cx="400" cy="244" rx="310" ry="19" fill="#0005"/>
+   <path d="M100 210 L125 165 Q145 148 240 140 L310 85 Q350 58 480 68 L570 130 L680 151 Q710 165 720 207 L695 228 L105 228Z" fill="#d92736" stroke="#8d1826" stroke-width="5"/>
+   <path d="M290 132 L345 85 Q390 70 475 80 L535 132Z" fill="#a8d7e8" stroke="#fff" stroke-width="5"/>
+   <path d="M115 183 L220 175 L212 195 L110 199Z" fill="#ffe59a"/>
+   <path d="M620 175 L700 183 L700 201 L625 196Z" fill="#ff4d50"/>
+   <path d="M120 212 L690 212" stroke="#fff" stroke-width="5" opacity=".8"/>
+   <circle cx="230" cy="220" r="49" fill="#18202a"/><circle cx="230" cy="220" r="25" fill="#9eabb9"/><circle cx="230" cy="220" r="10" fill="#e5e9ed"/>
+   <circle cx="610" cy="220" r="49" fill="#18202a"/><circle cx="610" cy="220" r="25" fill="#9eabb9"/><circle cx="610" cy="220" r="10" fill="#e5e9ed"/>
+   <path d="M320 151 Q450 140 550 151" fill="none" stroke="#fff" stroke-width="5" opacity=".7"/>
+  </svg>
 
-    <button class="home-card green" onclick="openPage('blank')">
-      <span>✏️</span>Tableaux à compléter
-      <p class="small">Compléter les cases vides</p>
-    </button>
-
-    <button class="home-card yellow" onclick="startRandom()">
-      <span>🎲</span>Mode aléatoire
-      <p class="small">Verbe, temps et personne au hasard</p>
-    </button>
+  <div class="history">
+   <h3>🏁 Un héritage de passion</h3>
+   <p>En 1929, Enzo Ferrari fonde la Scuderia Ferrari à Modène, initialement comme une structure de compétition. L'aventure automobile qui suivra marquera l'histoire du sport automobile.</p>
   </div>
+  <button class="primary" id="startButton">ENTRER DANS LE GARAGE →</button>
+ </div>
 </section>
 
-<!-- TABLEAUX FAITS -->
-<section id="completed" class="page">
-  <div class="topbar">
-    <h2>📚 Tableaux faits</h2>
-    <button class="action" onclick="openPage('home')">← Accueil</button>
-  </div>
+<section id="game" class="screen hidden">
+ <div class="topbar">
+  <div><div class="step" id="stepLabel">ÉTAPE 01 / RESTAURATION</div><h2 id="stageTitle">Opération nettoyage</h2></div>
+  <div style="font-size:12px;color:var(--gold)">🏎️ TON PROJET • SANS LIMITE DE TEMPS</div>
+ </div>
 
-  <div class="verb-selector">
-    <label for="completedVerb">Choisis le verbe à afficher :</label>
-    <select id="completedVerb" onchange="updateTables(false)">
-      <option value="all">Tous les verbes</option>
-    </select>
-  </div>
+ <div class="progress-area" id="progressArea">
+  <div class="progress-label"><span>PROGRESSION DU NETTOYAGE</span><strong id="progressText">0 %</strong></div>
+  <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+ </div>
 
-  <div id="completedContent"></div>
+ <div class="garage" id="garage">
+  <div class="car-wrap" id="carWrap">
+   <svg id="carSvg" viewBox="0 0 800 330" role="img" aria-label="Voiture de sport personnalisable">
+    <defs>
+     <linearGradient id="bodyGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff8181"/><stop offset=".35" stop-color="#ed2637"/><stop offset="1" stop-color="#8e1024"/>
+     </linearGradient>
+     <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#dff8ff"/><stop offset="1" stop-color="#51758b"/></linearGradient>
+     <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff"/><stop offset=".5" stop-color="#8e9aa8"/><stop offset="1" stop-color="#303b49"/></linearGradient>
+     <filter id="glow"><feGaussianBlur stdDeviation="8"/></filter>
+    </defs>
+    <ellipse cx="405" cy="279" rx="325" ry="18" fill="#17202a" opacity=".3"/>
+    <ellipse id="neonGlow" cx="405" cy="260" rx="260" ry="18" fill="#00d9ff" opacity="0" filter="url(#glow)"/>
+    <g id="spoiler" style="display:none">
+     <path d="M640 110 L680 76 L690 83 L665 126Z" fill="#242a32"/>
+     <path d="M625 76 L720 76 L711 91 L625 89Z" fill="#1b2028" stroke="#8b949e" stroke-width="3"/>
+    </g>
+    <path d="M92 222 Q104 178 155 165 L270 151 Q320 75 404 68 L523 75 Q574 82 623 155 L704 177 Q740 187 745 229 L723 252 L88 252Z" fill="url(#bodyGradient)" stroke="#741421" stroke-width="5" id="body"/>
+    <path d="M286 147 L327 91 Q367 69 412 78 L408 147Z" fill="url(#glass)" stroke="#edf8ff" stroke-width="5"/>
+    <path d="M420 78 Q490 78 519 95 L568 147 L421 147Z" fill="url(#glass)" stroke="#edf8ff" stroke-width="5"/>
+    <path d="M416 80 L416 150" stroke="#344b5b" stroke-width="5"/>
+    <path d="M100 212 L210 201 L201 222 L96 228Z" fill="#fff1ba" stroke="#bca76f" stroke-width="3"/>
+    <path d="M672 202 L733 213 L728 231 L672 223Z" fill="#ff6871" stroke="#a51729" stroke-width="3"/>
+    <path d="M120 239 L700 239" stroke="#fff" stroke-width="5" opacity=".65"/>
+    <path d="M175 176 Q250 164 284 160" fill="none" stroke="#fff" stroke-width="5" opacity=".45"/>
+    <path d="M450 159 Q535 160 610 179" fill="none" stroke="#fff" stroke-width="4" opacity=".4"/>
+    <g id="stripes" style="display:none">
+     <path d="M420 80 L427 151 L435 151 L430 80Z" fill="#f5f5f5"/>
+     <path d="M442 83 L450 151 L457 151 L452 84Z" fill="#252a32"/>
+     <path d="M430 157 L436 235 L449 235 L442 157Z" fill="#fff"/>
+    </g>
+    <g id="wheelRear"><circle cx="235" cy="242" r="48" fill="#151b23"/><circle cx="235" cy="242" r="29" fill="url(#metal)" stroke="#313b47" stroke-width="5"/><g id="rearSpokes" stroke="#343f4b" stroke-width="5"><path d="M235 215V269 M208 242H262 M216 223L254 261 M254 223L216 261"/></g><circle cx="235" cy="242" r="8" fill="#d7e1ea"/></g>
+    <g id="wheelFront"><circle cx="610" cy="242" r="48" fill="#151b23"/><circle cx="610" cy="242" r="29" fill="url(#metal)" stroke="#313b47" stroke-width="5"/><g id="frontSpokes" stroke="#343f4b" stroke-width="5"><path d="M610 215V269 M583 242H637 M591 223L629 261 M629 223L591 261"/></g><circle cx="610" cy="242" r="8" fill="#d7e1ea"/></g>
+    <rect x="675" y="231" width="62" height="20" rx="4" fill="#f2f0db" stroke="#252d38" stroke-width="2"/>
+    <text id="plateText" x="706" y="245" font-size="11" font-weight="bold" text-anchor="middle" fill="#202733">GARAGE</text>
+    <path d="M330 253 L510 253" stroke="#fff" stroke-width="4" opacity=".5"/>
+    <path d="M145 185 L175 183" stroke="#fff" stroke-width="4" opacity=".7"/>
+   </svg>
+  </div>
+  <canvas id="dirtCanvas"></canvas>
+  <div class="sponge" id="sponge"></div>
+ </div>
+
+ <div id="historyBox">
+  <h3 id="historyTitle">📜 Histoire Ferrari — Les origines</h3>
+  <p id="historyText">Enzo Ferrari a fondé la Scuderia Ferrari en 1929 à Modène. Cette écurie a participé aux compétitions automobiles avant la création de ses propres voitures.</p>
+ </div>
+
+ <div class="controls hidden" id="customControls">
+  <div class="tabs">
+   <button class="tab active" data-tab="paint">🎨 Peinture</button>
+   <button class="tab" data-tab="wheels">⚙️ Jantes</button>
+   <button class="tab" data-tab="details">✨ Détails</button>
+   <button class="tab" data-tab="plate">🔤 Immatriculation</button>
+  </div>
+  <div class="panel active" id="panel-paint">
+   <h3>Choisis ta couleur de carrosserie</h3>
+   <div class="colors" id="colorChoices"></div>
+  </div>
+  <div class="panel" id="panel-wheels">
+   <h3>Style des jantes</h3>
+   <div class="choices" id="wheelChoices">
+    <button class="choice selected" data-wheel="0">Classique</button>
+    <button class="choice" data-wheel="1">Sport</button>
+    <button class="choice" data-wheel="2">Étoile</button>
+    <button class="choice" data-wheel="3">Course</button>
+   </div>
+  </div>
+  <div class="panel" id="panel-details">
+   <h3>Personnalise les détails</h3>
+   <label class="switchline"><input type="checkbox" id="spoilerToggle"> Ajouter un aileron arrière</label>
+   <label class="switchline"><input type="checkbox" id="stripeToggle"> Ajouter des bandes sportives</label>
+   <label class="switchline"><input type="checkbox" id="neonToggle"> Activer le néon sous la voiture</label>
+  </div>
+  <div class="panel" id="panel-plate">
+   <h3>Ta plaque personnalisée</h3>
+   <input class="plate-input" id="plateInput" maxlength="8" placeholder="FERRARI" value="GARAGE">
+   <p style="color:var(--muted);font-size:12px">Maximum 8 caractères.</p>
+  </div>
+ </div>
+
+ <div class="action-row" id="cleanActions">
+  <button class="primary" id="finishCleaning">TERMINER LE NETTOYAGE →</button>
+ </div>
+
+ <div class="action-row hidden" id="customActions">
+  <button class="pedal" id="pedal">ACCÉLÉRATEUR<br>▼</button>
+  <button class="primary finish" id="finishProject">TERMINER LE PROJET ★</button>
+ </div>
+ <footer>ATELIER DE TUNING • CRÉATION PERSONNELLE • AUCUN CHRONOMÈTRE</footer>
 </section>
 
-<!-- TABLEAUX À COMPLÉTER -->
-<section id="blank" class="page">
-  <div class="topbar">
-    <h2>✏️ Tableaux à compléter</h2>
-    <button class="action" onclick="openPage('home')">← Accueil</button>
-  </div>
-
-  <p>Complète les cases avec les bonnes conjugaisons.</p>
-
-  <div class="verb-selector">
-    <label for="blankVerb">Choisis le verbe à compléter :</label>
-    <select id="blankVerb" onchange="updateTables(true)">
-      <option value="all">Tous les verbes</option>
-    </select>
-  </div>
-
-  <div class="blank-tools">
-    <button class="action green" onclick="checkBlank()">✓ Corriger mes réponses</button>
-    <button class="action purple" onclick="showSolutions()">👁 Voir les solutions</button>
-    <button class="action yellow" onclick="resetBlank()">↻ Recommencer</button>
-    <p id="blankFeedback">Écris tes réponses directement dans les tableaux.</p>
-  </div>
-
-  <div id="blankContent"></div>
+<section id="finalScreen" class="hidden">
+ <canvas id="confetti"></canvas>
+ <div class="final-card">
+  <div class="logo">PROJET TERMINÉ</div>
+  <h1>UNE CRÉATION UNIQUE !</h1>
+  <div id="finalCar" style="max-width:700px;margin:auto"></div>
+  <p id="personalMessage">Bravo ! Ton projet est terminé. Chaque détail raconte ton style et ta passion automobile.</p>
+  <button class="primary" id="download">↓ TÉLÉCHARGER LA CAPTURE</button>
+  <button class="choice" id="restart" style="margin:12px">RECOMMENCER</button>
+ </div>
 </section>
 
-<!-- MODE ALÉATOIRE -->
-<section id="random" class="page">
-  <div class="topbar">
-    <h2>🎲 Mode aléatoire</h2>
-    <button class="action" onclick="openPage('home')">← Accueil</button>
-  </div>
-
-  <div class="random-box">
-    <div class="score-area">
-      🏆 Score : <span id="score">0</span> points
-      <br>
-      <button class="action purple" onclick="resetScore()">↻ Réinitialiser le score</button>
-    </div>
-
-    <p id="randomVerb" style="font-size:30px"></p>
-    <p id="randomTense" style="font-size:21px"></p>
-    <p id="randomPerson" style="font-size:21px"></p>
-
-    <input id="answer" placeholder="Écris la conjugaison..." autocomplete="off">
-
-    <div>
-      <button class="action purple" onclick="checkRandom()">Vérifier</button>
-      <button class="action yellow" onclick="newRandom()">Nouvelle question</button>
-    </div>
-
-    <p id="feedback"></p>
-  </div>
-</section>
-
-</main>
+<canvas id="downloadCanvas"></canvas>
 
 <script>
-const pronouns=[
-  "Je","Tu","Il / Elle","Nous","Vous","Ils / Elles"
-];
+/* =========================================================
+   ATELIER DE TUNING
+   Pour modifier le message final, change le texte ci-dessous.
+========================================================= */
+const PERSONAL_MESSAGE = "Félicitations ! Tu as transformé une voiture oubliée en une véritable œuvre d'art. Continue à rêver, créer et rouler vers tes passions !";
 
-/*
-  Les huit verbes demandés.
-  Les radicaux et les formes irrégulières sont indiqués
-  séparément pour éviter les erreurs de construction.
+/* Histoire : repères historiques vérifiés à partir de sources
+   institutionnelles Ferrari et de références historiques.
 */
-
-const verbs={
-  "faire":{
-    pp:"fait",
-    present:["fais","fais","fait","faisons","faites","font"],
-    imp:"fais",
-    simple:["fis","fis","fit","fîmes","fîtes","firent"],
-    future:"fer",
-    subj:["fasse","fasses","fasse","fassions","fassiez","fassent"],
-    subjImp:["fisse","fisses","fît","fissions","fissiez","fissent"],
-    participle:"faisant",
-    imperative:["fais","faisons","faites"]
-  },
-
-  "écrire":{
-    pp:"écrit",
-    present:["écris","écris","écrit","écrivons","écrivez","écrivent"],
-    imp:"écriv",
-    simple:["écrivis","écrivis","écrivit","écrivîmes","écrivîtes","écrivirent"],
-    future:"écrir",
-    subj:["écrive","écrives","écrive","écrivions","écriviez","écrivent"],
-    subjImp:["écrivisse","écrivisses","écrivît","écrivissions","écrivissiez","écrivissent"],
-    participle:"écrivant",
-    imperative:["écris","écrivons","écrivez"]
-  },
-
-  "acquérir":{
-    pp:"acquis",
-    present:["acquiers","acquiers","acquiert","acquérons","acquérez","acquièrent"],
-    imp:"acquér",
-    simple:["acquis","acquis","acquit","acquîmes","acquîtes","acquirent"],
-    future:"acquerr",
-    subj:["acquière","acquières","acquière","acquérions","acquériez","acquièrent"],
-    subjImp:["acquisse","acquisses","acquît","acquissions","acquissiez","acquissent"],
-    participle:"acquérant",
-    imperative:["acquiers","acquérons","acquérez"]
-  },
-
-  "assiéger":{
-    pp:"assiégé",
-    present:["assiège","assièges","assiège","assiégeons","assiégez","assiègent"],
-    imp:"assiég",
-    simple:["assiégeai","assiégeas","assiégea","assiégeâmes","assiégeâtes","assiégèrent"],
-    future:"assiéger",
-    subj:["assiège","assièges","assiège","assiégions","assiégiez","assiègent"],
-    subjImp:["assiégeasse","assiégeasses","assiégeât","assiégeassions","assiégeassiez","assiégeassent"],
-    participle:"assiégeant",
-    imperative:["assiège","assiégeons","assiégez"]
-  },
-
-  "battre":{
-    pp:"battu",
-    present:["bats","bats","bat","battons","battez","battent"],
-    imp:"batt",
-    simple:["battis","battis","battit","battîmes","battîtes","battirent"],
-    future:"battr",
-    subj:["batte","battes","batte","battions","battiez","battent"],
-    subjImp:["battisse","battisses","battît","battissions","battissiez","battissent"],
-    participle:"battant",
-    imperative:["bats","battons","battez"]
-  },
-
-  "boire":{
-    pp:"bu",
-    present:["bois","bois","boit","buvons","buvez","boivent"],
-    imp:"buv",
-    simple:["bus","bus","but","bûmes","bûtes","burent"],
-    future:"boir",
-    subj:["boive","boives","boive","buvions","buviez","boivent"],
-    subjImp:["busse","busses","bût","bussions","bussiez","bussent"],
-    participle:"buvant",
-    imperative:["bois","buvons","buvez"]
-  },
-
-  "prendre":{
-    pp:"pris",
-    present:["prends","prends","prend","prenons","prenez","prennent"],
-    imp:"pren",
-    simple:["pris","pris","prit","prîmes","prîtes","prirent"],
-    future:"prendr",
-    subj:["prenne","prennes","prenne","prenions","preniez","prennent"],
-    subjImp:["prisse","prisses","prît","prissions","prissiez","prissent"],
-    participle:"prenant",
-    imperative:["prends","prenons","prenez"]
-  },
-
-  "tenir":{
-    pp:"tenu",
-    present:["tiens","tiens","tient","tenons","tenez","tiennent"],
-    imp:"ten",
-    simple:["tins","tins","tint","tînmes","tîntes","tinrent"],
-    future:"tiendr",
-    subj:["tienne","tiennes","tienne","tenions","teniez","tiennent"],
-    subjImp:["tinsse","tinsses","tînt","tinssions","tinssiez","tinssent"],
-    participle:"tenant",
-    imperative:["tiens","tenons","tenez"]
-  }
+const HISTORY = {
+ clean:{
+  title:"📜 1929 — La naissance de la Scuderia Ferrari",
+  text:"Enzo Ferrari fonde la Scuderia Ferrari en 1929 à Modène, en Italie. À ses débuts, elle prépare et engage des voitures Alfa Romeo en compétition. La Scuderia devient progressivement l'un des noms les plus célèbres du sport automobile."
+ },
+ paint:{
+  title:"📜 1947 — La première Ferrari de route",
+  text:"En 1947, la Ferrari 125 S devient la première voiture portant le nom Ferrari. Elle est équipée d'un moteur V12 de 1,5 litre conçu par Gioachino Colombo. La même année, elle remporte sa première victoire en compétition, au Grand Prix de Rome."
+ },
+ wheels:{
+  title:"📜 1950 — Ferrari entre en Formule 1",
+  text:"Ferrari participe au tout premier championnat du monde de Formule 1 en 1950. Elle est aujourd'hui la seule écurie à avoir participé à toutes les saisons du championnat depuis sa création."
+ },
+ details:{
+  title:"📜 1962 — Une légende de compétition",
+  text:"La Ferrari 250 GTO apparaît en 1962. Conçue pour la compétition, elle devient une voiture emblématique de l'histoire de Ferrari et illustre le lien étroit entre les voitures de route et la course."
+ },
+ plate:{
+  title:"📜 1987 — La Ferrari F40",
+  text:"Présentée en 1987 pour célébrer les 40 ans de Ferrari, la F40 est la dernière nouvelle voiture approuvée par Enzo Ferrari avant sa disparition en 1988. Elle est devenue l'un des modèles les plus emblématiques de la marque."
+ },
+ final:{
+  title:"📜 Aujourd'hui — Une passion qui continue",
+  text:"Ferrari poursuit son histoire entre compétition, innovation et voitures de sport. Son écurie détient un palmarès historique en Formule 1 et le cheval cabré demeure un symbole reconnu dans le monde entier."
+ }
 };
 
-const sections=[
-  {
-    name:"Indicatif",
-    items:[
-      "Présent","Imparfait","Passé simple","Futur simple",
-      "Passé composé","Plus-que-parfait","Passé antérieur","Futur antérieur"
-    ]
-  },
-  {
-    name:"Conditionnel",
-    items:[
-      "Conditionnel présent",
-      "Conditionnel passé 1re forme",
-      "Conditionnel passé 2e forme"
-    ]
-  },
-  {
-    name:"Subjonctif",
-    items:[
-      "Subjonctif présent","Subjonctif passé",
-      "Subjonctif imparfait","Subjonctif plus-que-parfait"
-    ]
-  },
-  {
-    name:"Impératif",
-    items:["Impératif présent","Impératif passé"]
-  },
-  {
-    name:"Infinitif",
-    items:["Infinitif présent","Infinitif passé"]
-  },
-  {
-    name:"Participe",
-    items:["Participe présent","Participe passé"]
-  }
+const $=id=>document.getElementById(id);
+const colors=[
+ {name:"Rouge course",value:"#e52536"},
+ {name:"Jaune Modène",value:"#f3c52d"},
+ {name:"Bleu électrique",value:"#1679e8"},
+ {name:"Vert émeraude",value:"#13a879"},
+ {name:"Violet",value:"#8c49d9"},
+ {name:"Orange",value:"#f07826"},
+ {name:"Noir",value:"#252a35"},
+ {name:"Blanc nacré",value:"#e7eaf0"}
 ];
+let phase="clean",cleaning=false,cleaned=0,wheelStyle=0;
+let audioContext=null,oscillator=null,gain=null,filter=null;
+let animationConfetti=null;
 
-const allTenses=sections.flatMap(section=>section.items);
-
-const avoirForms={
-  present:["ai","as","a","avons","avez","ont"],
-  imparfait:["avais","avais","avait","avions","aviez","avaient"],
-  simple:["eus","eus","eut","eûmes","eûtes","eurent"],
-  future:["aurai","auras","aura","aurons","aurez","auront"],
-  conditional:["aurais","aurais","aurait","aurions","auriez","auraient"],
-  subj:["aie","aies","ait","ayons","ayez","aient"],
-  subjImp:["eusse","eusses","eût","eussions","eussiez","eussent"]
-};
-
-const imparfaitEnd=["ais","ais","ait","ions","iez","aient"];
-const futureEnd=["ai","as","a","ons","ez","ont"];
-const conditionalEnd=["ais","ais","ait","ions","iez","aient"];
-
-function endings(stem,arr){
-  return arr.map(ending=>stem+ending);
+function setHistory(key){
+ $("historyTitle").textContent=HISTORY[key].title;
+ $("historyText").textContent=HISTORY[key].text;
 }
-
-function imperfect(verb){
-  return endings(verb.imp,imparfaitEnd);
+function startGame(){
+ $("intro").classList.add("hidden");
+ $("game").classList.remove("hidden");
+ setHistory("clean");
+ resizeDirt();
 }
+$("startButton").addEventListener("click",startGame);
 
-function future(verb){
-  return endings(verb.future,futureEnd);
+/* Nettoyage tactile et souris */
+const dirt=$("dirtCanvas"),ctx=dirt.getContext("2d");
+function resizeDirt(){
+ const rect=$("garage").getBoundingClientRect();
+ dirt.width=Math.round(rect.width*devicePixelRatio);
+ dirt.height=Math.round(rect.height*devicePixelRatio);
+ dirt.style.width=rect.width+"px";dirt.style.height=rect.height+"px";
+ ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+ ctx.clearRect(0,0,rect.width,rect.height);
+ drawDirt(rect.width,rect.height);
 }
-
-function conditional(verb){
-  return endings(verb.future,conditionalEnd);
+function drawDirt(w,h){
+ ctx.clearRect(0,0,w,h);
+ ctx.save();
+ ctx.beginPath();
+ ctx.ellipse(w*.5,h*.68,w*.39,h*.36,0,0,Math.PI*2);
+ ctx.clip();
+ for(let i=0;i<450;i++){
+  let x=Math.random()*w,y=Math.random()*h;
+  let r=2+Math.random()*15;
+  ctx.fillStyle=i%3===0?"#55412c55":"#8a765b66";
+  ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
+ }
+ for(let i=0;i<45;i++){
+  ctx.fillStyle="#53432e22";
+  ctx.beginPath();ctx.ellipse(Math.random()*w,Math.random()*h,10+Math.random()*30,4+Math.random()*12,Math.random(),0,Math.PI*2);ctx.fill();
+ }
+ ctx.restore();
 }
-
-/*
-  Les temps composés utilisent avoir :
-  - passé composé : présent de avoir
-  - plus-que-parfait : imparfait de avoir
-  - passé antérieur : passé simple de avoir
-  - futur antérieur : futur simple de avoir
-  - conditionnel passé : conditionnel de avoir
-  - subjonctif passé : subjonctif présent de avoir
-  - subjonctif plus-que-parfait : subjonctif imparfait de avoir
-*/
-
-function compound(verb,auxiliaryForms){
-  return auxiliaryForms.map(aux=>aux+" "+verb.pp);
+function eraseAt(x,y){
+ if(phase!=="clean"||!cleaning)return;
+ const rect=dirt.getBoundingClientRect();
+ const px=x-rect.left,py=y-rect.top;
+ ctx.globalCompositeOperation="destination-out";
+ ctx.beginPath();ctx.arc(px,py,27,0,Math.PI*2);ctx.fill();
+ ctx.globalCompositeOperation="source-over";
+ const sponge=$("sponge");
+ sponge.style.display="block";
+ sponge.style.left=(px-22)+"px";sponge.style.top=(py-22)+"px";
+ cleaned=Math.min(100,cleaned+.16);
+ $("progressText").textContent=Math.floor(cleaned)+" %";
+ $("progressFill").style.width=cleaned+"%";
+ if(cleaned>=100)completeCleaning();
 }
+dirt.addEventListener("pointerdown",e=>{
+ if(phase!=="clean")return;
+ cleaning=true;dirt.setPointerCapture(e.pointerId);eraseAt(e.clientX,e.clientY);
+});
+dirt.addEventListener("pointermove",e=>{if(cleaning)eraseAt(e.clientX,e.clientY)});
+dirt.addEventListener("pointerup",()=>{cleaning=false});
+dirt.addEventListener("pointercancel",()=>{cleaning=false});
 
-function imperativePast(verb){
-  return ["aie","ayons","ayez"].map(aux=>aux+" "+verb.pp);
+function completeCleaning(){
+ cleaned=100;phase="paint";
+ $("progressText").textContent="100 %";
+ $("progressFill").style.width="100%";
+ $("sponge").style.display="none";
+ $("dirtCanvas").classList.add("hidden");
+ $("progressArea").classList.add("hidden");
+ $("stageTitle").textContent="Personnalisation de ta voiture";
+ $("stepLabel").textContent="ÉTAPE 02 / PERSONNALISATION";
+ $("cleanActions").classList.add("hidden");
+ $("customControls").classList.remove("hidden");
+ $("customActions").classList.remove("hidden");
+ setHistory("paint");
+ buildColors();
 }
+$("finishCleaning").addEventListener("click",()=>{
+ if(cleaned<100){
+  // Le bouton permet de passer librement à la personnalisation.
+  cleaned=100;
+  completeCleaning();
+ }
+});
 
-function conjugate(name,tense){
-  const verb=verbs[name];
-
-  switch(tense){
-    case "Présent":
-      return {values:verb.present,people:pronouns};
-
-    case "Imparfait":
-      return {values:imperfect(verb),people:pronouns};
-
-    case "Passé simple":
-      return {values:verb.simple,people:pronouns};
-
-    case "Futur simple":
-      return {values:future(verb),people:pronouns};
-
-    case "Passé composé":
-      return {values:compound(verb,avoirForms.present),people:pronouns};
-
-    case "Plus-que-parfait":
-      return {values:compound(verb,avoirForms.imparfait),people:pronouns};
-
-    case "Passé antérieur":
-      return {values:compound(verb,avoirForms.simple),people:pronouns};
-
-    case "Futur antérieur":
-      return {values:compound(verb,avoirForms.future),people:pronouns};
-
-    case "Conditionnel présent":
-      return {values:conditional(verb),people:pronouns};
-
-    case "Conditionnel passé 1re forme":
-      return {values:compound(verb,avoirForms.conditional),people:pronouns};
-
-    case "Conditionnel passé 2e forme":
-      return {values:compound(verb,avoirForms.subjImp),people:pronouns};
-
-    case "Subjonctif présent":
-      return {values:verb.subj,people:pronouns};
-
-    case "Subjonctif passé":
-      return {values:compound(verb,avoirForms.subj),people:pronouns};
-
-    case "Subjonctif imparfait":
-      return {values:verb.subjImp,people:pronouns};
-
-    case "Subjonctif plus-que-parfait":
-      return {values:compound(verb,avoirForms.subjImp),people:pronouns};
-
-    case "Impératif présent":
-      return {values:verb.imperative,people:["Tu","Nous","Vous"]};
-
-    case "Impératif passé":
-      return {values:imperativePast(verb),people:["Tu","Nous","Vous"]};
-
-    case "Infinitif présent":
-      return {values:[name],people:["Infinitif"]};
-
-    case "Infinitif passé":
-      return {values:["avoir "+verb.pp],people:["Infinitif passé"]};
-
-    case "Participe présent":
-      return {values:[verb.participle],people:["Participe présent"]};
-
-    case "Participe passé":
-      return {values:[verb.pp],people:["Participe passé"]};
-  }
-}
-
-/* CRÉATION DES TABLEAUX */
-
-function escapeHTML(value){
-  return String(value)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-}
-
-function makeCell(blank,value,name,tense,person){
-  if(!blank)return escapeHTML(value);
-
-  return `<input
-    class="answer-input"
-    type="text"
-    autocomplete="off"
-    autocapitalize="none"
-    spellcheck="false"
-    data-answer="${escapeHTML(value)}"
-    aria-label="${escapeHTML(name+", "+tense+", "+person)}"
-    placeholder="Écrire..."
-  >`;
-}
-
-function renderTables(blank,selectedVerb="all"){
-  let html="";
-  const names=selectedVerb==="all"?Object.keys(verbs):[selectedVerb];
-
-  names.forEach(name=>{
-    if(!verbs[name])return;
-
-    html+=`<div class="verb-card"><h3>${escapeHTML(name)}</h3>`;
-
-    sections.forEach(section=>{
-      html+=`<div class="section-title">${section.name}</div>`;
-      html+=`<table><thead><tr><th>Temps / forme</th>`;
-
-      pronouns.forEach(person=>{
-        html+=`<th>${person}</th>`;
-      });
-
-      html+=`</tr></thead><tbody>`;
-
-      section.items.forEach(tense=>{
-        const result=conjugate(name,tense);
-        html+=`<tr><td>${tense}</td>`;
-
-        if(result.values.length===6){
-          result.values.forEach((value,index)=>{
-            html+=`<td>${makeCell(blank,value,name,tense,result.people[index])}</td>`;
-          });
-
-        }else if(result.values.length===3){
-          html+=`<td></td>`;
-          html+=`<td>${makeCell(blank,result.values[0],name,tense,"Tu")}</td>`;
-          html+=`<td></td>`;
-          html+=`<td>${makeCell(blank,result.values[1],name,tense,"Nous")}</td>`;
-          html+=`<td>${makeCell(blank,result.values[2],name,tense,"Vous")}</td>`;
-          html+=`<td></td>`;
-
-        }else{
-          html+=`<td colspan="6">${makeCell(blank,result.values[0],name,tense,result.people[0])}</td>`;
-        }
-
-        html+="</tr>";
-      });
-
-      html+="</tbody></table>";
-    });
-
-    html+="</div>";
+/* Couleurs */
+function buildColors(){
+ const container=$("colorChoices");container.innerHTML="";
+ colors.forEach((c,i)=>{
+  const b=document.createElement("button");
+  b.className="color"+(i===0?" selected":"");
+  b.style.background=c.value;b.title=c.name;b.setAttribute("aria-label",c.name);
+  b.addEventListener("click",()=>{
+   document.querySelectorAll(".color").forEach(x=>x.classList.remove("selected"));
+   b.classList.add("selected");
+   $("body").setAttribute("fill",c.value);
+   $("body").style.fill=c.value;
+   $("body").style.stroke="#641421";
+   $("body").style.filter="drop-shadow(0 -3px 2px #ffffff55)";
+   document.querySelector("#body").setAttribute("fill",c.value);
+   document.querySelector("#body").style.fill=c.value;
+   $("body").style.fill=c.value;
+   $("carSvg").querySelector("#body").setAttribute("fill",c.value);
+   $("carSvg").querySelector("#body").style.fill=c.value;
+   $("carSvg").querySelector("#body").style.filter="brightness(1.05)";
+   $("carSvg").querySelector("#body").setAttribute("style","fill:"+c.value);
   });
-
-  return html;
+  container.appendChild(b);
+ });
 }
 
-/* SELECTEURS */
+/* Onglets */
+document.querySelectorAll(".tab").forEach(tab=>{
+ tab.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+  tab.classList.add("active");
+  $("panel-"+tab.dataset.tab).classList.add("active");
+  if(tab.dataset.tab==="wheels")setHistory("wheels");
+  if(tab.dataset.tab==="details")setHistory("details");
+  if(tab.dataset.tab==="plate")setHistory("plate");
+ });
+});
 
-function fillSelectors(){
-  const names=Object.keys(verbs);
-
-  ["completedVerb","blankVerb"].forEach(id=>{
-    const select=document.getElementById(id);
-
-    names.forEach(name=>{
-      const option=document.createElement("option");
-      option.value=name;
-      option.textContent=name;
-      select.appendChild(option);
-    });
+/* Styles de jantes */
+document.querySelectorAll("[data-wheel]").forEach(b=>{
+ b.addEventListener("click",()=>{
+  wheelStyle=Number(b.dataset.wheel);
+  document.querySelectorAll("[data-wheel]").forEach(x=>x.classList.remove("selected"));
+  b.classList.add("selected");
+  const designs=[
+   "M0 -25V25 M-25 0H25 M-18 -18L18 18 M18 -18L-18 18",
+   "M0 -25L8 -5L25 0L8 5L0 25L-8 5L-25 0L-8 -5Z",
+   "M0 -25L7 -8L24 -18L12 -2L25 0L12 7L20 23L4 12L0 25L-7 9L-23 18L-12 3L-25 0L-9 -7Z",
+   "M0 -26L0 26 M-25 -8L25 8 M-25 8L25 -8"
+  ];
+  ["rearSpokes","frontSpokes"].forEach(id=>{
+   const g=$(id);g.innerHTML="";
+   const p=document.createElementNS("http://www.w3.org/2000/svg","path");
+   p.setAttribute("d",designs[wheelStyle]);
+   p.setAttribute("stroke","#303b49");p.setAttribute("stroke-width","5");p.setAttribute("fill","none");
+   g.appendChild(p);
   });
+ });
+});
+
+/* Détails */
+$("spoilerToggle").addEventListener("change",e=>$("spoiler").style.display=e.target.checked?"block":"none");
+$("stripeToggle").addEventListener("change",e=>$("stripes").style.display=e.target.checked?"block":"none");
+$("neonToggle").addEventListener("change",e=>$("neonGlow").style.opacity=e.target.checked?".9":"0");
+$("plateInput").addEventListener("input",e=>{
+ $("plateText").textContent=e.target.value.toUpperCase().slice(0,8)||"";
+});
+
+/* Moteur sonore synthétique : Web Audio API */
+function startEngine(){
+ if(!audioContext){
+  audioContext=new (window.AudioContext||window.webkitAudioContext)();
+  oscillator=audioContext.createOscillator();
+  filter=audioContext.createBiquadFilter();
+  gain=audioContext.createGain();
+  oscillator.type="sawtooth";
+  oscillator.frequency.value=65;
+  filter.type="lowpass";filter.frequency.value=450;
+  gain.gain.value=0;
+  oscillator.connect(filter);filter.connect(gain);gain.connect(audioContext.destination);
+  oscillator.start();
+ }
+ if(audioContext.state==="suspended")audioContext.resume();
+ gain.gain.cancelScheduledValues(audioContext.currentTime);
+ gain.gain.setTargetAtTime(.11,audioContext.currentTime,.06);
+ oscillator.frequency.setTargetAtTime(105,audioContext.currentTime,.08);
+ filter.frequency.setTargetAtTime(900,audioContext.currentTime,.1);
+ $("carWrap").classList.add("revving");
+ smokeEffect();
 }
-
-function updateTables(blank){
-  const selectId=blank?"blankVerb":"completedVerb";
-  const contentId=blank?"blankContent":"completedContent";
-  const selected=document.getElementById(selectId).value;
-
-  document.getElementById(contentId).innerHTML=
-    renderTables(blank,selected);
-
-  if(blank){
-    const feedback=document.getElementById("blankFeedback");
-    feedback.textContent="Écris tes réponses directement dans les tableaux.";
-    feedback.style.color="#302b35";
-  }
+function stopEngine(){
+ if(!audioContext)return;
+ gain.gain.setTargetAtTime(0,audioContext.currentTime,.12);
+ oscillator.frequency.setTargetAtTime(65,audioContext.currentTime,.15);
+ filter.frequency.setTargetAtTime(450,audioContext.currentTime,.15);
+ $("carWrap").classList.remove("revving");
 }
+function smokeEffect(){
+ if(!$("pedal").classList.contains("pressed"))return;
+ const s=document.createElement("div");
+ s.className="smoke";
+ s.style.left="12%";s.style.top="65%";
+ $("garage").appendChild(s);
+ setTimeout(()=>s.remove(),1500);
+}
+const pedal=$("pedal");
+pedal.addEventListener("pointerdown",e=>{
+ e.preventDefault();pedal.setPointerCapture(e.pointerId);
+ pedal.classList.add("pressed");startEngine();
+});
+function releasePedal(){
+ pedal.classList.remove("pressed");stopEngine();
+}
+pedal.addEventListener("pointerup",releasePedal);
+pedal.addEventListener("pointercancel",releasePedal);
+pedal.addEventListener("lostpointercapture",releasePedal);
 
-/* NAVIGATION */
+/* Fin du projet */
+$("finishProject").addEventListener("click",()=>{
+ stopEngine();phase="final";
+ $("game").classList.add("hidden");
+ $("finalScreen").classList.remove("hidden");
+ $("personalMessage").textContent=PERSONAL_MESSAGE;
+ $("finalCar").innerHTML=$("carSvg").outerHTML;
+ $("finalCar").querySelector("svg").style.width="100%";
+ startConfetti();
+ setHistory("final");
+});
 
-function openPage(id){
-  document.querySelectorAll(".page").forEach(page=>{
-    page.classList.remove("active");
+/* Confettis */
+const confetti=$("confetti"),cctx=confetti.getContext("2d");
+let particles=[];
+function startConfetti(){
+ confetti.width=innerWidth*devicePixelRatio;
+ confetti.height=innerHeight*devicePixelRatio;
+ cctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+ particles=Array.from({length:160},()=>({
+  x:Math.random()*innerWidth,y:-Math.random()*innerHeight,
+  vx:(Math.random()-.5)*4,vy:2+Math.random()*5,
+  size:4+Math.random()*7,color:colors[Math.floor(Math.random()*colors.length)].value,
+  angle:Math.random()*6
+ }));
+ if(animationConfetti)cancelAnimationFrame(animationConfetti);
+ function draw(){
+  cctx.clearRect(0,0,innerWidth,innerHeight);
+  particles.forEach(p=>{
+   p.x+=p.vx;p.y+=p.vy;p.angle+=.05;
+   if(p.y>innerHeight){p.y=-10;p.x=Math.random()*innerWidth}
+   cctx.save();cctx.translate(p.x,p.y);cctx.rotate(p.angle);
+   cctx.fillStyle=p.color;cctx.fillRect(0,0,p.size,p.size*1.5);
+   cctx.restore();
   });
-
-  document.getElementById(id).classList.add("active");
+  animationConfetti=requestAnimationFrame(draw);
+ }
+ draw();
 }
 
-/* NORMALISATION DES RÉPONSES */
+/* Capture PNG sans dépendance externe */
+$("download").addEventListener("click",()=>{
+ const svg=$("finalCar").querySelector("svg");
+ const serialized=new XMLSerializer().serializeToString(svg);
+ const svgBlob=new Blob([serialized],{type:"image/svg+xml;charset=utf-8"});
+ const url=URL.createObjectURL(svgBlob);
+ const img=new Image();
+ img.onload=()=>{
+  const canvas=$("downloadCanvas");
+  canvas.width=1200;canvas.height=600;
+  const c=canvas.getContext("2d");
+  const grad=c.createLinearGradient(0,0,0,600);
+  grad.addColorStop(0,"#dce8f0");grad.addColorStop(1,"#8494a4");
+  c.fillStyle=grad;c.fillRect(0,0,1200,600);
+  c.fillStyle="#202735";c.font="bold 32px Arial";c.fillText("ATELIER DE TUNING",50,60);
+  c.drawImage(img,60,90,1080,445);
+  c.fillStyle="#202735";c.font="bold 18px Arial";c.fillText("MA CRÉATION PERSONNELLE",50,570);
+  const a=document.createElement("a");
+  a.download="mon-projet-automobile.png";
+  a.href=canvas.toDataURL("image/png");a.click();
+  URL.revokeObjectURL(url);
+ };
+ img.src=url;
+});
 
-function normalizeAnswer(value){
-  return value
-    .trim()
-    .toLowerCase()
-    .normalize("NFC")
-    .replace(/\s+/g," ");
-}
-
-/* CORRECTION DES TABLEAUX */
-
-function checkBlank(){
-  const inputs=document.querySelectorAll("#blankContent .answer-input");
-  let correct=0,incorrect=0,empty=0;
-
-  inputs.forEach(input=>{
-    const answer=normalizeAnswer(input.value);
-    const solution=normalizeAnswer(input.dataset.answer);
-
-    input.classList.remove("correct","incorrect");
-
-    if(answer===""){
-      empty++;
-    }else if(answer===solution){
-      correct++;
-      input.classList.add("correct");
-    }else{
-      incorrect++;
-      input.classList.add("incorrect");
-    }
-  });
-
-  const feedback=document.getElementById("blankFeedback");
-
-  if(incorrect===0 && empty===0){
-    feedback.textContent="Bravo ! Toutes tes réponses sont correctes ! ⭐";
-    feedback.style.color="green";
-  }else{
-    feedback.textContent=
-      correct+" bonne(s) réponse(s), "+
-      incorrect+" erreur(s), "+
-      empty+" case(s) vide(s).";
-    feedback.style.color="#a33";
-  }
-}
-
-/* AFFICHER LES SOLUTIONS */
-
-function showSolutions(){
-  const inputs=document.querySelectorAll("#blankContent .answer-input");
-
-  inputs.forEach(input=>{
-    input.value=input.dataset.answer;
-    input.classList.remove("incorrect");
-    input.classList.add("correct");
-    input.disabled=true;
-  });
-
-  const feedback=document.getElementById("blankFeedback");
-  feedback.textContent="Voici toutes les bonnes réponses ! ⭐";
-  feedback.style.color="green";
-}
-
-/* RECOMMENCER LES TABLEAUX */
-
-function resetBlank(){
-  const inputs=document.querySelectorAll("#blankContent .answer-input");
-
-  inputs.forEach(input=>{
-    input.value="";
-    input.disabled=false;
-    input.classList.remove("correct","incorrect");
-  });
-
-  const feedback=document.getElementById("blankFeedback");
-  feedback.textContent="Nouvel essai ! Complète les tableaux.";
-  feedback.style.color="#302b35";
-}
-
-/* INITIALISATION */
-
-fillSelectors();
-updateTables(false);
-updateTables(true);
-
-/* MODE ALÉATOIRE ET SCORE */
-
-let current=null;
-let score=0;
-let answered=false;
-
-function updateScore(){
-  document.getElementById("score").textContent=score;
-}
-
-function resetScore(){
-  score=0;
-  updateScore();
-}
-
-function newRandom(){
-  const names=Object.keys(verbs);
-  const name=names[Math.floor(Math.random()*names.length)];
-  const tense=allTenses[Math.floor(Math.random()*allTenses.length)];
-  const result=conjugate(name,tense);
-  const index=Math.floor(Math.random()*result.values.length);
-
-  current={
-    name:name,
-    tense:tense,
-    index:index,
-    answer:result.values[index],
-    person:result.people[index]
-  };
-
-  answered=false;
-
-  document.getElementById("randomVerb").textContent=name;
-  document.getElementById("randomTense").textContent=tense;
-  document.getElementById("randomPerson").textContent=result.people[index];
-  document.getElementById("answer").value="";
-  document.getElementById("feedback").textContent="";
-  document.getElementById("feedback").style.color="#302b35";
-
-  updateScore();
-}
-
-function startRandom(){
-  openPage("random");
-  newRandom();
-}
-
-function checkRandom(){
-  if(!current || answered)return;
-
-  const input=normalizeAnswer(document.getElementById("answer").value);
-  const correct=normalizeAnswer(current.answer);
-  const feedback=document.getElementById("feedback");
-
-  if(input===""){
-    feedback.textContent="Écris une réponse avant de vérifier.";
-    feedback.style.color="#a33";
-    return;
-  }
-
-  answered=true;
-
-  if(input===correct){
-    score++;
-    feedback.textContent="Bravo ! C'est correct ! ⭐ +1 point";
-    feedback.style.color="green";
-  }else{
-    feedback.textContent="La bonne réponse est : "+current.answer;
-    feedback.style.color="#a33";
-  }
-
-  updateScore();
-}
+/* Redémarrage */
+$("restart").addEventListener("click",()=>location.reload());
+window.addEventListener("resize",()=>{
+ if(phase==="clean")resizeDirt();
+ if(!$("finalScreen").classList.contains("hidden"))startConfetti();
+});
 </script>
 </body>
 </html>

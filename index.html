@@ -1,571 +1,837 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#151923">
-<title>Atelier de préparation — Ferrari Edition</title>
-<style>
-:root {
-  --bg:#11151e;--panel:#202735;--red:#e63946;--gold:#f4bd50;
-  --text:#f7f7f8;--muted:#aab2c0;--green:#42d392;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;overflow-x:hidden}
-button,input{font:inherit}
-button{cursor:pointer}
-.hidden{display:none!important}
-.screen{min-height:100vh}
-#intro{
- display:flex;align-items:center;justify-content:center;text-align:center;
- padding:25px;background:radial-gradient(ellipse at 50% 35%,#45404a,#171b26 65%,#10131a);
-}
-.intro-content{width:min(800px,100%)}
-.logo{font-size:13px;letter-spacing:7px;color:var(--gold);font-weight:800}
-.intro-content h1{font-size:clamp(38px,8vw,76px);margin:20px 0 10px;text-transform:uppercase;font-style:italic}
-.intro-content h1 span{color:var(--red)}
-.intro-content p{color:#d0d2da;line-height:1.7}
-.hero-car{width:min(650px,100%);margin:20px auto;filter:drop-shadow(0 20px 25px #0008)}
-.primary{
- border:0;border-radius:12px;background:var(--red);color:white;
- padding:16px 30px;font-weight:900;letter-spacing:1px;
- box-shadow:0 5px 0 #92202b;transition:.2s
-}
-.primary:hover{transform:translateY(-2px);filter:brightness(1.12)}
-.history{background:#ffffff0b;border:1px solid #ffffff1c;padding:17px;border-radius:14px;margin:20px auto;max-width:650px;text-align:left}
-.history h3{color:var(--gold);margin:0 0 8px}
-.history p{margin:0;font-size:14px}
-#game{padding:15px;max-width:1200px;margin:auto}
-.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.topbar h2{font-size:20px;margin:8px 0}
-.step{font-size:12px;color:var(--gold);letter-spacing:2px;font-weight:bold}
-.progress-area{margin:15px 0}
-.progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:7px}
-.progress{height:12px;background:#303847;border-radius:20px;overflow:hidden}
-.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#f3a43c,#f6d76d);transition:width .15s}
-.garage{
- position:relative;background:linear-gradient(#dbe5ee 0%,#aab9c6 65%,#7d8c9b 66%,#65717e 100%);
- border-radius:20px;min-height:340px;display:flex;align-items:center;justify-content:center;
- overflow:hidden;border:5px solid #303847;box-shadow:inset 0 0 40px #fff8;
-}
-.garage:before{content:"";position:absolute;top:0;left:8%;right:8%;height:58%;border-left:5px solid #ffffff88;border-right:5px solid #ffffff88;background:repeating-linear-gradient(90deg,transparent 0 80px,#ffffff30 82px 85px)}
-.garage:after{content:"";position:absolute;bottom:0;left:0;right:0;height:34%;background:repeating-linear-gradient(90deg,#ffffff12 0 2px,transparent 2px 100px)}
-.car-wrap{position:relative;z-index:2;width:min(850px,96%);touch-action:pan-y;transition:transform .08s}
-.car-wrap.revving{animation:vibrate .09s infinite alternate}
-@keyframes vibrate{from{transform:translate(1px,0)}to{transform:translate(-1px,1px)}}
-#carSvg{width:100%;height:auto;overflow:visible;display:block}
-#dirtCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;touch-action:none}
-.sponge{position:absolute;width:45px;height:45px;border-radius:50%;border:3px solid white;background:#c7f4ff99;box-shadow:0 0 0 5px #8ceaff55;pointer-events:none;display:none;z-index:5}
-#historyBox{margin:14px 0;background:#252d3a;border:1px solid #414b5c;border-radius:13px;padding:14px}
-#historyBox h3{font-size:14px;color:var(--gold);margin:0 0 6px}
-#historyBox p{font-size:13px;color:#d4d9e2;line-height:1.55;margin:0}
-.controls{background:var(--panel);padding:15px;border-radius:16px;margin-top:15px}
-.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:12px}
-.tab{background:#303a4b;color:white;border:1px solid #4a566b;padding:11px 15px;border-radius:9px;white-space:nowrap;font-size:13px}
-.tab.active{background:var(--red);border-color:var(--red)}
-.panel{display:none;min-height:100px}
-.panel.active{display:block}
-.panel h3{font-size:15px}
-.colors,.choices{display:flex;flex-wrap:wrap;gap:12px}
-.color{width:42px;height:42px;border:3px solid #fff7;border-radius:50%;padding:0}
-.color.selected,.choice.selected{outline:3px solid var(--gold);outline-offset:3px}
-.choice{border:1px solid #536075;background:#303a4b;color:white;padding:12px;border-radius:10px}
-.switchline{display:flex;align-items:center;gap:10px;margin:12px 0;color:#e0e3e9;font-size:14px}
-.switchline input{accent-color:var(--red);width:20px;height:20px}
-.plate-input{background:#121823;color:white;border:1px solid #536075;padding:12px;border-radius:9px;width:160px;text-transform:uppercase}
-.action-row{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0}
-.pedal{width:115px;height:95px;border-radius:18px 18px 30px 30px;border:4px solid #999;background:linear-gradient(145deg,#b4bdc9,#465365);color:#111;font-weight:1000;box-shadow:0 8px 0 #222;touch-action:none}
-.pedal:active,.pedal.pressed{transform:translateY(6px);box-shadow:0 2px 0 #222}
-.finish{background:var(--green);color:#10231b;box-shadow:0 5px 0 #1a8059}
-.smoke{position:absolute;width:18px;height:18px;background:#e8edf0aa;border-radius:50%;filter:blur(4px);pointer-events:none;z-index:4;animation:smoke 1.4s forwards}
-@keyframes smoke{to{transform:translate(-60px,-55px) scale(3);opacity:0}}
-#finalScreen{position:fixed;inset:0;background:#11151ef5;z-index:20;display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto}
-.final-card{width:min(850px,100%);text-align:center;position:relative}
-.final-card h1{font-size:clamp(32px,7vw,58px);color:var(--gold)}
-.final-card p{line-height:1.6;color:#e2e5ea}
-#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1}
-#downloadCanvas{display:none}
-footer{text-align:center;color:#7e899a;font-size:11px;padding:20px}
-@media(max-width:600px){
- #game{padding:10px}.garage{min-height:245px}
- .controls{padding:12px}.topbar h2{font-size:17px}
- .hero-car{margin:8px auto}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Estacionamiento Zen</title>
+  <style>
+    :root {
+      --ink: #594d55;
+      --cream: #fff8ed;
+      --rose: #f2b6a0;
+      --shadow: 0 14px 40px rgba(80, 55, 60, .16);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 15% 5%, rgba(255, 224, 179, .75), transparent 40%),
+        linear-gradient(145deg, #f8d9c8, #f5e5d3 55%, #e9d8db);
+      font-family: ui-rounded, "Avenir Next", Avenir, system-ui, sans-serif;
+      display: flex;
+      justify-content: center;
+      padding: 18px;
+      touch-action: manipulation;
+    }
+
+    .app {
+      width: min(100%, 1050px);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 2px 6px;
+    }
+
+    .brand h1 {
+      font-size: clamp(1.25rem, 3vw, 1.8rem);
+      margin: 0;
+      letter-spacing: -.04em;
+    }
+
+    .brand p {
+      margin: 3px 0 0;
+      font-size: .9rem;
+      opacity: .76;
+    }
+
+    .top-tools {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      background: rgba(255, 248, 237, .7);
+      border: 1px solid rgba(255,255,255,.75);
+      border-radius: 999px;
+      padding: 7px 12px;
+      box-shadow: 0 5px 16px rgba(80, 55, 60, .08);
+      font-size: .9rem;
+      white-space: nowrap;
+    }
+
+    #carColor {
+      width: 31px;
+      height: 31px;
+      padding: 0;
+      border: 2px solid white;
+      border-radius: 50%;
+      background: none;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    #carColor::-webkit-color-swatch-wrapper { padding: 0; }
+    #carColor::-webkit-color-swatch { border: 0; border-radius: 50%; }
+
+    .stage {
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      max-height: min(66vh, 680px);
+      position: relative;
+      overflow: hidden;
+      border: 6px solid rgba(255, 248, 237, .82);
+      border-radius: 24px;
+      background: #e8d1b3;
+      box-shadow: var(--shadow);
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .level-pill {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      padding: 8px 13px;
+      border: 1px solid rgba(255,255,255,.65);
+      border-radius: 999px;
+      background: rgba(255, 248, 237, .83);
+      backdrop-filter: blur(8px);
+      font-size: .88rem;
+      font-weight: 700;
+      pointer-events: none;
+    }
+
+    .tip {
+      position: absolute;
+      right: 14px;
+      top: 14px;
+      max-width: 48%;
+      padding: 8px 12px;
+      border-radius: 14px;
+      background: rgba(255, 248, 237, .77);
+      font-size: .82rem;
+      text-align: right;
+      pointer-events: none;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .pad {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .control-button {
+      width: clamp(54px, 8vw, 72px);
+      height: clamp(50px, 7vw, 62px);
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 19px;
+      background: rgba(255, 248, 237, .82);
+      color: var(--ink);
+      box-shadow: 0 7px 16px rgba(80, 55, 60, .10);
+      font: inherit;
+      font-size: 1.25rem;
+      font-weight: 800;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+      transition: transform .12s, background .12s;
+    }
+
+    .control-button:active,
+    .control-button.pressed {
+      transform: translateY(2px) scale(.97);
+      background: #ffe3c3;
+    }
+
+    .drive-button { font-size: .83rem; }
+    .hint-text { font-size: .86rem; opacity: .78; text-align: center; }
+
+    .modal {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(76, 57, 67, .23);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal.visible { display: flex; }
+
+    .postcard {
+      width: min(100%, 390px);
+      padding: 26px 25px 22px;
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 26px;
+      background: linear-gradient(155deg, #fffaf0, #ffeedf);
+      box-shadow: 0 20px 60px rgba(59, 39, 49, .24);
+      text-align: center;
+      animation: arrive .45s cubic-bezier(.2,.8,.2,1) both;
+    }
+
+    @keyframes arrive {
+      from { transform: translateY(16px) scale(.94); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    .postcard .stamp { font-size: 2.2rem; }
+    .postcard h2 { margin: 8px 0 6px; font-size: 1.45rem; }
+    .postcard p { margin: 0 0 20px; line-height: 1.55; }
+
+    .next-button {
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 21px;
+      color: white;
+      background: linear-gradient(135deg, #df987d, #c97d83);
+      box-shadow: 0 7px 16px rgba(182, 104, 108, .22);
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .progress {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 2px 0 0;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(89, 77, 85, .2);
+    }
+
+    .dot.done { background: #c98276; }
+
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .app { gap: 9px; }
+      .stage { max-height: none; border-width: 4px; border-radius: 17px; }
+      header { padding: 1px 3px; }
+      .brand p { font-size: .78rem; }
+      .top-tools { padding: 5px 9px; font-size: .78rem; }
+      .tip { font-size: .72rem; }
+      .controls { gap: 8px; }
+      .pad { gap: 6px; }
+      .hint-text { display: none; }
+    }
+
+    @media (max-height: 700px) and (min-width: 601px) {
+      body { padding-top: 9px; padding-bottom: 9px; }
+      .stage { max-height: 62vh; }
+    }
+  </style>
 </head>
 <body>
+  <main class="app">
+    <header>
+      <div class="brand">
+        <h1>Estacionamiento Zen <span aria-hidden="true">🌇</span></h1>
+        <p>Respire, tournez doucement… et prenez votre temps.</p>
+      </div>
+      <label class="top-tools" for="carColor">
+        <span>Couleur de la voiture</span>
+        <input id="carColor" type="color" value="#d98272" aria-label="Choisir la couleur de la voiture">
+      </label>
+    </header>
 
-<section id="intro" class="screen">
- <div class="intro-content">
-  <div class="logo">ÉDITION AUTOMOBILE • 01</div>
-  <h1>ATELIER <span>DE TUNING</span></h1>
-  <p>Bienvenue dans ton garage ! Restaure une voiture de sport classique, personnalise-la et donne vie à ta propre création.</p>
+    <section class="stage" aria-label="Jeu de stationnement">
+      <canvas id="game" width="960" height="640" aria-label="Jeu en vue de dessus"></canvas>
+      <div class="level-pill" id="levelLabel"></div>
+      <div class="tip">Flèches / WASD ou boutons · Aucun stress, aucune limite 🌼</div>
 
-  <svg class="hero-car" viewBox="0 0 800 300" role="img" aria-label="Illustration d'une voiture sportive rouge">
-   <ellipse cx="400" cy="244" rx="310" ry="19" fill="#0005"/>
-   <path d="M100 210 L125 165 Q145 148 240 140 L310 85 Q350 58 480 68 L570 130 L680 151 Q710 165 720 207 L695 228 L105 228Z" fill="#d92736" stroke="#8d1826" stroke-width="5"/>
-   <path d="M290 132 L345 85 Q390 70 475 80 L535 132Z" fill="#a8d7e8" stroke="#fff" stroke-width="5"/>
-   <path d="M115 183 L220 175 L212 195 L110 199Z" fill="#ffe59a"/>
-   <path d="M620 175 L700 183 L700 201 L625 196Z" fill="#ff4d50"/>
-   <path d="M120 212 L690 212" stroke="#fff" stroke-width="5" opacity=".8"/>
-   <circle cx="230" cy="220" r="49" fill="#18202a"/><circle cx="230" cy="220" r="25" fill="#9eabb9"/><circle cx="230" cy="220" r="10" fill="#e5e9ed"/>
-   <circle cx="610" cy="220" r="49" fill="#18202a"/><circle cx="610" cy="220" r="25" fill="#9eabb9"/><circle cx="610" cy="220" r="10" fill="#e5e9ed"/>
-   <path d="M320 151 Q450 140 550 151" fill="none" stroke="#fff" stroke-width="5" opacity=".7"/>
-  </svg>
+      <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="postcard">
+          <div class="stamp" aria-hidden="true">💌✨</div>
+          <h2 id="modalTitle">Carte postale débloquée !</h2>
+          <p id="messageText"></p>
+          <button class="next-button" id="nextButton">Continuer</button>
+        </div>
+      </div>
+    </section>
 
-  <div class="history">
-   <h3>🏁 Un héritage de passion</h3>
-   <p>En 1929, Enzo Ferrari fonde la Scuderia Ferrari à Modène, initialement comme une structure de compétition. L'aventure automobile qui suivra marquera l'histoire du sport automobile.</p>
-  </div>
-  <button class="primary" id="startButton">ENTRER DANS LE GARAGE →</button>
- </div>
-</section>
+    <div class="controls" aria-label="Commandes tactiles">
+      <div class="pad">
+        <button class="control-button" data-control="left" aria-label="Tourner à gauche">↶</button>
+        <button class="control-button" data-control="right" aria-label="Tourner à droite">↷</button>
+      </div>
+      <div class="hint-text">La voiture rebondit doucement contre les bordures et les cônes.</div>
+      <div class="pad">
+        <button class="control-button drive-button" data-control="reverse" aria-label="Reculer">◀ Reculer</button>
+        <button class="control-button drive-button" data-control="forward" aria-label="Avancer">Avancer ▶</button>
+      </div>
+    </div>
 
-<section id="game" class="screen hidden">
- <div class="topbar">
-  <div><div class="step" id="stepLabel">ÉTAPE 01 / RESTAURATION</div><h2 id="stageTitle">Opération nettoyage</h2></div>
-  <div style="font-size:12px;color:var(--gold)">🏎️ TON PROJET • SANS LIMITE DE TEMPS</div>
- </div>
+    <div class="progress" id="progress" aria-label="Progression des niveaux"></div>
+  </main>
 
- <div class="progress-area" id="progressArea">
-  <div class="progress-label"><span>PROGRESSION DU NETTOYAGE</span><strong id="progressText">0 %</strong></div>
-  <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
- </div>
+  <script>
+    "use strict";
 
- <div class="garage" id="garage">
-  <div class="car-wrap" id="carWrap">
-   <svg id="carSvg" viewBox="0 0 800 330" role="img" aria-label="Voiture de sport personnalisable">
-    <defs>
-     <linearGradient id="bodyGradient" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ff8181"/><stop offset=".35" stop-color="#ed2637"/><stop offset="1" stop-color="#8e1024"/>
-     </linearGradient>
-     <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#dff8ff"/><stop offset="1" stop-color="#51758b"/></linearGradient>
-     <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff"/><stop offset=".5" stop-color="#8e9aa8"/><stop offset="1" stop-color="#303b49"/></linearGradient>
-     <filter id="glow"><feGaussianBlur stdDeviation="8"/></filter>
-    </defs>
-    <ellipse cx="405" cy="279" rx="325" ry="18" fill="#17202a" opacity=".3"/>
-    <ellipse id="neonGlow" cx="405" cy="260" rx="260" ry="18" fill="#00d9ff" opacity="0" filter="url(#glow)"/>
-    <g id="spoiler" style="display:none">
-     <path d="M640 110 L680 76 L690 83 L665 126Z" fill="#242a32"/>
-     <path d="M625 76 L720 76 L711 91 L625 89Z" fill="#1b2028" stroke="#8b949e" stroke-width="3"/>
-    </g>
-    <path d="M92 222 Q104 178 155 165 L270 151 Q320 75 404 68 L523 75 Q574 82 623 155 L704 177 Q740 187 745 229 L723 252 L88 252Z" fill="url(#bodyGradient)" stroke="#741421" stroke-width="5" id="body"/>
-    <path d="M286 147 L327 91 Q367 69 412 78 L408 147Z" fill="url(#glass)" stroke="#edf8ff" stroke-width="5"/>
-    <path d="M420 78 Q490 78 519 95 L568 147 L421 147Z" fill="url(#glass)" stroke="#edf8ff" stroke-width="5"/>
-    <path d="M416 80 L416 150" stroke="#344b5b" stroke-width="5"/>
-    <path d="M100 212 L210 201 L201 222 L96 228Z" fill="#fff1ba" stroke="#bca76f" stroke-width="3"/>
-    <path d="M672 202 L733 213 L728 231 L672 223Z" fill="#ff6871" stroke="#a51729" stroke-width="3"/>
-    <path d="M120 239 L700 239" stroke="#fff" stroke-width="5" opacity=".65"/>
-    <path d="M175 176 Q250 164 284 160" fill="none" stroke="#fff" stroke-width="5" opacity=".45"/>
-    <path d="M450 159 Q535 160 610 179" fill="none" stroke="#fff" stroke-width="4" opacity=".4"/>
-    <g id="stripes" style="display:none">
-     <path d="M420 80 L427 151 L435 151 L430 80Z" fill="#f5f5f5"/>
-     <path d="M442 83 L450 151 L457 151 L452 84Z" fill="#252a32"/>
-     <path d="M430 157 L436 235 L449 235 L442 157Z" fill="#fff"/>
-    </g>
-    <g id="wheelRear"><circle cx="235" cy="242" r="48" fill="#151b23"/><circle cx="235" cy="242" r="29" fill="url(#metal)" stroke="#313b47" stroke-width="5"/><g id="rearSpokes" stroke="#343f4b" stroke-width="5"><path d="M235 215V269 M208 242H262 M216 223L254 261 M254 223L216 261"/></g><circle cx="235" cy="242" r="8" fill="#d7e1ea"/></g>
-    <g id="wheelFront"><circle cx="610" cy="242" r="48" fill="#151b23"/><circle cx="610" cy="242" r="29" fill="url(#metal)" stroke="#313b47" stroke-width="5"/><g id="frontSpokes" stroke="#343f4b" stroke-width="5"><path d="M610 215V269 M583 242H637 M591 223L629 261 M629 223L591 261"/></g><circle cx="610" cy="242" r="8" fill="#d7e1ea"/></g>
-    <rect x="675" y="231" width="62" height="20" rx="4" fill="#f2f0db" stroke="#252d38" stroke-width="2"/>
-    <text id="plateText" x="706" y="245" font-size="11" font-weight="bold" text-anchor="middle" fill="#202733">GARAGE</text>
-    <path d="M330 253 L510 253" stroke="#fff" stroke-width="4" opacity=".5"/>
-    <path d="M145 185 L175 183" stroke="#fff" stroke-width="4" opacity=".7"/>
-   </svg>
-  </div>
-  <canvas id="dirtCanvas"></canvas>
-  <div class="sponge" id="sponge"></div>
- </div>
+    // Personnalisez ici les quatre dédicaces, une par niveau.
+    const MESSAGES_PERSONNALISES = [
+      "bravo yoyooo jespere que tu tamusesss.",
+      "coucouuuu bravo tas eu encore une etapeee.",
+      "t deja a la??? omggggg bravo chouchouuuuu.",
+      "tas finis le jeuxxx bravoooooooo je suis fiere de toiiii"
+    ];
 
- <div id="historyBox">
-  <h3 id="historyTitle">📜 Histoire Ferrari — Les origines</h3>
-  <p id="historyText">Enzo Ferrari a fondé la Scuderia Ferrari en 1929 à Modène. Cette écurie a participé aux compétitions automobiles avant la création de ses propres voitures.</p>
- </div>
+    const W = 960;
+    const H = 640;
+    const canvas = document.getElementById("game");
+    const ctx = canvas.getContext("2d");
+    const colorPicker = document.getElementById("carColor");
+    const modal = document.getElementById("modal");
+    const levelLabel = document.getElementById("levelLabel");
+    const progressEl = document.getElementById("progress");
 
- <div class="controls hidden" id="customControls">
-  <div class="tabs">
-   <button class="tab active" data-tab="paint">🎨 Peinture</button>
-   <button class="tab" data-tab="wheels">⚙️ Jantes</button>
-   <button class="tab" data-tab="details">✨ Détails</button>
-   <button class="tab" data-tab="plate">🔤 Immatriculation</button>
-  </div>
-  <div class="panel active" id="panel-paint">
-   <h3>Choisis ta couleur de carrosserie</h3>
-   <div class="colors" id="colorChoices"></div>
-  </div>
-  <div class="panel" id="panel-wheels">
-   <h3>Style des jantes</h3>
-   <div class="choices" id="wheelChoices">
-    <button class="choice selected" data-wheel="0">Classique</button>
-    <button class="choice" data-wheel="1">Sport</button>
-    <button class="choice" data-wheel="2">Étoile</button>
-    <button class="choice" data-wheel="3">Course</button>
-   </div>
-  </div>
-  <div class="panel" id="panel-details">
-   <h3>Personnalise les détails</h3>
-   <label class="switchline"><input type="checkbox" id="spoilerToggle"> Ajouter un aileron arrière</label>
-   <label class="switchline"><input type="checkbox" id="stripeToggle"> Ajouter des bandes sportives</label>
-   <label class="switchline"><input type="checkbox" id="neonToggle"> Activer le néon sous la voiture</label>
-  </div>
-  <div class="panel" id="panel-plate">
-   <h3>Ta plaque personnalisée</h3>
-   <input class="plate-input" id="plateInput" maxlength="8" placeholder="FERRARI" value="GARAGE">
-   <p style="color:var(--muted);font-size:12px">Maximum 8 caractères.</p>
-  </div>
- </div>
+    const levels = [
+      {
+        name: "La pause-café",
+        subtitle: "Une petite place au soleil",
+        theme: "cafe",
+        start: { x: 175, y: 475, a: -0.12 },
+        goal: { x: 748, y: 190, a: Math.PI / 2 },
+        obstacles: [{ x: 500, y: 345 }, { x: 564, y: 344 }, { x: 627, y: 344 }],
+        decorations: [{ x: 250, y: 180 }, { x: 370, y: 180 }]
+      },
+      {
+        name: "Le belvédère",
+        subtitle: "Un coucher de soleil rien que pour vous",
+        theme: "lookout",
+        start: { x: 170, y: 492, a: -0.18 },
+        goal: { x: 755, y: 215, a: 0 },
+        obstacles: [{ x: 580, y: 405 }, { x: 640, y: 405 }, { x: 700, y: 405 }, { x: 490, y: 270 }],
+        decorations: []
+      },
+      {
+        name: "Le ciné-parc",
+        subtitle: "La dernière séance commence bientôt",
+        theme: "drivein",
+        start: { x: 175, y: 465, a: -0.1 },
+        goal: { x: 760, y: 486, a: Math.PI },
+        obstacles: [{ x: 450, y: 300 }, { x: 515, y: 300 }, { x: 580, y: 300 }, { x: 645, y: 300 }],
+        decorations: []
+      },
+      {
+        name: "Le garage privé",
+        subtitle: "Votre petit cocon, enfin à la maison",
+        theme: "garage",
+        start: { x: 170, y: 500, a: 0 },
+        goal: { x: 730, y: 210, a: Math.PI / 2 },
+        obstacles: [{ x: 490, y: 435 }, { x: 555, y: 435 }, { x: 620, y: 435 }, { x: 685, y: 435 }],
+        decorations: []
+      }
+    ];
 
- <div class="action-row" id="cleanActions">
-  <button class="primary" id="finishCleaning">TERMINER LE NETTOYAGE →</button>
- </div>
+    const input = { forward: false, reverse: false, left: false, right: false };
+    const car = { x: 170, y: 475, angle: 0, speed: 0, color: colorPicker.value };
+    const carLength = 54;
+    const carWidth = 30;
+    const cones = [];
+    let levelIndex = 0;
+    let parkTimer = 0;
+    let completed = false;
+    let starsTime = 0;
+    let lastFrame = 0;
 
- <div class="action-row hidden" id="customActions">
-  <button class="pedal" id="pedal">ACCÉLÉRATEUR<br>▼</button>
-  <button class="primary finish" id="finishProject">TERMINER LE PROJET ★</button>
- </div>
- <footer>ATELIER DE TUNING • CRÉATION PERSONNELLE • AUCUN CHRONOMÈTRE</footer>
-</section>
+    function loadLevel(index) {
+      levelIndex = index;
+      const level = levels[levelIndex];
+      car.x = level.start.x;
+      car.y = level.start.y;
+      car.angle = level.start.a;
+      car.speed = 0;
+      parkTimer = 0;
+      completed = false;
+      starsTime = 0;
+      cones.splice(0, cones.length, ...level.obstacles.map(p => ({ ...p, r: 12 })));
+      modal.classList.remove("visible");
+      levelLabel.textContent = `Niveau ${levelIndex + 1} / 4 · ${level.name}`;
+      renderProgress();
+    }
 
-<section id="finalScreen" class="hidden">
- <canvas id="confetti"></canvas>
- <div class="final-card">
-  <div class="logo">PROJET TERMINÉ</div>
-  <h1>UNE CRÉATION UNIQUE !</h1>
-  <div id="finalCar" style="max-width:700px;margin:auto"></div>
-  <p id="personalMessage">Bravo ! Ton projet est terminé. Chaque détail raconte ton style et ta passion automobile.</p>
-  <button class="primary" id="download">↓ TÉLÉCHARGER LA CAPTURE</button>
-  <button class="choice" id="restart" style="margin:12px">RECOMMENCER</button>
- </div>
-</section>
+    function renderProgress() {
+      progressEl.innerHTML = "";
+      levels.forEach((_, i) => {
+        const dot = document.createElement("span");
+        dot.className = "dot" + (i < levelIndex ? " done" : "");
+        dot.setAttribute("aria-label", `Niveau ${i + 1}`);
+        progressEl.appendChild(dot);
+      });
+    }
 
-<canvas id="downloadCanvas"></canvas>
+    function wrapAngle(a) {
+      while (a > Math.PI) a -= Math.PI * 2;
+      while (a < -Math.PI) a += Math.PI * 2;
+      return a;
+    }
 
-<script>
-/* =========================================================
-   ATELIER DE TUNING
-   Pour modifier le message final, change le texte ci-dessous.
-========================================================= */
-const PERSONAL_MESSAGE = "Félicitations ! Tu as transformé une voiture oubliée en une véritable œuvre d'art. Continue à rêver, créer et rouler vers tes passions !";
+    function localPosition(x, y, target) {
+      const dx = x - target.x;
+      const dy = y - target.y;
+      const c = Math.cos(target.a);
+      const s = Math.sin(target.a);
+      return { x: dx * c + dy * s, y: -dx * s + dy * c };
+    }
 
-/* Histoire : repères historiques vérifiés à partir de sources
-   institutionnelles Ferrari et de références historiques.
-*/
-const HISTORY = {
- clean:{
-  title:"📜 1929 — La naissance de la Scuderia Ferrari",
-  text:"Enzo Ferrari fonde la Scuderia Ferrari en 1929 à Modène, en Italie. À ses débuts, elle prépare et engage des voitures Alfa Romeo en compétition. La Scuderia devient progressivement l'un des noms les plus célèbres du sport automobile."
- },
- paint:{
-  title:"📜 1947 — La première Ferrari de route",
-  text:"En 1947, la Ferrari 125 S devient la première voiture portant le nom Ferrari. Elle est équipée d'un moteur V12 de 1,5 litre conçu par Gioachino Colombo. La même année, elle remporte sa première victoire en compétition, au Grand Prix de Rome."
- },
- wheels:{
-  title:"📜 1950 — Ferrari entre en Formule 1",
-  text:"Ferrari participe au tout premier championnat du monde de Formule 1 en 1950. Elle est aujourd'hui la seule écurie à avoir participé à toutes les saisons du championnat depuis sa création."
- },
- details:{
-  title:"📜 1962 — Une légende de compétition",
-  text:"La Ferrari 250 GTO apparaît en 1962. Conçue pour la compétition, elle devient une voiture emblématique de l'histoire de Ferrari et illustre le lien étroit entre les voitures de route et la course."
- },
- plate:{
-  title:"📜 1987 — La Ferrari F40",
-  text:"Présentée en 1987 pour célébrer les 40 ans de Ferrari, la F40 est la dernière nouvelle voiture approuvée par Enzo Ferrari avant sa disparition en 1988. Elle est devenue l'un des modèles les plus emblématiques de la marque."
- },
- final:{
-  title:"📜 Aujourd'hui — Une passion qui continue",
-  text:"Ferrari poursuit son histoire entre compétition, innovation et voitures de sport. Son écurie détient un palmarès historique en Formule 1 et le cheval cabré demeure un symbole reconnu dans le monde entier."
- }
-};
+    function isInParkingSpace() {
+      const goal = levels[levelIndex].goal;
+      const p = localPosition(car.x, car.y, goal);
+      const angleDifference = Math.abs(wrapAngle(car.angle - goal.a));
+      const parallelDifference = Math.min(angleDifference, Math.abs(Math.PI - angleDifference));
+      return Math.abs(p.x) < 24 && Math.abs(p.y) < 13 && parallelDifference < 0.22;
+    }
 
-const $=id=>document.getElementById(id);
-const colors=[
- {name:"Rouge course",value:"#e52536"},
- {name:"Jaune Modène",value:"#f3c52d"},
- {name:"Bleu électrique",value:"#1679e8"},
- {name:"Vert émeraude",value:"#13a879"},
- {name:"Violet",value:"#8c49d9"},
- {name:"Orange",value:"#f07826"},
- {name:"Noir",value:"#252a35"},
- {name:"Blanc nacré",value:"#e7eaf0"}
-];
-let phase="clean",cleaning=false,cleaned=0,wheelStyle=0;
-let audioContext=null,oscillator=null,gain=null,filter=null;
-let animationConfetti=null;
+    function update(dt) {
+      if (completed) return;
 
-function setHistory(key){
- $("historyTitle").textContent=HISTORY[key].title;
- $("historyText").textContent=HISTORY[key].text;
-}
-function startGame(){
- $("intro").classList.add("hidden");
- $("game").classList.remove("hidden");
- setHistory("clean");
- resizeDirt();
-}
-$("startButton").addEventListener("click",startGame);
+      const steering = (input.right ? 1 : 0) - (input.left ? 1 : 0);
+      const throttle = (input.forward ? 1 : 0) - (input.reverse ? 1 : 0);
 
-/* Nettoyage tactile et souris */
-const dirt=$("dirtCanvas"),ctx=dirt.getContext("2d");
-function resizeDirt(){
- const rect=$("garage").getBoundingClientRect();
- dirt.width=Math.round(rect.width*devicePixelRatio);
- dirt.height=Math.round(rect.height*devicePixelRatio);
- dirt.style.width=rect.width+"px";dirt.style.height=rect.height+"px";
- ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
- ctx.clearRect(0,0,rect.width,rect.height);
- drawDirt(rect.width,rect.height);
-}
-function drawDirt(w,h){
- ctx.clearRect(0,0,w,h);
- ctx.save();
- ctx.beginPath();
- ctx.ellipse(w*.5,h*.68,w*.39,h*.36,0,0,Math.PI*2);
- ctx.clip();
- for(let i=0;i<450;i++){
-  let x=Math.random()*w,y=Math.random()*h;
-  let r=2+Math.random()*15;
-  ctx.fillStyle=i%3===0?"#55412c55":"#8a765b66";
-  ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
- }
- for(let i=0;i<45;i++){
-  ctx.fillStyle="#53432e22";
-  ctx.beginPath();ctx.ellipse(Math.random()*w,Math.random()*h,10+Math.random()*30,4+Math.random()*12,Math.random(),0,Math.PI*2);ctx.fill();
- }
- ctx.restore();
-}
-function eraseAt(x,y){
- if(phase!=="clean"||!cleaning)return;
- const rect=dirt.getBoundingClientRect();
- const px=x-rect.left,py=y-rect.top;
- ctx.globalCompositeOperation="destination-out";
- ctx.beginPath();ctx.arc(px,py,27,0,Math.PI*2);ctx.fill();
- ctx.globalCompositeOperation="source-over";
- const sponge=$("sponge");
- sponge.style.display="block";
- sponge.style.left=(px-22)+"px";sponge.style.top=(py-22)+"px";
- cleaned=Math.min(100,cleaned+.16);
- $("progressText").textContent=Math.floor(cleaned)+" %";
- $("progressFill").style.width=cleaned+"%";
- if(cleaned>=100)completeCleaning();
-}
-dirt.addEventListener("pointerdown",e=>{
- if(phase!=="clean")return;
- cleaning=true;dirt.setPointerCapture(e.pointerId);eraseAt(e.clientX,e.clientY);
-});
-dirt.addEventListener("pointermove",e=>{if(cleaning)eraseAt(e.clientX,e.clientY)});
-dirt.addEventListener("pointerup",()=>{cleaning=false});
-dirt.addEventListener("pointercancel",()=>{cleaning=false});
+      car.speed += throttle * 210 * dt;
+      car.speed *= Math.exp(-1.25 * dt);
+      car.speed = Math.max(-145, Math.min(205, car.speed));
 
-function completeCleaning(){
- cleaned=100;phase="paint";
- $("progressText").textContent="100 %";
- $("progressFill").style.width="100%";
- $("sponge").style.display="none";
- $("dirtCanvas").classList.add("hidden");
- $("progressArea").classList.add("hidden");
- $("stageTitle").textContent="Personnalisation de ta voiture";
- $("stepLabel").textContent="ÉTAPE 02 / PERSONNALISATION";
- $("cleanActions").classList.add("hidden");
- $("customControls").classList.remove("hidden");
- $("customActions").classList.remove("hidden");
- setHistory("paint");
- buildColors();
-}
-$("finishCleaning").addEventListener("click",()=>{
- if(cleaned<100){
-  // Le bouton permet de passer librement à la personnalisation.
-  cleaned=100;
-  completeCleaning();
- }
-});
+      const speedFactor = Math.min(1, Math.abs(car.speed) / 75);
+      if (steering !== 0) {
+        const lowSpeedAssist = Math.abs(car.speed) < 8 ? 0.32 : 0;
+        car.angle += steering * (0.25 + speedFactor * 1.55 + lowSpeedAssist) *
+          Math.sign(car.speed || 1) * dt;
+      }
 
-/* Couleurs */
-function buildColors(){
- const container=$("colorChoices");container.innerHTML="";
- colors.forEach((c,i)=>{
-  const b=document.createElement("button");
-  b.className="color"+(i===0?" selected":"");
-  b.style.background=c.value;b.title=c.name;b.setAttribute("aria-label",c.name);
-  b.addEventListener("click",()=>{
-   document.querySelectorAll(".color").forEach(x=>x.classList.remove("selected"));
-   b.classList.add("selected");
-   $("body").setAttribute("fill",c.value);
-   $("body").style.fill=c.value;
-   $("body").style.stroke="#641421";
-   $("body").style.filter="drop-shadow(0 -3px 2px #ffffff55)";
-   document.querySelector("#body").setAttribute("fill",c.value);
-   document.querySelector("#body").style.fill=c.value;
-   $("body").style.fill=c.value;
-   $("carSvg").querySelector("#body").setAttribute("fill",c.value);
-   $("carSvg").querySelector("#body").style.fill=c.value;
-   $("carSvg").querySelector("#body").style.filter="brightness(1.05)";
-   $("carSvg").querySelector("#body").setAttribute("style","fill:"+c.value);
-  });
-  container.appendChild(b);
- });
-}
+      car.x += Math.cos(car.angle) * car.speed * dt;
+      car.y += Math.sin(car.angle) * car.speed * dt;
 
-/* Onglets */
-document.querySelectorAll(".tab").forEach(tab=>{
- tab.addEventListener("click",()=>{
-  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
-  tab.classList.add("active");
-  $("panel-"+tab.dataset.tab).classList.add("active");
-  if(tab.dataset.tab==="wheels")setHistory("wheels");
-  if(tab.dataset.tab==="details")setHistory("details");
-  if(tab.dataset.tab==="plate")setHistory("plate");
- });
-});
+      bounceFromEdges();
+      bounceFromCones();
 
-/* Styles de jantes */
-document.querySelectorAll("[data-wheel]").forEach(b=>{
- b.addEventListener("click",()=>{
-  wheelStyle=Number(b.dataset.wheel);
-  document.querySelectorAll("[data-wheel]").forEach(x=>x.classList.remove("selected"));
-  b.classList.add("selected");
-  const designs=[
-   "M0 -25V25 M-25 0H25 M-18 -18L18 18 M18 -18L-18 18",
-   "M0 -25L8 -5L25 0L8 5L0 25L-8 5L-25 0L-8 -5Z",
-   "M0 -25L7 -8L24 -18L12 -2L25 0L12 7L20 23L4 12L0 25L-7 9L-23 18L-12 3L-25 0L-9 -7Z",
-   "M0 -26L0 26 M-25 -8L25 8 M-25 8L25 -8"
-  ];
-  ["rearSpokes","frontSpokes"].forEach(id=>{
-   const g=$(id);g.innerHTML="";
-   const p=document.createElementNS("http://www.w3.org/2000/svg","path");
-   p.setAttribute("d",designs[wheelStyle]);
-   p.setAttribute("stroke","#303b49");p.setAttribute("stroke-width","5");p.setAttribute("fill","none");
-   g.appendChild(p);
-  });
- });
-});
+      const insideAndAligned = isInParkingSpace();
+      const goal = levels[levelIndex].goal;
 
-/* Détails */
-$("spoilerToggle").addEventListener("change",e=>$("spoiler").style.display=e.target.checked?"block":"none");
-$("stripeToggle").addEventListener("change",e=>$("stripes").style.display=e.target.checked?"block":"none");
-$("neonToggle").addEventListener("change",e=>$("neonGlow").style.opacity=e.target.checked?".9":"0");
-$("plateInput").addEventListener("input",e=>{
- $("plateText").textContent=e.target.value.toUpperCase().slice(0,8)||"";
-});
+      if (insideAndAligned && Math.abs(car.speed) < 9) {
+        parkTimer += dt;
+      } else {
+        parkTimer = 0;
+      }
 
-/* Moteur sonore synthétique : Web Audio API */
-function startEngine(){
- if(!audioContext){
-  audioContext=new (window.AudioContext||window.webkitAudioContext)();
-  oscillator=audioContext.createOscillator();
-  filter=audioContext.createBiquadFilter();
-  gain=audioContext.createGain();
-  oscillator.type="sawtooth";
-  oscillator.frequency.value=65;
-  filter.type="lowpass";filter.frequency.value=450;
-  gain.gain.value=0;
-  oscillator.connect(filter);filter.connect(gain);gain.connect(audioContext.destination);
-  oscillator.start();
- }
- if(audioContext.state==="suspended")audioContext.resume();
- gain.gain.cancelScheduledValues(audioContext.currentTime);
- gain.gain.setTargetAtTime(.11,audioContext.currentTime,.06);
- oscillator.frequency.setTargetAtTime(105,audioContext.currentTime,.08);
- filter.frequency.setTargetAtTime(900,audioContext.currentTime,.1);
- $("carWrap").classList.add("revving");
- smokeEffect();
-}
-function stopEngine(){
- if(!audioContext)return;
- gain.gain.setTargetAtTime(0,audioContext.currentTime,.12);
- oscillator.frequency.setTargetAtTime(65,audioContext.currentTime,.15);
- filter.frequency.setTargetAtTime(450,audioContext.currentTime,.15);
- $("carWrap").classList.remove("revving");
-}
-function smokeEffect(){
- if(!$("pedal").classList.contains("pressed"))return;
- const s=document.createElement("div");
- s.className="smoke";
- s.style.left="12%";s.style.top="65%";
- $("garage").appendChild(s);
- setTimeout(()=>s.remove(),1500);
-}
-const pedal=$("pedal");
-pedal.addEventListener("pointerdown",e=>{
- e.preventDefault();pedal.setPointerCapture(e.pointerId);
- pedal.classList.add("pressed");startEngine();
-});
-function releasePedal(){
- pedal.classList.remove("pressed");stopEngine();
-}
-pedal.addEventListener("pointerup",releasePedal);
-pedal.addEventListener("pointercancel",releasePedal);
-pedal.addEventListener("lostpointercapture",releasePedal);
+      if (parkTimer >= 1.5) {
+        completeLevel();
+      }
 
-/* Fin du projet */
-$("finishProject").addEventListener("click",()=>{
- stopEngine();phase="final";
- $("game").classList.add("hidden");
- $("finalScreen").classList.remove("hidden");
- $("personalMessage").textContent=PERSONAL_MESSAGE;
- $("finalCar").innerHTML=$("carSvg").outerHTML;
- $("finalCar").querySelector("svg").style.width="100%";
- startConfetti();
- setHistory("final");
-});
+      // Garder le halo du parking réactif même lorsque la voiture roule lentement.
+      car.goalReady = insideAndAligned;
+      car.goal = goal;
+    }
 
-/* Confettis */
-const confetti=$("confetti"),cctx=confetti.getContext("2d");
-let particles=[];
-function startConfetti(){
- confetti.width=innerWidth*devicePixelRatio;
- confetti.height=innerHeight*devicePixelRatio;
- cctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
- particles=Array.from({length:160},()=>({
-  x:Math.random()*innerWidth,y:-Math.random()*innerHeight,
-  vx:(Math.random()-.5)*4,vy:2+Math.random()*5,
-  size:4+Math.random()*7,color:colors[Math.floor(Math.random()*colors.length)].value,
-  angle:Math.random()*6
- }));
- if(animationConfetti)cancelAnimationFrame(animationConfetti);
- function draw(){
-  cctx.clearRect(0,0,innerWidth,innerHeight);
-  particles.forEach(p=>{
-   p.x+=p.vx;p.y+=p.vy;p.angle+=.05;
-   if(p.y>innerHeight){p.y=-10;p.x=Math.random()*innerWidth}
-   cctx.save();cctx.translate(p.x,p.y);cctx.rotate(p.angle);
-   cctx.fillStyle=p.color;cctx.fillRect(0,0,p.size,p.size*1.5);
-   cctx.restore();
-  });
-  animationConfetti=requestAnimationFrame(draw);
- }
- draw();
-}
+    function bounceFromEdges() {
+      const marginX = 46;
+      const marginY = 44;
+      const edges = [
+        { hit: car.x < marginX, n: { x: 1, y: 0 }, axis: "x", limit: marginX },
+        { hit: car.x > W - marginX, n: { x: -1, y: 0 }, axis: "x", limit: W - marginX },
+        { hit: car.y < marginY, n: { x: 0, y: 1 }, axis: "y", limit: marginY },
+        { hit: car.y > H - marginY, n: { x: 0, y: -1 }, axis: "y", limit: H - marginY }
+      ];
 
-/* Capture PNG sans dépendance externe */
-$("download").addEventListener("click",()=>{
- const svg=$("finalCar").querySelector("svg");
- const serialized=new XMLSerializer().serializeToString(svg);
- const svgBlob=new Blob([serialized],{type:"image/svg+xml;charset=utf-8"});
- const url=URL.createObjectURL(svgBlob);
- const img=new Image();
- img.onload=()=>{
-  const canvas=$("downloadCanvas");
-  canvas.width=1200;canvas.height=600;
-  const c=canvas.getContext("2d");
-  const grad=c.createLinearGradient(0,0,0,600);
-  grad.addColorStop(0,"#dce8f0");grad.addColorStop(1,"#8494a4");
-  c.fillStyle=grad;c.fillRect(0,0,1200,600);
-  c.fillStyle="#202735";c.font="bold 32px Arial";c.fillText("ATELIER DE TUNING",50,60);
-  c.drawImage(img,60,90,1080,445);
-  c.fillStyle="#202735";c.font="bold 18px Arial";c.fillText("MA CRÉATION PERSONNELLE",50,570);
-  const a=document.createElement("a");
-  a.download="mon-projet-automobile.png";
-  a.href=canvas.toDataURL("image/png");a.click();
-  URL.revokeObjectURL(url);
- };
- img.src=url;
-});
+      for (const edge of edges) {
+        if (!edge.hit) continue;
+        car[edge.axis] = edge.limit;
+        const vx = Math.cos(car.angle) * car.speed;
+        const vy = Math.sin(car.angle) * car.speed;
+        const dot = vx * edge.n.x + vy * edge.n.y;
+        const rx = vx - 1.45 * dot * edge.n.x;
+        const ry = vy - 1.45 * dot * edge.n.y;
+        car.speed = Math.max(34, Math.hypot(rx, ry) * 0.72) * Math.sign(rx * edge.n.x + ry * edge.n.y);
+        if (Math.hypot(rx, ry) > 0.1) {
+          car.angle = Math.atan2(ry, rx);
+          if (car.speed < 0) car.angle = wrapAngle(car.angle + Math.PI);
+        }
+      }
+    }
 
-/* Redémarrage */
-$("restart").addEventListener("click",()=>location.reload());
-window.addEventListener("resize",()=>{
- if(phase==="clean")resizeDirt();
- if(!$("finalScreen").classList.contains("hidden"))startConfetti();
-});
-</script>
+    function bounceFromCones() {
+      for (const cone of cones) {
+        const dx = car.x - cone.x;
+        const dy = car.y - cone.y;
+        const distance = Math.hypot(dx, dy) || 0.001;
+        const minDistance = 30 + cone.r;
+
+        if (distance >= minDistance) continue;
+
+        const nx = dx / distance;
+        const ny = dy / distance;
+        const overlap = minDistance - distance;
+        car.x += nx * (overlap + 1);
+        car.y += ny * (overlap + 1);
+
+        const vx = Math.cos(car.angle) * car.speed;
+        const vy = Math.sin(car.angle) * car.speed;
+        const dot = vx * nx + vy * ny;
+
+        // Impulsion douce vers l'extérieur : le véhicule ne reste pas bloqué.
+        const rx = vx - 1.45 * Math.min(dot, 0) * nx + nx * 32;
+        const ry = vy - 1.45 * Math.min(dot, 0) * ny + ny * 32;
+        const magnitude = Math.max(35, Math.hypot(rx, ry) * 0.76);
+        car.angle = Math.atan2(ry, rx);
+        car.speed = magnitude;
+      }
+    }
+
+    function completeLevel() {
+      completed = true;
+      starsTime = 0;
+      document.getElementById("messageText").textContent =
+        MESSAGES_PERSONNALIZADOS[levelIndex];
+      const isLast = levelIndex === levels.length - 1;
+      document.getElementById("nextButton").textContent =
+        isLast ? "Rejouer les niveaux" : "Niveau suivant";
+      modal.classList.add("visible");
+      renderProgress();
+    }
+
+    function drawRoundedRect(x, y, w, h, radius, fill, stroke) {
+      ctx.beginPath();
+      ctx.roundRect(x, y, w, h, radius);
+      if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+      if (stroke) { ctx.strokeStyle = stroke; ctx.stroke(); }
+    }
+
+    function drawBackground() {
+      const level = levels[levelIndex];
+      ctx.clearRect(0, 0, W, H);
+
+      const sky = ctx.createLinearGradient(0, 0, 0, H);
+      sky.addColorStop(0, level.theme === "drivein" ? "#d9b4bd" : "#efd7b9");
+      sky.addColorStop(1, "#e5cda9");
+      ctx.fillStyle = sky;
+      ctx.fillRect(0, 0, W, H);
+
+      // Aire de jeu et bordure douce.
+      drawRoundedRect(28, 28, W - 56, H - 56, 32, "#e9d9bd", "#fff3df");
+      drawRoundedRect(65, 65, W - 130, H - 130, 28, "#d9c6a9", null);
+
+      // Petits points décoratifs sur le sol.
+      ctx.fillStyle = "rgba(255,255,255,.19)";
+      for (let x = 95; x < W - 80; x += 68) {
+        for (let y = 95; y < H - 70; y += 63) {
+          ctx.beginPath();
+          ctx.arc(x + ((y / 63) % 2) * 16, y, 2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      drawTheme(level);
+      drawGoal(level.goal);
+      drawCones();
+      drawCar();
+      drawParkingProgress();
+      if (completed) drawStars();
+    }
+
+    function drawTheme(level) {
+      if (level.theme === "cafe") {
+        drawRoundedRect(112, 115, 245, 100, 18, "#c47e70", "#f7e1c4");
+        drawRoundedRect(130, 132, 210, 62, 12, "#ffe8c9", null);
+        ctx.fillStyle = "#795b5a";
+        ctx.font = "bold 22px system-ui";
+        ctx.textAlign = "center";
+        ctx.fillText("☕ LE PETIT CAFÉ", 235, 171);
+        drawPlant(390, 166);
+        drawPlant(435, 166);
+      } else if (level.theme === "lookout") {
+        const sun = ctx.createRadialGradient(765, 145, 8, 765, 145, 90);
+        sun.addColorStop(0, "rgba(255,224,153,.9)");
+        sun.addColorStop(1, "rgba(255,224,153,0)");
+        ctx.fillStyle = sun;
+        ctx.fillRect(650, 45, 230, 200);
+        ctx.fillStyle = "#dc9f7d";
+        ctx.beginPath();
+        ctx.arc(765, 145, 43, 0, Math.PI * 2);
+        ctx.fill();
+        drawRoundedRect(110, 125, 365, 46, 20, "#c9b9a2", null);
+        ctx.fillStyle = "#f8e9d1";
+        ctx.font = "bold 18px system-ui";
+        ctx.textAlign = "center";
+        ctx.fillText("BELVÉDÈRE DES RÊVES", 290, 155);
+        drawFence(95, 235, 765);
+      } else if (level.theme === "drivein") {
+        drawRoundedRect(630, 110, 220, 135, 14, "#594f63", "#fff0d7");
+        drawRoundedRect(647, 127, 186, 98, 9, "#a87582", null);
+        ctx.fillStyle = "#fff0d7";
+        ctx.font = "bold 21px system-ui";
+        ctx.textAlign = "center";
+        ctx.fillText("CINÉ-PARC", 740, 168);
+        ctx.font = "14px system-ui";
+        ctx.fillText("SOIRÉE SOUS LES ÉTOILES", 740, 194);
+        drawRoundedRect(125, 132, 325, 60, 16, "#c8a9a2", null);
+        ctx.fillStyle = "#fff1df";
+        ctx.font = "bold 18px system-ui";
+        ctx.fillText("UNE PLACE POUR VOUS", 287, 169);
+      } else {
+        drawRoundedRect(620, 104, 230, 162, 18, "#b98270", "#f9e5cd");
+        drawRoundedRect(646, 128, 178, 116, 12, "#6f6265", null);
+        drawRoundedRect(665, 146, 140, 80, 8, "#d7b79a", null);
+        ctx.fillStyle = "#fff1df";
+        ctx.font = "bold 17px system-ui";
+        ctx.textAlign = "center";
+        ctx.fillText("CHEZ VOUS", 735, 176);
+        ctx.font = "25px system-ui";
+        ctx.fillText("⌂", 735, 211);
+        drawPlant(555, 150);
+      }
+
+      // Détails communs : bordures végétales.
+      drawPlant(110, 330);
+      drawPlant(850, 335);
+      drawPlant(132, 545);
+      drawPlant(835, 540);
+    }
+
+    function drawPlant(x, y) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.fillStyle = "#8b9b76";
+      for (let i = 0; i < 5; i++) {
+        ctx.beginPath();
+        ctx.ellipse((i - 2) * 8, -8 - (i % 2) * 5, 6, 12, (i - 2) * .24, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.fillStyle = "#c98f7b";
+      ctx.beginPath();
+      ctx.arc(0, 2, 10, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawFence(x1, y, x2) {
+      ctx.strokeStyle = "#ad9d88";
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.moveTo(x1, y);
+      ctx.lineTo(x2, y);
+      ctx.stroke();
+      for (let x = x1; x <= x2; x += 34) {
+        ctx.beginPath();
+        ctx.moveTo(x, y - 10);
+        ctx.lineTo(x, y + 11);
+        ctx.stroke();
+      }
+    }
+
+    function drawGoal(goal) {
+      const ready = !!car.goalReady;
+      ctx.save();
+      ctx.translate(goal.x, goal.y);
+      ctx.rotate(goal.a);
+
+      ctx.shadowColor = ready ? "rgba(80,183,130,.65)" : "rgba(255,197,72,.5)";
+      ctx.shadowBlur = 20;
+      drawRoundedRect(-56, -34, 112, 68, 13,
+        ready ? "rgba(104,198,144,.57)" : "rgba(255,211,102,.57)",
+        ready ? "#58ad7b" : "#e4ad43");
+      ctx.shadowBlur = 0;
+      ctx.setLineDash([9, 7]);
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = ready ? "#f8fff4" : "rgba(255,255,255,.9)";
+      ctx.strokeRect(-47, -26, 94, 52);
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = ready ? "#2e8158" : "#9b6d2d";
+      ctx.font = "bold 13px system-ui";
+      ctx.textAlign = "center";
+      ctx.fillText(ready ? "PARFAIT !" : "VOTRE PLACE", 0, 5);
+      ctx.restore();
+    }
+
+    function drawCones() {
+      for (const cone of cones) {
+        ctx.save();
+        ctx.translate(cone.x, cone.y);
+        ctx.fillStyle = "rgba(88,65,57,.16)";
+        ctx.beginPath();
+        ctx.ellipse(2, 8, 14, 7, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#df8d68";
+        ctx.beginPath();
+        ctx.moveTo(0, -13);
+        ctx.lineTo(12, 10);
+        ctx.lineTo(-12, 10);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = "#fff0dc";
+        ctx.fillRect(-7, 1, 14, 4);
+        ctx.restore();
+      }
+    }
+
+    function drawCar() {
+      ctx.save();
+      ctx.translate(car.x, car.y);
+      ctx.rotate(car.angle);
+
+      // Ombre et carrosserie.
+      ctx.fillStyle = "rgba(71, 54, 60, .22)";
+      ctx.beginPath();
+      ctx.ellipse(2, 5, 31, 19, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      drawRoundedRect(-27, -15, 54, 30, 10, car.color, "#fff3e8");
+
+      // Vitres.
+      drawRoundedRect(-9, -11, 20, 22, 6, "rgba(255,244,218,.88)", null);
+      drawRoundedRect(11, -10, 9, 20, 4, "rgba(255,231,201,.88)", null);
+
+      // Roues arrière.
+      ctx.fillStyle = "#51484b";
+      drawRoundedRect(-18, -17, 12, 5, 2, "#51484b", null);
+      drawRoundedRect(-18, 12, 12, 5, 2, "#51484b", null);
+
+      // Roues avant qui tournent visuellement avec la direction.
+      const wheelTurn = ((input.left ? -1 : 0) + (input.right ? 1 : 0)) * .42;
+      ctx.save();
+      ctx.translate(17, -14);
+      ctx.rotate(wheelTurn);
+      drawRoundedRect(-5, -3, 11, 6, 2, "#51484b", null);
+      ctx.restore();
+      ctx.save();
+      ctx.translate(17, 14);
+      ctx.rotate(wheelTurn);
+      drawRoundedRect(-5, -3, 11, 6, 2, "#51484b", null);
+      ctx.restore();
+
+      // Phares.
+      ctx.fillStyle = "#fff4c4";
+      drawRoundedRect(22, -10, 5, 7, 2, "#fff4c4", null);
+      drawRoundedRect(22, 3, 5, 7, 2, "#fff4c4", null);
+      ctx.fillStyle = "#e88f82";
+      drawRoundedRect(-27, -10, 4, 7, 2, "#e88f82", null);
+      drawRoundedRect(-27, 3, 4, 7, 2, "#e88f82", null);
+      ctx.restore();
+    }
+
+    function drawParkingProgress() {
+      if (parkTimer <= 0 || completed) return;
+      const goal = levels[levelIndex].goal;
+      ctx.save();
+      ctx.translate(goal.x, goal.y);
+      ctx.rotate(goal.a);
+      ctx.strokeStyle = "rgba(255,255,255,.95)";
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(0, 0, 43, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.min(1, parkTimer / 1.5));
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawStars() {
+      const t = starsTime;
+      const cx = levels[levelIndex].goal.x;
+      const cy = levels[levelIndex].goal.y;
+      for (let i = 0; i < 14; i++) {
+        const phase = i * 1.7;
+        const radius = 35 + ((t * 70 + i * 19) % 115);
+        const x = cx + Math.cos(phase + t * .8) * radius;
+        const y = cy + Math.sin(phase + t * .8) * radius * .55;
+        const alpha = Math.max(0, 1 - ((t * 70 + i * 19) % 115) / 115);
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = i % 2 ? "#fff2ad" : "#fffaf0";
+        ctx.font = `${12 + (i % 3) * 5}px system-ui`;
+        ctx.textAlign = "center";
+        ctx.fillText("★", x, y);
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function frame(timestamp) {
+      const dt = Math.min(.04, lastFrame ? (timestamp - lastFrame) / 1000 : 0);
+      lastFrame = timestamp;
+      update(dt);
+      if (completed) starsTime += dt;
+      drawBackground();
+      requestAnimationFrame(frame);
+    }
+
+    colorPicker.addEventListener("input", () => { car.color = colorPicker.value; });
+
+    document.getElementById("nextButton").addEventListener("click", () => {
+      if (levelIndex === levels.length - 1) loadLevel(0);
+      else loadLevel(levelIndex + 1);
+    });
+
+    const keyMap = {
+      ArrowUp: "forward", KeyW: "forward",
+      ArrowDown: "reverse", KeyS: "reverse",
+      ArrowLeft: "left", KeyA: "left",
+      ArrowRight: "right", KeyD: "right"
+    };
+
+    window.addEventListener("keydown", event => {
+      const control = keyMap[event.code];
+      if (!control) return;
+      event.preventDefault();
+      input[control] = true;
+    });
+
+    window.addEventListener("keyup", event => {
+      const control = keyMap[event.code];
+      if (control) {
+        event.preventDefault();
+        input[control] = false;
+      }
+    });
+
+    window.addEventListener("blur", () => {
+      Object.keys(input).forEach(key => { input[key] = false; });
+    });
+
+    document.querySelectorAll("[data-control]").forEach(button => {
+      const control = button.dataset.control;
+      const release = event => {
+        if (event) event.preventDefault();
+        input[control] = false;
+        button.classList.remove("pressed");
+      };
+
+      button.addEventListener("pointerdown", event => {
+        event.preventDefault();
+        input[control] = true;
+        button.classList.add("pressed");
+        button.setPointerCapture(event.pointerId);
+      });
+      button.addEventListener("pointerup", release);
+      button.addEventListener("pointercancel", release);
+      button.addEventListener("lostpointercapture", release);
+    });
+
+    loadLevel(0);
+    requestAnimationFrame(frame);
+  </script>
 </body>
 </html>

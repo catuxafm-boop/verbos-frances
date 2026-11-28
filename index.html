@@ -2,836 +2,789 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>Estacionamiento Zen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quiz Ferrari</title>
   <style>
     :root {
-      --ink: #594d55;
-      --cream: #fff8ed;
-      --rose: #f2b6a0;
-      --shadow: 0 14px 40px rgba(80, 55, 60, .16);
+      --rouge: #c62828;
+      --jaune: #f2c94c;
+      --encre: #34383d;
+      --papier: rgba(255, 253, 248, .95);
+      --vert: #e0f1e2;
+      --vert-encre: #316b43;
+      --erreur: #f5dfdc;
+      --erreur-encre: #8d463b;
     }
 
     * { box-sizing: border-box; }
 
     body {
-      margin: 0;
       min-height: 100vh;
-      color: var(--ink);
+      margin: 0;
+      padding: 18px;
+      display: grid;
+      place-items: center;
+      color: var(--encre);
       background:
-        radial-gradient(ellipse at 15% 5%, rgba(255, 224, 179, .75), transparent 40%),
-        linear-gradient(145deg, #f8d9c8, #f5e5d3 55%, #e9d8db);
-      font-family: ui-rounded, "Avenir Next", Avenir, system-ui, sans-serif;
+        radial-gradient(circle at 12% 8%, rgba(255, 218, 172, .9), transparent 30%),
+        linear-gradient(145deg, #f8efe2, #dce5eb);
+      font-family: "Avenir Next", Avenir, system-ui, sans-serif;
+      transition: background .4s ease;
+    }
+
+    body.avec-photo {
+      background-position: center;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+
+    .page { width: min(820px, 100%); }
+
+    .logo-ferrari {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      min-width: 90px;
+      padding: 7px 10px;
+      border: 2px solid #d5ac3d;
+      border-radius: 10px 10px 17px 17px;
+      color: #233d2d;
+      background: linear-gradient(180deg, #fff5c9, #e9c64b);
+      box-shadow: 0 5px 12px rgba(0,0,0,.15);
+      font-size: .72rem;
+      font-weight: 1000;
+      letter-spacing: .08em;
+    }
+
+    .logo-ferrari .cheval { font-size: 1.15rem; }
+
+    .entete-logo {
       display: flex;
       justify-content: center;
-      padding: 18px;
-      touch-action: manipulation;
+      margin-bottom: 12px;
     }
 
-    .app {
-      width: min(100%, 1050px);
+    .accueil,
+    .quiz {
+      width: 100%;
+    }
+
+    .panneau {
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 26px;
+      background: var(--papier);
+      box-shadow: 0 18px 45px rgba(45,40,35,.2);
+      backdrop-filter: blur(12px);
+    }
+
+    .accueil {
+      padding: clamp(22px, 5vw, 40px);
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .accueil::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 9px;
+      background: linear-gradient(90deg, #16843b 0 33%, #fff 33% 66%, #d52b2b 66%);
+    }
+
+    .accueil h1 {
+      margin: 5px 0 8px;
+      font-size: clamp(1.7rem, 6vw, 2.5rem);
+    }
+
+    .intro {
+      max-width: 560px;
+      margin: 0 auto 23px;
+      line-height: 1.6;
+    }
+
+    .choix-categories {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 13px;
+    }
+
+    .categorie-bouton {
+      min-height: 150px;
+      padding: 17px 12px;
+      border: 2px solid #eee4d8;
+      border-radius: 20px;
+      color: var(--encre);
+      background:
+        linear-gradient(145deg, rgba(255,255,255,.95), rgba(255,244,228,.92));
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+    }
+
+    .categorie-bouton:hover {
+      transform: translateY(-3px);
+      border-color: var(--rouge);
+      box-shadow: 0 10px 20px rgba(132,45,36,.12);
+    }
+
+    .categorie-bouton .icone {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 2rem;
+    }
+
+    .categorie-bouton small {
+      display: block;
+      margin-top: 6px;
+      font-weight: 500;
+      opacity: .75;
+    }
+
+    .decorations {
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
       gap: 12px;
+      margin-top: 22px;
+      padding-top: 15px;
+      border-top: 1px solid #eee3d7;
     }
 
-    header {
+    .decorations img {
+      width: min(42%, 230px);
+      height: 92px;
+      border-radius: 14px;
+      object-fit: cover;
+      box-shadow: 0 5px 16px rgba(0,0,0,.14);
+    }
+
+    .quiz { display: none; }
+    .quiz.visible { display: block; }
+
+    .quiz-entete {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      padding: 2px 6px;
+      gap: 10px;
+      margin-bottom: 12px;
     }
 
-    .brand h1 {
-      font-size: clamp(1.25rem, 3vw, 1.8rem);
+    .titre-quiz {
       margin: 0;
-      letter-spacing: -.04em;
+      font-size: clamp(1.1rem, 4vw, 1.65rem);
     }
 
-    .brand p {
-      margin: 3px 0 0;
-      font-size: .9rem;
-      opacity: .76;
-    }
-
-    .top-tools {
+    .outils-entete {
       display: flex;
       align-items: center;
-      gap: 9px;
-      background: rgba(255, 248, 237, .7);
-      border: 1px solid rgba(255,255,255,.75);
+      gap: 8px;
+    }
+
+    .compteur {
+      padding: 8px 11px;
       border-radius: 999px;
-      padding: 7px 12px;
-      box-shadow: 0 5px 16px rgba(80, 55, 60, .08);
+      background: rgba(255,255,255,.88);
       font-size: .9rem;
+      font-weight: 800;
       white-space: nowrap;
     }
 
-    #carColor {
-      width: 31px;
-      height: 31px;
-      padding: 0;
-      border: 2px solid white;
-      border-radius: 50%;
-      background: none;
-      cursor: pointer;
-      overflow: hidden;
-    }
-
-    #carColor::-webkit-color-swatch-wrapper { padding: 0; }
-    #carColor::-webkit-color-swatch { border: 0; border-radius: 50%; }
-
-    .stage {
-      width: 100%;
-      aspect-ratio: 3 / 2;
-      max-height: min(66vh, 680px);
-      position: relative;
-      overflow: hidden;
-      border: 6px solid rgba(255, 248, 237, .82);
-      border-radius: 24px;
-      background: #e8d1b3;
-      box-shadow: var(--shadow);
-    }
-
-    canvas {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-
-    .level-pill {
-      position: absolute;
-      top: 14px;
-      left: 14px;
-      padding: 8px 13px;
-      border: 1px solid rgba(255,255,255,.65);
+    .bouton-menu {
+      padding: 9px 12px;
+      border: 1px solid rgba(255,255,255,.8);
       border-radius: 999px;
-      background: rgba(255, 248, 237, .83);
-      backdrop-filter: blur(8px);
+      color: var(--encre);
+      background: rgba(255,255,255,.85);
+      font: inherit;
       font-size: .88rem;
       font-weight: 700;
-      pointer-events: none;
+      cursor: pointer;
     }
 
-    .tip {
-      position: absolute;
-      right: 14px;
-      top: 14px;
-      max-width: 48%;
-      padding: 8px 12px;
-      border-radius: 14px;
-      background: rgba(255, 248, 237, .77);
-      font-size: .82rem;
-      text-align: right;
-      pointer-events: none;
+    .progression {
+      height: 8px;
+      margin-bottom: 13px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(50,50,50,.12);
     }
 
-    .controls {
+    #barre {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--rouge);
+      transition: width .25s ease;
+    }
+
+    .carte-question {
+      min-height: 420px;
+      padding: clamp(20px, 5vw, 36px);
+      overflow: hidden;
+    }
+
+    .logos-question {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 14px;
+      margin-bottom: 12px;
     }
 
-    .pad {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-    }
-
-    .control-button {
-      width: clamp(54px, 8vw, 72px);
-      height: clamp(50px, 7vw, 62px);
-      border: 1px solid rgba(255,255,255,.9);
-      border-radius: 19px;
-      background: rgba(255, 248, 237, .82);
-      color: var(--ink);
-      box-shadow: 0 7px 16px rgba(80, 55, 60, .10);
-      font: inherit;
-      font-size: 1.25rem;
+    .etiquette {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 999px;
+      color: #773c2d;
+      background: #f4e3d4;
+      font-size: .8rem;
       font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    #question {
+      margin: 5px 0 20px;
+      font-size: clamp(1.15rem, 4vw, 1.55rem);
+      line-height: 1.4;
+    }
+
+    #reponses {
+      display: grid;
+      gap: 10px;
+    }
+
+    .reponse {
+      width: 100%;
+      min-height: 52px;
+      padding: 12px 15px;
+      border: 2px solid #e8e3dc;
+      border-radius: 15px;
+      color: var(--encre);
+      background: rgba(255,255,255,.96);
+      font: inherit;
+      text-align: left;
       cursor: pointer;
-      user-select: none;
-      -webkit-user-select: none;
-      touch-action: none;
-      transition: transform .12s, background .12s;
     }
 
-    .control-button:active,
-    .control-button.pressed {
-      transform: translateY(2px) scale(.97);
-      background: #ffe3c3;
+    .reponse:hover { border-color: var(--rouge); }
+    .reponse:disabled { cursor: default; opacity: 1; }
+
+    .reponse.correcte {
+      border-color: #84b692;
+      color: var(--vert-encre);
+      background: var(--vert);
     }
 
-    .drive-button { font-size: .83rem; }
-    .hint-text { font-size: .86rem; opacity: .78; text-align: center; }
+    .reponse.fausse {
+      border-color: #d6a49c;
+      color: var(--erreur-encre);
+      background: var(--erreur);
+    }
 
-    .modal {
-      position: absolute;
-      inset: 0;
-      z-index: 4;
+    #correction {
       display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 18px;
-      background: rgba(76, 57, 67, .23);
-      backdrop-filter: blur(5px);
+      margin-top: 15px;
+      padding: 13px;
+      border-left: 4px solid var(--rouge);
+      border-radius: 8px;
+      background: #faf4ed;
+      line-height: 1.5;
     }
 
-    .modal.visible { display: flex; }
+    #correction.visible { display: block; }
 
-    .postcard {
-      width: min(100%, 390px);
-      padding: 26px 25px 22px;
-      border: 1px solid rgba(255,255,255,.9);
-      border-radius: 26px;
-      background: linear-gradient(155deg, #fffaf0, #ffeedf);
-      box-shadow: 0 20px 60px rgba(59, 39, 49, .24);
-      text-align: center;
-      animation: arrive .45s cubic-bezier(.2,.8,.2,1) both;
-    }
-
-    @keyframes arrive {
-      from { transform: translateY(16px) scale(.94); opacity: 0; }
-      to { transform: translateY(0) scale(1); opacity: 1; }
-    }
-
-    .postcard .stamp { font-size: 2.2rem; }
-    .postcard h2 { margin: 8px 0 6px; font-size: 1.45rem; }
-    .postcard p { margin: 0 0 20px; line-height: 1.55; }
-
-    .next-button {
+    #suivant {
+      display: none;
+      width: 100%;
+      margin-top: 15px;
+      padding: 13px;
       border: 0;
       border-radius: 999px;
-      padding: 12px 21px;
       color: white;
-      background: linear-gradient(135deg, #df987d, #c97d83);
-      box-shadow: 0 7px 16px rgba(182, 104, 108, .22);
+      background: var(--rouge);
       font: inherit;
       font-weight: 800;
       cursor: pointer;
     }
 
-    .progress {
+    #suivant.visible { display: block; }
+
+    #fin {
+      display: none;
+      padding: 25px 10px;
+      text-align: center;
+    }
+
+    #fin.visible { display: block; }
+
+    #score-final {
+      margin: 10px;
+      color: var(--rouge);
+      font-size: 3rem;
+      font-weight: 900;
+    }
+
+    .logo-bas {
       display: flex;
       justify-content: center;
-      gap: 8px;
-      padding: 2px 0 0;
+      margin-top: 15px;
     }
 
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: rgba(89, 77, 85, .2);
-    }
-
-    .dot.done { background: #c98276; }
-
-    @media (max-width: 600px) {
+    @media (max-width: 620px) {
       body { padding: 10px; }
-      .app { gap: 9px; }
-      .stage { max-height: none; border-width: 4px; border-radius: 17px; }
-      header { padding: 1px 3px; }
-      .brand p { font-size: .78rem; }
-      .top-tools { padding: 5px 9px; font-size: .78rem; }
-      .tip { font-size: .72rem; }
-      .controls { gap: 8px; }
-      .pad { gap: 6px; }
-      .hint-text { display: none; }
-    }
-
-    @media (max-height: 700px) and (min-width: 601px) {
-      body { padding-top: 9px; padding-bottom: 9px; }
-      .stage { max-height: 62vh; }
+      .choix-categories { grid-template-columns: 1fr; }
+      .categorie-bouton { min-height: 105px; }
+      .decorations img { height: 72px; }
+      .quiz-entete { align-items: flex-start; }
+      .compteur { font-size: .78rem; }
+      .bouton-menu { font-size: .78rem; }
+      .carte-question { min-height: 390px; }
     }
   </style>
 </head>
 <body>
-  <main class="app">
-    <header>
-      <div class="brand">
-        <h1>Estacionamiento Zen <span aria-hidden="true">🌇</span></h1>
-        <p>Respire, tournez doucement… et prenez votre temps.</p>
-      </div>
-      <label class="top-tools" for="carColor">
-        <span>Couleur de la voiture</span>
-        <input id="carColor" type="color" value="#d98272" aria-label="Choisir la couleur de la voiture">
-      </label>
-    </header>
-
-    <section class="stage" aria-label="Jeu de stationnement">
-      <canvas id="game" width="960" height="640" aria-label="Jeu en vue de dessus"></canvas>
-      <div class="level-pill" id="levelLabel"></div>
-      <div class="tip">Flèches / WASD ou boutons · Aucun stress, aucune limite 🌼</div>
-
-      <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-        <div class="postcard">
-          <div class="stamp" aria-hidden="true">💌✨</div>
-          <h2 id="modalTitle">Carte postale débloquée !</h2>
-          <p id="messageText"></p>
-          <button class="next-button" id="nextButton">Continuer</button>
-        </div>
-      </div>
-    </section>
-
-    <div class="controls" aria-label="Commandes tactiles">
-      <div class="pad">
-        <button class="control-button" data-control="left" aria-label="Tourner à gauche">↶</button>
-        <button class="control-button" data-control="right" aria-label="Tourner à droite">↷</button>
-      </div>
-      <div class="hint-text">La voiture rebondit doucement contre les bordures et les cônes.</div>
-      <div class="pad">
-        <button class="control-button drive-button" data-control="reverse" aria-label="Reculer">◀ Reculer</button>
-        <button class="control-button drive-button" data-control="forward" aria-label="Avancer">Avancer ▶</button>
+  <main class="page">
+    <div class="entete-logo">
+      <div class="logo-ferrari" role="img" aria-label="Logo inspiré de Ferrari">
+        <span class="cheval">🐎</span><span>FERRARI</span>
       </div>
     </div>
 
-    <div class="progress" id="progress" aria-label="Progression des niveaux"></div>
+    <section class="accueil panneau" id="accueil">
+      <h1>Le grand quiz Ferrari 🏁</h1>
+      <p class="intro">
+        Choisissez votre thème et testez vos connaissances sur les voitures,
+        les pilotes, les responsables et les courses de Ferrari.
+      </p>
+
+      <div class="choix-categories">
+        <button class="categorie-bouton" data-categorie="modeles" type="button">
+          <span class="icone">🏎️</span>
+          Modèles de voitures
+          <small>Les Ferrari de route et leurs caractéristiques</small>
+        </button>
+
+        <button class="categorie-bouton" data-categorie="pilotes" type="button">
+          <span class="icone">🏆</span>
+          Pilotes et responsables
+          <small>Les pilotes et les dirigeants de la Scuderia</small>
+        </button>
+
+        <button class="categorie-bouton" data-categorie="courses" type="button">
+          <span class="icone">🏁</span>
+          Courses
+          <small>Grands Prix et résultats de Ferrari</small>
+        </button>
+      </div>
+
+      <div class="decorations">
+        <img
+          src="https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&w=900&q=82"
+          alt="Voiture de sport rouge dans un décor ensoleillé"
+          loading="lazy">
+        <div class="logo-ferrari" role="img" aria-label="Logo inspiré de Ferrari">
+          <span class="cheval">🐎</span><span>FERRARI</span>
+        </div>
+        <img
+          src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=82"
+          alt="Voiture de sport photographiée sur la route"
+          loading="lazy">
+      </div>
+    </section>
+
+    <section class="quiz" id="quiz">
+      <header class="quiz-entete">
+        <h1 class="titre-quiz" id="titreCategorie">Quiz Ferrari</h1>
+        <div class="outils-entete">
+          <div class="compteur">
+            <span id="numero">1</span>/<span id="total">10</span>
+            · <span id="score">0</span> point(s)
+          </div>
+          <button class="bouton-menu" id="retourMenu" type="button">Menu</button>
+        </div>
+      </header>
+
+      <div class="progression"><div id="barre"></div></div>
+
+      <section class="carte-question panneau">
+        <div id="contenu">
+          <div class="logos-question">
+            <span class="etiquette" id="etiquette"></span>
+            <div class="logo-ferrari" role="img" aria-label="Logo inspiré de Ferrari">
+              <span class="cheval">🐎</span><span>FERRARI</span>
+            </div>
+          </div>
+
+          <h2 id="question"></h2>
+          <div id="reponses"></div>
+          <div id="correction" role="status"></div>
+          <button id="suivant" type="button">Continuer</button>
+        </div>
+
+        <div id="fin">
+          <h2>Quiz terminé !</h2>
+          <div id="score-final"></div>
+          <p id="message-final"></p>
+          <button class="bouton-menu" id="retourFin" type="button">Choisir un autre thème</button>
+          <div class="logo-bas">
+            <div class="logo-ferrari" role="img" aria-label="Logo inspiré de Ferrari">
+              <span class="cheval">🐎</span><span>FERRARI</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
   </main>
 
   <script>
     "use strict";
 
-    // Personnalisez ici les quatre dédicaces, une par niveau.
-    const MESSAGES_PERSONNALISES = [
-      "bravo yoyooo jespere que tu tamusesss.",
-      "coucouuuu bravo tas eu encore une etapeee.",
-      "t deja a la??? omggggg bravo chouchouuuuu.",
-      "tas finis le jeuxxx bravoooooooo je suis fiere de toiiii"
-    ];
+    const IMAGE_FERRARI =
+      "https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&w=1600&q=82";
+    const IMAGE_COURSE =
+      "https://images.unsplash.com/photo-1532906619279-a4b7267faa5a?auto=format&fit=crop&w=1600&q=82";
+    const IMAGE_PORSCHE =
+      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=82";
 
-    const W = 960;
-    const H = 640;
-    const canvas = document.getElementById("game");
-    const ctx = canvas.getContext("2d");
-    const colorPicker = document.getElementById("carColor");
-    const modal = document.getElementById("modal");
-    const levelLabel = document.getElementById("levelLabel");
-    const progressEl = document.getElementById("progress");
-
-    const levels = [
-      {
-        name: "La pause-café",
-        subtitle: "Une petite place au soleil",
-        theme: "cafe",
-        start: { x: 175, y: 475, a: -0.12 },
-        goal: { x: 748, y: 190, a: Math.PI / 2 },
-        obstacles: [{ x: 500, y: 345 }, { x: 564, y: 344 }, { x: 627, y: 344 }],
-        decorations: [{ x: 250, y: 180 }, { x: 370, y: 180 }]
-      },
-      {
-        name: "Le belvédère",
-        subtitle: "Un coucher de soleil rien que pour vous",
-        theme: "lookout",
-        start: { x: 170, y: 492, a: -0.18 },
-        goal: { x: 755, y: 215, a: 0 },
-        obstacles: [{ x: 580, y: 405 }, { x: 640, y: 405 }, { x: 700, y: 405 }, { x: 490, y: 270 }],
-        decorations: []
-      },
-      {
-        name: "Le ciné-parc",
-        subtitle: "La dernière séance commence bientôt",
-        theme: "drivein",
-        start: { x: 175, y: 465, a: -0.1 },
-        goal: { x: 760, y: 486, a: Math.PI },
-        obstacles: [{ x: 450, y: 300 }, { x: 515, y: 300 }, { x: 580, y: 300 }, { x: 645, y: 300 }],
-        decorations: []
-      },
-      {
-        name: "Le garage privé",
-        subtitle: "Votre petit cocon, enfin à la maison",
-        theme: "garage",
-        start: { x: 170, y: 500, a: 0 },
-        goal: { x: 730, y: 210, a: Math.PI / 2 },
-        obstacles: [{ x: 490, y: 435 }, { x: 555, y: 435 }, { x: 620, y: 435 }, { x: 685, y: 435 }],
-        decorations: []
-      }
-    ];
-
-    const input = { forward: false, reverse: false, left: false, right: false };
-    const car = { x: 170, y: 475, angle: 0, speed: 0, color: colorPicker.value };
-    const carLength = 54;
-    const carWidth = 30;
-    const cones = [];
-    let levelIndex = 0;
-    let parkTimer = 0;
-    let completed = false;
-    let starsTime = 0;
-    let lastFrame = 0;
-
-    function loadLevel(index) {
-      levelIndex = index;
-      const level = levels[levelIndex];
-      car.x = level.start.x;
-      car.y = level.start.y;
-      car.angle = level.start.a;
-      car.speed = 0;
-      parkTimer = 0;
-      completed = false;
-      starsTime = 0;
-      cones.splice(0, cones.length, ...level.obstacles.map(p => ({ ...p, r: 12 })));
-      modal.classList.remove("visible");
-      levelLabel.textContent = `Niveau ${levelIndex + 1} / 4 · ${level.name}`;
-      renderProgress();
-    }
-
-    function renderProgress() {
-      progressEl.innerHTML = "";
-      levels.forEach((_, i) => {
-        const dot = document.createElement("span");
-        dot.className = "dot" + (i < levelIndex ? " done" : "");
-        dot.setAttribute("aria-label", `Niveau ${i + 1}`);
-        progressEl.appendChild(dot);
-      });
-    }
-
-    function wrapAngle(a) {
-      while (a > Math.PI) a -= Math.PI * 2;
-      while (a < -Math.PI) a += Math.PI * 2;
-      return a;
-    }
-
-    function localPosition(x, y, target) {
-      const dx = x - target.x;
-      const dy = y - target.y;
-      const c = Math.cos(target.a);
-      const s = Math.sin(target.a);
-      return { x: dx * c + dy * s, y: -dx * s + dy * c };
-    }
-
-    function isInParkingSpace() {
-      const goal = levels[levelIndex].goal;
-      const p = localPosition(car.x, car.y, goal);
-      const angleDifference = Math.abs(wrapAngle(car.angle - goal.a));
-      const parallelDifference = Math.min(angleDifference, Math.abs(Math.PI - angleDifference));
-      return Math.abs(p.x) < 24 && Math.abs(p.y) < 13 && parallelDifference < 0.22;
-    }
-
-    function update(dt) {
-      if (completed) return;
-
-      const steering = (input.right ? 1 : 0) - (input.left ? 1 : 0);
-      const throttle = (input.forward ? 1 : 0) - (input.reverse ? 1 : 0);
-
-      car.speed += throttle * 210 * dt;
-      car.speed *= Math.exp(-1.25 * dt);
-      car.speed = Math.max(-145, Math.min(205, car.speed));
-
-      const speedFactor = Math.min(1, Math.abs(car.speed) / 75);
-      if (steering !== 0) {
-        const lowSpeedAssist = Math.abs(car.speed) < 8 ? 0.32 : 0;
-        car.angle += steering * (0.25 + speedFactor * 1.55 + lowSpeedAssist) *
-          Math.sign(car.speed || 1) * dt;
-      }
-
-      car.x += Math.cos(car.angle) * car.speed * dt;
-      car.y += Math.sin(car.angle) * car.speed * dt;
-
-      bounceFromEdges();
-      bounceFromCones();
-
-      const insideAndAligned = isInParkingSpace();
-      const goal = levels[levelIndex].goal;
-
-      if (insideAndAligned && Math.abs(car.speed) < 9) {
-        parkTimer += dt;
-      } else {
-        parkTimer = 0;
-      }
-
-      if (parkTimer >= 1.5) {
-        completeLevel();
-      }
-
-      // Garder le halo du parking réactif même lorsque la voiture roule lentement.
-      car.goalReady = insideAndAligned;
-      car.goal = goal;
-    }
-
-    function bounceFromEdges() {
-      const marginX = 46;
-      const marginY = 44;
-      const edges = [
-        { hit: car.x < marginX, n: { x: 1, y: 0 }, axis: "x", limit: marginX },
-        { hit: car.x > W - marginX, n: { x: -1, y: 0 }, axis: "x", limit: W - marginX },
-        { hit: car.y < marginY, n: { x: 0, y: 1 }, axis: "y", limit: marginY },
-        { hit: car.y > H - marginY, n: { x: 0, y: -1 }, axis: "y", limit: H - marginY }
-      ];
-
-      for (const edge of edges) {
-        if (!edge.hit) continue;
-        car[edge.axis] = edge.limit;
-        const vx = Math.cos(car.angle) * car.speed;
-        const vy = Math.sin(car.angle) * car.speed;
-        const dot = vx * edge.n.x + vy * edge.n.y;
-        const rx = vx - 1.45 * dot * edge.n.x;
-        const ry = vy - 1.45 * dot * edge.n.y;
-        car.speed = Math.max(34, Math.hypot(rx, ry) * 0.72) * Math.sign(rx * edge.n.x + ry * edge.n.y);
-        if (Math.hypot(rx, ry) > 0.1) {
-          car.angle = Math.atan2(ry, rx);
-          if (car.speed < 0) car.angle = wrapAngle(car.angle + Math.PI);
+    const QUESTIONS = {
+      modeles: [
+        {
+          question: "Est-ce que le vollant de la Ferrari Luce a le volant parfaitement rond ? Ou il est peut-être un peu droit en bas?",
+          reponses: ["Il est complètement rond", "Non, il est droit en bas"],
+          bonne: 1,
+          image: IMAGE_FERRARI
+        },
+        {
+          question: "Le toit de la Ferrari amalfi spider se plie en combien lorsqu'il se met dans le compartiment arrière?",
+          reponses: ["2", "3", "4", "5"],
+          bonne: 1,
+          image: IMAGE_FERRARI
+        },
+        {
+          question: "La Ferrari 849 Testarossa a quoi comme type de moteur??",
+          reponses: ["V12", "V6", "V10", "V8"],
+          bonne: 3,
+          image: IMAGE_FERRARI
+        },
+        {
+          question: "Combien de chevaux a la Ferrari Testarossa?",
+          reponses: ["1050cv", "1200cv", "620cv", "830cv"],
+          bonne: 0,
+          image: IMAGE_FERRARI
+        },
+        {
+          question: "Quel type de porte a la Ferrari Enzo?",
+          reponses: ["porte antsgoniste", "porte papillon", "porte normale", "porte élytre"],
+          bonne: 3,
+          image: IMAGE_FERRARI
+        },
+        {
+          question: "Combien de places a Ferrari Daytona SP3?",
+          reponses: ["1 place", "2 places", "3 places", "4 places ou plus"],
+          bonne: 1,
+          image: IMAGE_FERRARI
+        },
+        {
+          question: "Quelle a été la première voiture créée par la fameuse marque de supercars Ferrari?",
+          reponses: ["Ferrari 125 S", "Ferrari 159 S", "The Ferrari 125 S"],
+          bonne: 0,
+          image: IMAGE_FERRARI
+        },
+        {
+          question: "Quelle est la puissance de la première Ferrari?(elle est en kW donc kilowatts)",
+          reponses: ["80kW", "68kW", "87kW", "90kW"],
+          bonne: 2,
+          image: IMAGE_FERRARI
+        },
+        {
+          question: "La Ferrari 296 spéciale a elle une vitre transparente à l'arrière laissant voir le moteur?",
+          reponses: ["oui", "non"],
+          bonne: 0,
+          image: IMAGE_FERRARI
+        },
+        {
+          question: "La Ferrari 159 S a-elle des fenêtres?",
+          reponses: ["oui, elle a 2 fenêtres", "non, elle est complètement découverte en haut"],
+          bonne: 1,
+          image: IMAGE_FERRARI
         }
-      }
-    }
+      ],
 
-    function bounceFromCones() {
-      for (const cone of cones) {
-        const dx = car.x - cone.x;
-        const dy = car.y - cone.y;
-        const distance = Math.hypot(dx, dy) || 0.001;
-        const minDistance = 30 + cone.r;
-
-        if (distance >= minDistance) continue;
-
-        const nx = dx / distance;
-        const ny = dy / distance;
-        const overlap = minDistance - distance;
-        car.x += nx * (overlap + 1);
-        car.y += ny * (overlap + 1);
-
-        const vx = Math.cos(car.angle) * car.speed;
-        const vy = Math.sin(car.angle) * car.speed;
-        const dot = vx * nx + vy * ny;
-
-        // Impulsion douce vers l'extérieur : le véhicule ne reste pas bloqué.
-        const rx = vx - 1.45 * Math.min(dot, 0) * nx + nx * 32;
-        const ry = vy - 1.45 * Math.min(dot, 0) * ny + ny * 32;
-        const magnitude = Math.max(35, Math.hypot(rx, ry) * 0.76);
-        car.angle = Math.atan2(ry, rx);
-        car.speed = magnitude;
-      }
-    }
-
-    function completeLevel() {
-      completed = true;
-      starsTime = 0;
-      document.getElementById("messageText").textContent =
-        MESSAGES_PERSONNALIZADOS[levelIndex];
-      const isLast = levelIndex === levels.length - 1;
-      document.getElementById("nextButton").textContent =
-        isLast ? "Rejouer les niveaux" : "Niveau suivant";
-      modal.classList.add("visible");
-      renderProgress();
-    }
-
-    function drawRoundedRect(x, y, w, h, radius, fill, stroke) {
-      ctx.beginPath();
-      ctx.roundRect(x, y, w, h, radius);
-      if (fill) { ctx.fillStyle = fill; ctx.fill(); }
-      if (stroke) { ctx.strokeStyle = stroke; ctx.stroke(); }
-    }
-
-    function drawBackground() {
-      const level = levels[levelIndex];
-      ctx.clearRect(0, 0, W, H);
-
-      const sky = ctx.createLinearGradient(0, 0, 0, H);
-      sky.addColorStop(0, level.theme === "drivein" ? "#d9b4bd" : "#efd7b9");
-      sky.addColorStop(1, "#e5cda9");
-      ctx.fillStyle = sky;
-      ctx.fillRect(0, 0, W, H);
-
-      // Aire de jeu et bordure douce.
-      drawRoundedRect(28, 28, W - 56, H - 56, 32, "#e9d9bd", "#fff3df");
-      drawRoundedRect(65, 65, W - 130, H - 130, 28, "#d9c6a9", null);
-
-      // Petits points décoratifs sur le sol.
-      ctx.fillStyle = "rgba(255,255,255,.19)";
-      for (let x = 95; x < W - 80; x += 68) {
-        for (let y = 95; y < H - 70; y += 63) {
-          ctx.beginPath();
-          ctx.arc(x + ((y / 63) % 2) * 16, y, 2, 0, Math.PI * 2);
-          ctx.fill();
+      pilotes: [
+        {
+          question: "Quelle de ces phrases a dit Charles Leclerc quand il était encore un enfant?",
+          reponses: [
+            "\"When I was little, my dream was to become an F1 driver, because I used to watch it on TV with my parents.\"",
+            "\"Ever since I was a kid, my most heartfelt dream was to be able to drive the red car and I’ve managed to make it come true.\"",
+            "\"Ever since I was a child, my biggest dream was to drive a Ferrari.\""
+          ],
+          bonne: 1,
+          image: IMAGE_COURSE
+        },
+        {
+          question: "En quelle année est né Charles Leclerc?",
+          reponses: ["2000", "2002", "1997", "1998"],
+          bonne: 2,
+          image: IMAGE_COURSE
+        },
+        {
+          question: "Est ce que Charles Leclerc fait la taille du papa de Yohan?",
+          reponses: ["oui", "non"],
+          bonne: 0,
+          image: IMAGE_COURSE
+        },
+        {
+          question: "Charles Leclerc est déjà arrivé au podium avec une autre compagnie?",
+          reponses: ["oui, quelques fois", "non, aucune fois"],
+          bonne: 1,
+          image: IMAGE_COURSE
+        },
+        {
+          question: "Lewis Hamilton est plus âgé que t freres et ta soeur? Il est né en quelle année?",
+          reponses: ["1985", "1995", "1990", "1987"],
+          bonne: 0,
+          image: IMAGE_COURSE
+        },
+        {
+          question: "Lewis Hamilton est arrivé au podium plus de 200 fois??",
+          reponses: ["oui", "non"],
+          bonne: 0,
+          image: IMAGE_COURSE
+        },
+        {
+          question: "Lewis Hamilton a déjà gagné combien de titres de champion mondial?",
+          reponses: ["4", "7", "5", "6"],
+          bonne: 1,
+          image: IMAGE_COURSE
+        },
+        {
+          question: "Où Frédéric Vasseur a fait l'École Supérieure des Techniques Aéronautiques et de Construction Automobile en 1995?",
+          reponses: ["Suisse", "allemagne", "France", "Autriche"],
+          bonne: 2,
+          image: IMAGE_COURSE
+        },
+        {
+          question: "En quelle année est né Frédéric Vasseur?",
+          reponses: [
+            "en mai (COMME MOI ET TA MAMAN)",
+            "en avril(comme ma mereee)",
+            "en août (comme Laurene et ton pereee)"
+          ],
+          bonne: null,
+          image: IMAGE_COURSE
         }
-      }
+      ],
 
-      drawTheme(level);
-      drawGoal(level.goal);
-      drawCones();
-      drawCar();
-      drawParkingProgress();
-      if (completed) drawStars();
-    }
-
-    function drawTheme(level) {
-      if (level.theme === "cafe") {
-        drawRoundedRect(112, 115, 245, 100, 18, "#c47e70", "#f7e1c4");
-        drawRoundedRect(130, 132, 210, 62, 12, "#ffe8c9", null);
-        ctx.fillStyle = "#795b5a";
-        ctx.font = "bold 22px system-ui";
-        ctx.textAlign = "center";
-        ctx.fillText("☕ LE PETIT CAFÉ", 235, 171);
-        drawPlant(390, 166);
-        drawPlant(435, 166);
-      } else if (level.theme === "lookout") {
-        const sun = ctx.createRadialGradient(765, 145, 8, 765, 145, 90);
-        sun.addColorStop(0, "rgba(255,224,153,.9)");
-        sun.addColorStop(1, "rgba(255,224,153,0)");
-        ctx.fillStyle = sun;
-        ctx.fillRect(650, 45, 230, 200);
-        ctx.fillStyle = "#dc9f7d";
-        ctx.beginPath();
-        ctx.arc(765, 145, 43, 0, Math.PI * 2);
-        ctx.fill();
-        drawRoundedRect(110, 125, 365, 46, 20, "#c9b9a2", null);
-        ctx.fillStyle = "#f8e9d1";
-        ctx.font = "bold 18px system-ui";
-        ctx.textAlign = "center";
-        ctx.fillText("BELVÉDÈRE DES RÊVES", 290, 155);
-        drawFence(95, 235, 765);
-      } else if (level.theme === "drivein") {
-        drawRoundedRect(630, 110, 220, 135, 14, "#594f63", "#fff0d7");
-        drawRoundedRect(647, 127, 186, 98, 9, "#a87582", null);
-        ctx.fillStyle = "#fff0d7";
-        ctx.font = "bold 21px system-ui";
-        ctx.textAlign = "center";
-        ctx.fillText("CINÉ-PARC", 740, 168);
-        ctx.font = "14px system-ui";
-        ctx.fillText("SOIRÉE SOUS LES ÉTOILES", 740, 194);
-        drawRoundedRect(125, 132, 325, 60, 16, "#c8a9a2", null);
-        ctx.fillStyle = "#fff1df";
-        ctx.font = "bold 18px system-ui";
-        ctx.fillText("UNE PLACE POUR VOUS", 287, 169);
-      } else {
-        drawRoundedRect(620, 104, 230, 162, 18, "#b98270", "#f9e5cd");
-        drawRoundedRect(646, 128, 178, 116, 12, "#6f6265", null);
-        drawRoundedRect(665, 146, 140, 80, 8, "#d7b79a", null);
-        ctx.fillStyle = "#fff1df";
-        ctx.font = "bold 17px system-ui";
-        ctx.textAlign = "center";
-        ctx.fillText("CHEZ VOUS", 735, 176);
-        ctx.font = "25px system-ui";
-        ctx.fillText("⌂", 735, 211);
-        drawPlant(555, 150);
-      }
-
-      // Détails communs : bordures végétales.
-      drawPlant(110, 330);
-      drawPlant(850, 335);
-      drawPlant(132, 545);
-      drawPlant(835, 540);
-    }
-
-    function drawPlant(x, y) {
-      ctx.save();
-      ctx.translate(x, y);
-      ctx.fillStyle = "#8b9b76";
-      for (let i = 0; i < 5; i++) {
-        ctx.beginPath();
-        ctx.ellipse((i - 2) * 8, -8 - (i % 2) * 5, 6, 12, (i - 2) * .24, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.fillStyle = "#c98f7b";
-      ctx.beginPath();
-      ctx.arc(0, 2, 10, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-    }
-
-    function drawFence(x1, y, x2) {
-      ctx.strokeStyle = "#ad9d88";
-      ctx.lineWidth = 5;
-      ctx.beginPath();
-      ctx.moveTo(x1, y);
-      ctx.lineTo(x2, y);
-      ctx.stroke();
-      for (let x = x1; x <= x2; x += 34) {
-        ctx.beginPath();
-        ctx.moveTo(x, y - 10);
-        ctx.lineTo(x, y + 11);
-        ctx.stroke();
-      }
-    }
-
-    function drawGoal(goal) {
-      const ready = !!car.goalReady;
-      ctx.save();
-      ctx.translate(goal.x, goal.y);
-      ctx.rotate(goal.a);
-
-      ctx.shadowColor = ready ? "rgba(80,183,130,.65)" : "rgba(255,197,72,.5)";
-      ctx.shadowBlur = 20;
-      drawRoundedRect(-56, -34, 112, 68, 13,
-        ready ? "rgba(104,198,144,.57)" : "rgba(255,211,102,.57)",
-        ready ? "#58ad7b" : "#e4ad43");
-      ctx.shadowBlur = 0;
-      ctx.setLineDash([9, 7]);
-      ctx.lineWidth = 3;
-      ctx.strokeStyle = ready ? "#f8fff4" : "rgba(255,255,255,.9)";
-      ctx.strokeRect(-47, -26, 94, 52);
-      ctx.setLineDash([]);
-
-      ctx.fillStyle = ready ? "#2e8158" : "#9b6d2d";
-      ctx.font = "bold 13px system-ui";
-      ctx.textAlign = "center";
-      ctx.fillText(ready ? "PARFAIT !" : "VOTRE PLACE", 0, 5);
-      ctx.restore();
-    }
-
-    function drawCones() {
-      for (const cone of cones) {
-        ctx.save();
-        ctx.translate(cone.x, cone.y);
-        ctx.fillStyle = "rgba(88,65,57,.16)";
-        ctx.beginPath();
-        ctx.ellipse(2, 8, 14, 7, 0, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = "#df8d68";
-        ctx.beginPath();
-        ctx.moveTo(0, -13);
-        ctx.lineTo(12, 10);
-        ctx.lineTo(-12, 10);
-        ctx.closePath();
-        ctx.fill();
-        ctx.fillStyle = "#fff0dc";
-        ctx.fillRect(-7, 1, 14, 4);
-        ctx.restore();
-      }
-    }
-
-    function drawCar() {
-      ctx.save();
-      ctx.translate(car.x, car.y);
-      ctx.rotate(car.angle);
-
-      // Ombre et carrosserie.
-      ctx.fillStyle = "rgba(71, 54, 60, .22)";
-      ctx.beginPath();
-      ctx.ellipse(2, 5, 31, 19, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      drawRoundedRect(-27, -15, 54, 30, 10, car.color, "#fff3e8");
-
-      // Vitres.
-      drawRoundedRect(-9, -11, 20, 22, 6, "rgba(255,244,218,.88)", null);
-      drawRoundedRect(11, -10, 9, 20, 4, "rgba(255,231,201,.88)", null);
-
-      // Roues arrière.
-      ctx.fillStyle = "#51484b";
-      drawRoundedRect(-18, -17, 12, 5, 2, "#51484b", null);
-      drawRoundedRect(-18, 12, 12, 5, 2, "#51484b", null);
-
-      // Roues avant qui tournent visuellement avec la direction.
-      const wheelTurn = ((input.left ? -1 : 0) + (input.right ? 1 : 0)) * .42;
-      ctx.save();
-      ctx.translate(17, -14);
-      ctx.rotate(wheelTurn);
-      drawRoundedRect(-5, -3, 11, 6, 2, "#51484b", null);
-      ctx.restore();
-      ctx.save();
-      ctx.translate(17, 14);
-      ctx.rotate(wheelTurn);
-      drawRoundedRect(-5, -3, 11, 6, 2, "#51484b", null);
-      ctx.restore();
-
-      // Phares.
-      ctx.fillStyle = "#fff4c4";
-      drawRoundedRect(22, -10, 5, 7, 2, "#fff4c4", null);
-      drawRoundedRect(22, 3, 5, 7, 2, "#fff4c4", null);
-      ctx.fillStyle = "#e88f82";
-      drawRoundedRect(-27, -10, 4, 7, 2, "#e88f82", null);
-      drawRoundedRect(-27, 3, 4, 7, 2, "#e88f82", null);
-      ctx.restore();
-    }
-
-    function drawParkingProgress() {
-      if (parkTimer <= 0 || completed) return;
-      const goal = levels[levelIndex].goal;
-      ctx.save();
-      ctx.translate(goal.x, goal.y);
-      ctx.rotate(goal.a);
-      ctx.strokeStyle = "rgba(255,255,255,.95)";
-      ctx.lineWidth = 4;
-      ctx.beginPath();
-      ctx.arc(0, 0, 43, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.min(1, parkTimer / 1.5));
-      ctx.stroke();
-      ctx.restore();
-    }
-
-    function drawStars() {
-      const t = starsTime;
-      const cx = levels[levelIndex].goal.x;
-      const cy = levels[levelIndex].goal.y;
-      for (let i = 0; i < 14; i++) {
-        const phase = i * 1.7;
-        const radius = 35 + ((t * 70 + i * 19) % 115);
-        const x = cx + Math.cos(phase + t * .8) * radius;
-        const y = cy + Math.sin(phase + t * .8) * radius * .55;
-        const alpha = Math.max(0, 1 - ((t * 70 + i * 19) % 115) / 115);
-        ctx.globalAlpha = alpha;
-        ctx.fillStyle = i % 2 ? "#fff2ad" : "#fffaf0";
-        ctx.font = `${12 + (i % 3) * 5}px system-ui`;
-        ctx.textAlign = "center";
-        ctx.fillText("★", x, y);
-      }
-      ctx.globalAlpha = 1;
-    }
-
-    function frame(timestamp) {
-      const dt = Math.min(.04, lastFrame ? (timestamp - lastFrame) / 1000 : 0);
-      lastFrame = timestamp;
-      update(dt);
-      if (completed) starsTime += dt;
-      drawBackground();
-      requestAnimationFrame(frame);
-    }
-
-    colorPicker.addEventListener("input", () => { car.color = colorPicker.value; });
-
-    document.getElementById("nextButton").addEventListener("click", () => {
-      if (levelIndex === levels.length - 1) loadLevel(0);
-      else loadLevel(levelIndex + 1);
-    });
-
-    const keyMap = {
-      ArrowUp: "forward", KeyW: "forward",
-      ArrowDown: "reverse", KeyS: "reverse",
-      ArrowLeft: "left", KeyA: "left",
-      ArrowRight: "right", KeyD: "right"
+      courses: [
+        {
+          question: "Quand sera le prochain grand prix de Qatar?",
+          reponses: ["le 29 novembre", "le 30 novembre", "le 29 décembre"],
+          bonne: 0,
+          image: IMAGE_COURSE
+        },
+        {
+          question: "En quelle place sont restés Lewis Hamilton et Charles Leclerc dans le São Paulo grand prix ?",
+          reponses: ["4eme et 5eme", "8eme et 11eme", "9eme et 8eme"],
+          bonne: 2,
+          image: IMAGE_COURSE
+        },
+        {
+          question: "Au grand prix 2026 des États-Unis, qui est resté en deuxième place?",
+          reponses: ["Lewis Hamilton", "Charles Leclerc"],
+          bonne: 1,
+          image: IMAGE_COURSE
+        },
+        {
+          question: "Au Barcelona-Cataluña grand prix, un des deux pilotes de Ferrari a fini en première place?",
+          reponses: ["oui", "non"],
+          bonne: 0,
+          image: IMAGE_COURSE
+        },
+        {
+          question: "Quelle était la vélocité maximale de Lewis Hamilton dans le grand prix d'Italie?",
+          reponses: ["289.748km/h", "294.794km/h", "333.100km/h"],
+          bonne: null,
+          image: IMAGE_COURSE
+        }
+      ]
     };
 
-    window.addEventListener("keydown", event => {
-      const control = keyMap[event.code];
-      if (!control) return;
-      event.preventDefault();
-      input[control] = true;
-    });
+    const NOMS_CATEGORIES = {
+      modeles: "Modèles de voitures",
+      pilotes: "Pilotes et responsables",
+      courses: "Courses"
+    };
 
-    window.addEventListener("keyup", event => {
-      const control = keyMap[event.code];
-      if (control) {
-        event.preventDefault();
-        input[control] = false;
+    let categorieActive = "";
+    let indexQuestion = 0;
+    let score = 0;
+    let correctionAffichee = false;
+
+    const accueil = document.getElementById("accueil");
+    const quiz = document.getElementById("quiz");
+    const titreCategorie = document.getElementById("titreCategorie");
+    const numero = document.getElementById("numero");
+    const total = document.getElementById("total");
+    const scoreElement = document.getElementById("score");
+    const barre = document.getElementById("barre");
+    const etiquette = document.getElementById("etiquette");
+    const questionElement = document.getElementById("question");
+    const reponsesElement = document.getElementById("reponses");
+    const correctionElement = document.getElementById("correction");
+    const boutonSuivant = document.getElementById("suivant");
+    const contenu = document.getElementById("contenu");
+    const fin = document.getElementById("fin");
+
+    function afficherFond(image) {
+      if (!image) {
+        document.body.classList.remove("avec-photo");
+        document.body.style.backgroundImage = "";
+        return;
       }
-    });
 
-    window.addEventListener("blur", () => {
-      Object.keys(input).forEach(key => { input[key] = false; });
-    });
+      document.body.classList.add("avec-photo");
+      document.body.style.backgroundImage =
+        `linear-gradient(rgba(247,241,231,.58), rgba(247,241,231,.58)), url("${image}")`;
+    }
 
-    document.querySelectorAll("[data-control]").forEach(button => {
-      const control = button.dataset.control;
-      const release = event => {
-        if (event) event.preventDefault();
-        input[control] = false;
-        button.classList.remove("pressed");
-      };
+    function ouvrirCategorie(categorie) {
+      categorieActive = categorie;
+      indexQuestion = 0;
+      score = 0;
+      accueil.hidden = true;
+      quiz.classList.add("visible");
+      titreCategorie.textContent = NOMS_CATEGORIES[categorie];
+      afficherQuestion();
+    }
 
-      button.addEventListener("pointerdown", event => {
-        event.preventDefault();
-        input[control] = true;
-        button.classList.add("pressed");
-        button.setPointerCapture(event.pointerId);
+    function afficherQuestion() {
+      const liste = QUESTIONS[categorieActive];
+
+      if (indexQuestion >= liste.length) {
+        afficherFin();
+        return;
+      }
+
+      correctionAffichee = false;
+      const element = liste[indexQuestion];
+
+      afficherFond(element.image);
+      contenu.style.display = "block";
+      fin.classList.remove("visible");
+      correctionElement.classList.remove("visible");
+      correctionElement.textContent = "";
+      boutonSuivant.classList.remove("visible");
+
+      numero.textContent = String(indexQuestion + 1);
+      total.textContent = String(liste.length);
+      scoreElement.textContent = String(score);
+      barre.style.width = `${(indexQuestion / liste.length) * 100}%`;
+      etiquette.textContent = NOMS_CATEGORIES[categorieActive];
+      questionElement.textContent = element.question;
+      reponsesElement.replaceChildren();
+
+      element.reponses.forEach((texte, choix) => {
+        const bouton = document.createElement("button");
+        bouton.type = "button";
+        bouton.className = "reponse";
+        bouton.textContent = texte;
+
+        bouton.addEventListener("click", evenement => {
+          evenement.stopPropagation();
+          choisirReponse(choix);
+        });
+
+        reponsesElement.appendChild(bouton);
       });
-      button.addEventListener("pointerup", release);
-      button.addEventListener("pointercancel", release);
-      button.addEventListener("lostpointercapture", release);
+    }
+
+    function choisirReponse(choix) {
+      if (correctionAffichee) return;
+      correctionAffichee = true;
+
+      const element = QUESTIONS[categorieActive][indexQuestion];
+      const boutons = [...reponsesElement.querySelectorAll(".reponse")];
+
+      boutons.forEach((bouton, index) => {
+        bouton.disabled = true;
+
+        if (element.bonne !== null && index === element.bonne) {
+          bouton.classList.add("correcte");
+        }
+
+        if (index === choix && element.bonne !== null && choix !== element.bonne) {
+          bouton.classList.add("fausse");
+        }
+      });
+
+      if (element.bonne === null) {
+        correctionElement.textContent =
+          "Réponse correcte non indiquée pour cette question. Vous pouvez continuer.";
+      } else if (choix === element.bonne) {
+        score++;
+        scoreElement.textContent = String(score);
+        correctionElement.textContent = "✅ Bonne réponse !";
+      } else {
+        correctionElement.textContent =
+          `❌ Mauvaise réponse. La bonne réponse est « ${element.reponses[element.bonne]} ».`;
+      }
+
+      correctionElement.classList.add("visible");
+      boutonSuivant.classList.add("visible");
+    }
+
+    function questionSuivante() {
+      if (!correctionAffichee) return;
+      indexQuestion++;
+      afficherQuestion();
+    }
+
+    function afficherFin() {
+      afficherFond("");
+      contenu.style.display = "none";
+      fin.classList.add("visible");
+      barre.style.width = "100%";
+
+      const nombreQuestions = QUESTIONS[categorieActive].length;
+      document.getElementById("score-final").textContent = `${score}/${nombreQuestions}`;
+
+      let message = "Quiz terminé ! Vous pouvez choisir un autre thème.";
+      if (score === nombreQuestions) message = "Excellent ! Toutes vos réponses sont correctes.";
+      else if (score >= Math.ceil(nombreQuestions * .7)) message = "Très bon résultat !";
+
+      document.getElementById("message-final").textContent = message;
+    }
+
+    function retournerAuMenu() {
+      quiz.classList.remove("visible");
+      accueil.hidden = false;
+      afficherFond("");
+    }
+
+    document.querySelectorAll("[data-categorie]").forEach(bouton => {
+      bouton.addEventListener("click", () => {
+        ouvrirCategorie(bouton.dataset.categorie);
+      });
     });
 
-    loadLevel(0);
-    requestAnimationFrame(frame);
+    boutonSuivant.addEventListener("click", evenement => {
+      evenement.stopPropagation();
+      questionSuivante();
+    });
+
+    document.addEventListener("click", evenement => {
+      if (!correctionAffichee) return;
+      if (evenement.target.closest("#suivant")) return;
+      if (evenement.target.closest("#retourMenu")) return;
+      if (evenement.target.closest("#retourFin")) return;
+
+      questionSuivante();
+    });
+
+    document.getElementById("retourMenu").addEventListener("click", retournerAuMenu);
+    document.getElementById("retourFin").addEventListener("click", retournerAuMenu);
   </script>
 </body>
 </html>

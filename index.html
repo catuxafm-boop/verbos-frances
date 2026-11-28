@@ -7,9 +7,8 @@
   <style>
     :root {
       --rouge: #c62828;
-      --jaune: #f2c94c;
       --encre: #34383d;
-      --papier: rgba(255, 253, 248, .95);
+      --papier: rgba(255, 253, 248, .96);
       --vert: #e0f1e2;
       --vert-encre: #316b43;
       --erreur: #f5dfdc;
@@ -26,7 +25,7 @@
       place-items: center;
       color: var(--encre);
       background:
-        radial-gradient(circle at 12% 8%, rgba(255, 218, 172, .9), transparent 30%),
+        radial-gradient(circle at 12% 8%, rgba(255,218,172,.9), transparent 30%),
         linear-gradient(145deg, #f8efe2, #dce5eb);
       font-family: "Avenir Next", Avenir, system-ui, sans-serif;
       transition: background .4s ease;
@@ -65,11 +64,6 @@
       margin-bottom: 12px;
     }
 
-    .accueil,
-    .quiz {
-      width: 100%;
-    }
-
     .panneau {
       border: 1px solid rgba(255,255,255,.9);
       border-radius: 26px;
@@ -79,10 +73,11 @@
     }
 
     .accueil {
-      padding: clamp(22px, 5vw, 40px);
-      text-align: center;
-      overflow: hidden;
       position: relative;
+      width: 100%;
+      padding: clamp(22px, 5vw, 40px);
+      overflow: hidden;
+      text-align: center;
     }
 
     .accueil::before {
@@ -116,8 +111,7 @@
       border: 2px solid #eee4d8;
       border-radius: 20px;
       color: var(--encre);
-      background:
-        linear-gradient(145deg, rgba(255,255,255,.95), rgba(255,244,228,.92));
+      background: linear-gradient(145deg, rgba(255,255,255,.97), rgba(255,244,228,.94));
       font: inherit;
       font-weight: 800;
       cursor: pointer;
@@ -186,7 +180,7 @@
     .compteur {
       padding: 8px 11px;
       border-radius: 999px;
-      background: rgba(255,255,255,.88);
+      background: rgba(255,255,255,.9);
       font-size: .9rem;
       font-weight: 800;
       white-space: nowrap;
@@ -197,7 +191,7 @@
       border: 1px solid rgba(255,255,255,.8);
       border-radius: 999px;
       color: var(--encre);
-      background: rgba(255,255,255,.85);
+      background: rgba(255,255,255,.9);
       font: inherit;
       font-size: .88rem;
       font-weight: 700;
@@ -262,7 +256,7 @@
       border: 2px solid #e8e3dc;
       border-radius: 15px;
       color: var(--encre);
-      background: rgba(255,255,255,.96);
+      background: rgba(255,255,255,.97);
       font: inherit;
       text-align: left;
       cursor: pointer;
@@ -318,13 +312,6 @@
     }
 
     #fin.visible { display: block; }
-
-    #score-final {
-      margin: 10px;
-      color: var(--rouge);
-      font-size: 3rem;
-      font-weight: 900;
-    }
 
     .logo-bas {
       display: flex;
@@ -425,8 +412,7 @@
 
         <div id="fin">
           <h2>Quiz terminé !</h2>
-          <div id="score-final"></div>
-          <p id="message-final"></p>
+          <p>Choisissez un autre thème pour continuer</p>
           <button class="bouton-menu" id="retourFin" type="button">Choisir un autre thème</button>
           <div class="logo-bas">
             <div class="logo-ferrari" role="img" aria-label="Logo inspiré de Ferrari">
@@ -445,14 +431,12 @@
       "https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&w=1600&q=82";
     const IMAGE_COURSE =
       "https://images.unsplash.com/photo-1532906619279-a4b7267faa5a?auto=format&fit=crop&w=1600&q=82";
-    const IMAGE_PORSCHE =
-      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=82";
 
     const QUESTIONS = {
       modeles: [
         {
           question: "Est-ce que le vollant de la Ferrari Luce a le volant parfaitement rond ? Ou il est peut-être un peu droit en bas?",
-          reponses: ["Il est complètement rond", "Non, il est droit en bas"],
+          reponses: ["Il est completement rond", "Non, il est droit en bas"],
           bonne: 1,
           image: IMAGE_FERRARI
         },
@@ -476,7 +460,7 @@
         },
         {
           question: "Quel type de porte a la Ferrari Enzo?",
-          reponses: ["porte antsgoniste", "porte papillon", "porte normale", "porte élytre"],
+          reponses: ["porte antsgoniste", "porte papillon", "porte normale", "porte elytre"],
           bonne: 3,
           image: IMAGE_FERRARI
         },
@@ -487,7 +471,7 @@
           image: IMAGE_FERRARI
         },
         {
-          question: "Quelle a été la première voiture créée par la fameuse marque de supercars Ferrari?",
+          question: "Quelle a été la première voiture crée par la fameuse marque de supercars Ferrari?",
           reponses: ["Ferrari 125 S", "Ferrari 159 S", "The Ferrari 125 S"],
           bonne: 0,
           image: IMAGE_FERRARI
@@ -499,14 +483,14 @@
           image: IMAGE_FERRARI
         },
         {
-          question: "La Ferrari 296 spéciale a elle une vitre transparente à l'arrière laissant voir le moteur?",
+          question: "La Ferrari 296 spéciale a elle une vitre transparente a larrière laissant voir le moteur?",
           reponses: ["oui", "non"],
           bonne: 0,
           image: IMAGE_FERRARI
         },
         {
           question: "La Ferrari 159 S a-elle des fenêtres?",
-          reponses: ["oui, elle a 2 fenêtres", "non, elle est complètement découverte en haut"],
+          reponses: ["oui, elle a 2 fenêtres", "non, elle est complétement decouverte en haut"],
           bonne: 1,
           image: IMAGE_FERRARI
         }
@@ -514,7 +498,7 @@
 
       pilotes: [
         {
-          question: "Quelle de ces phrases a dit Charles Leclerc quand il était encore un enfant?",
+          question: "Quelle de ces phrases a dit Charles Leclerc quand il etait encore un enfant?",
           reponses: [
             "\"When I was little, my dream was to become an F1 driver, because I used to watch it on TV with my parents.\"",
             "\"Ever since I was a kid, my most heartfelt dream was to be able to drive the red car and I’ve managed to make it come true.\"",
@@ -530,7 +514,7 @@
           image: IMAGE_COURSE
         },
         {
-          question: "Est ce que Charles Leclerc fait la taille du papa de Yohan?",
+          question: "Est ce que Charles leclerc fait la taille du papa de Yohan?",
           reponses: ["oui", "non"],
           bonne: 0,
           image: IMAGE_COURSE
@@ -542,7 +526,7 @@
           image: IMAGE_COURSE
         },
         {
-          question: "Lewis Hamilton est plus âgé que t freres et ta soeur? Il est né en quelle année?",
+          question: "Lewis Hamilton est plus agé que t freres et ta soeur? Il est né en quelle année?",
           reponses: ["1985", "1995", "1990", "1987"],
           bonne: 0,
           image: IMAGE_COURSE
@@ -554,14 +538,14 @@
           image: IMAGE_COURSE
         },
         {
-          question: "Lewis Hamilton a déjà gagné combien de titres de champion mondial?",
+          question: "Lewis Hamilton a deja gagne combien de titres de champion mondial?",
           reponses: ["4", "7", "5", "6"],
           bonne: 1,
           image: IMAGE_COURSE
         },
         {
           question: "Où Frédéric Vasseur a fait l'École Supérieure des Techniques Aéronautiques et de Construction Automobile en 1995?",
-          reponses: ["Suisse", "allemagne", "France", "Autriche"],
+          reponses: ["Suisse", "alemagne", "France", "Autriche"],
           bonne: 2,
           image: IMAGE_COURSE
         },
@@ -569,18 +553,18 @@
           question: "En quelle année est né Frédéric Vasseur?",
           reponses: [
             "en mai (COMME MOI ET TA MAMAN)",
-            "en avril(comme ma mereee)",
-            "en août (comme Laurene et ton pereee)"
+            "en avil(comme ma mereee)",
+            "en aout (comme Laurene et ton pereee)"
           ],
-          bonne: null,
+          bonne: 0,
           image: IMAGE_COURSE
         }
       ],
 
       courses: [
         {
-          question: "Quand sera le prochain grand prix de Qatar?",
-          reponses: ["le 29 novembre", "le 30 novembre", "le 29 décembre"],
+          question: "Quand sera le prochain grand prix de quatar?",
+          reponses: ["le 29 novembre", "le 30 novembre", "le 29 decembre"],
           bonne: 0,
           image: IMAGE_COURSE
         },
@@ -591,21 +575,21 @@
           image: IMAGE_COURSE
         },
         {
-          question: "Au grand prix 2026 des États-Unis, qui est resté en deuxième place?",
+          question: "Au grand prix 2026 des etats unis, qui est resté en deuxième place?",
           reponses: ["Lewis Hamilton", "Charles Leclerc"],
           bonne: 1,
           image: IMAGE_COURSE
         },
         {
-          question: "Au Barcelona-Cataluña grand prix, un des deux pilotes de Ferrari a fini en première place?",
+          question: "Au Barcelona-Cataluña grand prix, un des deux pilotes de Ferrari a finit en première place?",
           reponses: ["oui", "non"],
           bonne: 0,
           image: IMAGE_COURSE
         },
         {
-          question: "Quelle était la vélocité maximale de Lewis Hamilton dans le grand prix d'Italie?",
+          question: "Quelle était la vélocité maximal de Lewis Hamilton dans le grand prix d'Italie?",
           reponses: ["289.748km/h", "294.794km/h", "333.100km/h"],
-          bonne: null,
+          bonne: 2,
           image: IMAGE_COURSE
         }
       ]
@@ -710,19 +694,16 @@
       boutons.forEach((bouton, index) => {
         bouton.disabled = true;
 
-        if (element.bonne !== null && index === element.bonne) {
+        if (index === element.bonne) {
           bouton.classList.add("correcte");
         }
 
-        if (index === choix && element.bonne !== null && choix !== element.bonne) {
+        if (index === choix && choix !== element.bonne) {
           bouton.classList.add("fausse");
         }
       });
 
-      if (element.bonne === null) {
-        correctionElement.textContent =
-          "Réponse correcte non indiquée pour cette question. Vous pouvez continuer.";
-      } else if (choix === element.bonne) {
+      if (choix === element.bonne) {
         score++;
         scoreElement.textContent = String(score);
         correctionElement.textContent = "✅ Bonne réponse !";
@@ -746,15 +727,6 @@
       contenu.style.display = "none";
       fin.classList.add("visible");
       barre.style.width = "100%";
-
-      const nombreQuestions = QUESTIONS[categorieActive].length;
-      document.getElementById("score-final").textContent = `${score}/${nombreQuestions}`;
-
-      let message = "Quiz terminé ! Vous pouvez choisir un autre thème.";
-      if (score === nombreQuestions) message = "Excellent ! Toutes vos réponses sont correctes.";
-      else if (score >= Math.ceil(nombreQuestions * .7)) message = "Très bon résultat !";
-
-      document.getElementById("message-final").textContent = message;
     }
 
     function retournerAuMenu() {
@@ -774,12 +746,13 @@
       questionSuivante();
     });
 
-    document.addEventListener("click", evenement => {
+    document.addEventListener("pointerdown", evenement => {
       if (!correctionAffichee) return;
       if (evenement.target.closest("#suivant")) return;
       if (evenement.target.closest("#retourMenu")) return;
       if (evenement.target.closest("#retourFin")) return;
 
+      evenement.preventDefault();
       questionSuivante();
     });
 
